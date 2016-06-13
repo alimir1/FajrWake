@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		013DBEA21CEF9B6F00071C15 /* AddAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013DBEA11CEF9B6F00071C15 /* AddAlarmViewController.swift */; };
 		0152D6411CEF0FCC004FFC04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6401CEF0FCC004FFC04 /* AppDelegate.swift */; };
 		0152D6461CEF0FCC004FFC04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0152D6441CEF0FCC004FFC04 /* Main.storyboard */; };
 		0152D6481CEF0FCC004FFC04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0152D6471CEF0FCC004FFC04 /* Assets.xcassets */; };
@@ -18,10 +17,11 @@
 		0176D6B51D0E304B00A5BB01 /* DisplayPrayersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6B41D0E304B00A5BB01 /* DisplayPrayersViewController.swift */; };
 		0176D6B71D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6B61D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift */; };
 		0176D6B91D0E44A200A5BB01 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6B81D0E44A200A5BB01 /* HomeViewController.swift */; };
+		0176D6BF1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */; };
+		0176D6C31D0F0EAF00A5BB01 /* TestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6C21D0F0EAF00A5BB01 /* TestTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		013DBEA11CEF9B6F00071C15 /* AddAlarmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmViewController.swift; sourceTree = "<group>"; };
 		0152D63D1CEF0FCB004FFC04 /* Fajr Wake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fajr Wake.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0152D6401CEF0FCC004FFC04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0152D6451CEF0FCC004FFC04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -34,6 +34,8 @@
 		0176D6B41D0E304B00A5BB01 /* DisplayPrayersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayPrayersViewController.swift; sourceTree = "<group>"; };
 		0176D6B61D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = displayPrayerTimesTableViewCell.swift; sourceTree = "<group>"; };
 		0176D6B81D0E44A200A5BB01 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmTableViewController.swift; sourceTree = "<group>"; };
+		0176D6C21D0F0EAF00A5BB01 /* TestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,10 +83,11 @@
 		0176D6BC1D0E53FE00A5BB01 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				0176D6C21D0F0EAF00A5BB01 /* TestTableViewController.swift */,
 				0176D6B81D0E44A200A5BB01 /* HomeViewController.swift */,
 				0176D6B41D0E304B00A5BB01 /* DisplayPrayersViewController.swift */,
 				0176D6B61D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift */,
-				013DBEA11CEF9B6F00071C15 /* AddAlarmViewController.swift */,
+				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -170,10 +173,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				013DBEA21CEF9B6F00071C15 /* AddAlarmViewController.swift in Sources */,
 				0152D6571CEF1071004FFC04 /* FajrWake.swift in Sources */,
+				0176D6C31D0F0EAF00A5BB01 /* TestTableViewController.swift in Sources */,
 				0152D6551CEF105F004FFC04 /* OneShotLocation.swift in Sources */,
 				0152D6531CEF1048004FFC04 /* PrayerTimes.swift in Sources */,
+				0176D6BF1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift in Sources */,
 				0176D6B91D0E44A200A5BB01 /* HomeViewController.swift in Sources */,
 				0152D6411CEF0FCC004FFC04 /* AppDelegate.swift in Sources */,
 				0176D6B71D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift in Sources */,

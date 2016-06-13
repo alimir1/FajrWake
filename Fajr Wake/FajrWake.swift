@@ -47,38 +47,38 @@ class LocalGMT {
     }
 }
 
-class PrayTimes {
-    class func getPrayerTimesString(userSettings: Settings) -> [SalatsAndQadhas : String] {
-        let myPrayerTimes = PrayerTimes(caculationmethod: userSettings.calculationMethod, asrJuristic: userSettings.asrJuristic, adjustHighLats: userSettings.adjustHighLats, timeFormat: userSettings.timeFormat)
-        let prayerTimes = myPrayerTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: userSettings.latitude, longitude: userSettings.longitude, tZone: userSettings.localGMT())
-        let finalPrayTimes = [SalatsAndQadhas.Fajr : prayerTimes.sort()[0], SalatsAndQadhas.Sunrise : prayerTimes.sort()[1]]
-        
-        return finalPrayTimes
-    }
-    class func getPrayerTimesInt(userSettings: Settings) -> [SalatsAndQadhas : [Int]] {
-        let myPrayerTimes = PrayerTimes(caculationmethod: userSettings.calculationMethod, asrJuristic: userSettings.asrJuristic, adjustHighLats: userSettings.adjustHighLats, timeFormat: userSettings.timeFormat)
-        let prayerTimes = myPrayerTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: userSettings.latitude, longitude: userSettings.longitude, tZone: userSettings.localGMT())
-        let finalPrayTimes = [SalatsAndQadhas.Fajr : prayerTimes.sort()[0], SalatsAndQadhas.Sunrise : prayerTimes.sort()[1]]
-        
-        // For Fajr
-        let fajrTime = finalPrayTimes[SalatsAndQadhas.Fajr]
-        let componentsFajrTime = fajrTime!.characters.split { $0 == ":" } .map {
-            (x) -> Int in return Int(String(x))!
-        }
-        let fajrTimeInt = [componentsFajrTime[0], componentsFajrTime[1]]
-        
-        // For Sunrise
-        let sunriseTime = finalPrayTimes[SalatsAndQadhas.Sunrise]
-        let componentsSunriseTime = sunriseTime!.characters.split { $0 == ":" } .map {
-            (x) -> Int in return Int(String(x))!
-        }
-        let sunriseTimeInt = [componentsSunriseTime[0], componentsSunriseTime[1]]
-        
-        let finalPrayTimesInt = [SalatsAndQadhas.Fajr : fajrTimeInt, SalatsAndQadhas.Sunrise : sunriseTimeInt]
-        
-        return finalPrayTimesInt
-    }
-}
+//class PrayTimes {
+//    class func getPrayerTimesString(userSettings: Settings) -> [SalatsAndQadhas : String] {
+//        let myPrayerTimes = PrayerTimes(caculationmethod: userSettings.calculationMethod, asrJuristic: userSettings.asrJuristic, adjustHighLats: userSettings.adjustHighLats, timeFormat: userSettings.timeFormat)
+//        let prayerTimes = myPrayerTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: userSettings.latitude, longitude: userSettings.longitude, tZone: userSettings.localGMT())
+//        let finalPrayTimes = [SalatsAndQadhas.Fajr : prayerTimes.sort()[0], SalatsAndQadhas.Sunrise : prayerTimes.sort()[1]]
+//        
+//        return finalPrayTimes
+//    }
+//    class func getPrayerTimesInt(userSettings: Settings) -> [SalatsAndQadhas : [Int]] {
+//        let myPrayerTimes = PrayerTimes(caculationmethod: userSettings.calculationMethod, asrJuristic: userSettings.asrJuristic, adjustHighLats: userSettings.adjustHighLats, timeFormat: userSettings.timeFormat)
+//        let prayerTimes = myPrayerTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: userSettings.latitude, longitude: userSettings.longitude, tZone: userSettings.localGMT())
+//        let finalPrayTimes = [SalatsAndQadhas.Fajr : prayerTimes.sort()[0], SalatsAndQadhas.Sunrise : prayerTimes.sort()[1]]
+//        
+//        // For Fajr
+//        let fajrTime = finalPrayTimes[SalatsAndQadhas.Fajr]
+//        let componentsFajrTime = fajrTime!.characters.split { $0 == ":" } .map {
+//            (x) -> Int in return Int(String(x))!
+//        }
+//        let fajrTimeInt = [componentsFajrTime[0], componentsFajrTime[1]]
+//        
+//        // For Sunrise
+//        let sunriseTime = finalPrayTimes[SalatsAndQadhas.Sunrise]
+//        let componentsSunriseTime = sunriseTime!.characters.split { $0 == ":" } .map {
+//            (x) -> Int in return Int(String(x))!
+//        }
+//        let sunriseTimeInt = [componentsSunriseTime[0], componentsSunriseTime[1]]
+//        
+//        let finalPrayTimesInt = [SalatsAndQadhas.Fajr : fajrTimeInt, SalatsAndQadhas.Sunrise : sunriseTimeInt]
+//        
+//        return finalPrayTimesInt
+//    }
+//}
 
 class DaysToRepeatLabel {
     class func getTextToRepeatDaysLabel(days: [Days]) -> String {
