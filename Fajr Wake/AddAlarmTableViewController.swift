@@ -9,9 +9,7 @@
 import UIKit
 
 class AddAlarmTableViewController: UITableViewController {
-    
-    var player: String?
-    
+        
     @IBOutlet weak var alarmLabelDetail: UILabel!
 
     override func viewDidLoad() {

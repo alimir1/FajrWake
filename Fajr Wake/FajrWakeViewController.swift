@@ -10,20 +10,37 @@ import UIKit
 import CoreLocation
 
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
-
+    
     var prayerTimes: [String: String] = [:]
     var manager: OneShotLocationManager?
+    let defaults = NSUserDefaults.standardUserDefaults()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupPrayerTimes()
-
+        
         // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+//         self.clearsSelectionOnViewWillAppear = false
+        isAppAlreadyLaunchedOnce()
+        
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func isAppAlreadyLaunchedOnce()->Bool{
+        if let isAppAlreadyLaunchedOnce = defaults.stringForKey("isAppAlreadyLaunchedOnce"){
+            print("App already launched : \(isAppAlreadyLaunchedOnce)")
+            
+            let lon = defaults.doubleForKey("longitude")
+            let lat = defaults.doubleForKey("latitude")
+            let gmt = defaults.doubleForKey("gmt")
+            updatePrayerTimes(lat, lon: lon, gmt: gmt)
+            return true
+        } else {
+            defaults.setBool(true, forKey: "isAppAlreadyLaunchedOnce")
+            print("App launched first time")
+            getLocationCoordinatesAndSetup()
+            return false
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -37,7 +54,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     // gets location and calls updatePrayerTimes function
-    func setupPrayerTimes() {
+    func getLocationCoordinatesAndSetup() {
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
             // fetch location or an error
@@ -45,10 +62,21 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
                 // got the location!
                 let lat = loc.coordinate.latitude
                 let lon = loc.coordinate.longitude
+                
+                // setting defaults
+                self.defaults.setDouble(lat, forKey: "latitude")
+                self.defaults.setDouble(lon, forKey: "longitude")
+                self.defaults.setDouble(LocalGMT.getLocalGMT(), forKey: "gmt")
                 self.updatePrayerTimes(lat, lon: lon, gmt: LocalGMT.getLocalGMT())
+                
             } else if let err = error {
-                // default to Qom's time if error in getting location
-                self.updatePrayerTimes(34.61, lon: 50.84, gmt: +4.5) // Default location: Qom
+                
+                // setting defaults to Qom's time if error in getting user location
+//                self.defaults.setDouble(34.61, forKey: "latitude")
+//                self.defaults.setDouble(50.84, forKey: "longitude")
+//                self.defaults.setDouble(+4.5, forKey: "gmt")
+//                self.updatePrayerTimes(34.61, lon: 50.84, gmt: +4.5)
+                
                 print(err.localizedDescription)
             }
             self.manager = nil
@@ -57,22 +85,14 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     func updatePrayerTimes(lat: Double, lon: Double, gmt: Double) {
         
-        // SORTING DICTIONARY!!!
-        /*
-         var someDict = ["Wash Face" : "6:34 AM", "Clean the House" : "7:40 AM", "Go to School" : "5:30 AM"]
-         
-         let sortedDict = someDict.sort { $0.1 < $1.1 }
-         print("\(sortedDict)")  //[("Go to School", "5:30 AM"), ("Wash Face", "6:34 AM"), ("Clean the House", "7:40 AM")]
-         
-         */
-        
         // default settings
         let myPrayTimes = PrayerTimes(caculationmethod: .Tehran, asrJuristic: .Shafii, adjustHighLats: .None, timeFormat: .Time12)
-        
         self.prayerTimes = myPrayTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
+        let something = myPrayTimes.julianDate(2016, month: 6, day: 14)
+        print("(FajrWakeViewController)ISHRAQ: Julian or Islamic? I'm confused.. \(something)")
     }
     
-    // unwind methods
+    // unwind methods for cells
     @IBAction func cancelToPlayersViewController(segue:UIStoryboardSegue) {
     }
     
