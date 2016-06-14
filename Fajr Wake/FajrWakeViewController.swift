@@ -1,33 +1,33 @@
 //
-//  TestTableViewController.swift
+//  FajrWakeViewController.swift
 //  Fajr Wake
 //
-//  Created by Abidi on 6/13/16.
+//  Created by Abidi on 6/14/16.
 //  Copyright © 2016 Fajr Wake. All rights reserved.
 //
 
 import UIKit
 import CoreLocation
 
-class TestTableViewController: UITableViewController, CLLocationManagerDelegate {
-    
+class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
+
     var prayerTimes: [String: String] = [:]
     var manager: OneShotLocationManager?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupPrayerTimes()
 
         // Uncomment the following line to preserve selection between presentations
-         self.clearsSelectionOnViewWillAppear = false
+        // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "displayPrayerTimesSegue1"
+        if segue.identifier == "displayPrayerTimesSegue"
         {
             if  let navController = segue.destinationViewController as? UINavigationController,
                 let displayPrayerVC = navController.topViewController as? DisplayPrayersViewController {
@@ -70,6 +70,13 @@ class TestTableViewController: UITableViewController, CLLocationManagerDelegate 
         let myPrayTimes = PrayerTimes(caculationmethod: .Tehran, asrJuristic: .Shafii, adjustHighLats: .None, timeFormat: .Time12)
         
         self.prayerTimes = myPrayTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
+    }
+    
+    // unwind methods
+    @IBAction func cancelToPlayersViewController(segue:UIStoryboardSegue) {
+    }
+    
+    @IBAction func savePlayerDetail(segue:UIStoryboardSegue) {
     }
 
     // MARK: - Table view data source

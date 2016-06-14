@@ -8,27 +8,24 @@
 
 import UIKit
 
-class DisplayPrayersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DisplayPrayersViewController: UITableViewController {
     
-    @IBOutlet var prayertimesTableView: UITableView!
     var prayTimesArray: [String: String] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        prayertimesTableView.delegate = self
-        prayertimesTableView.dataSource = self
-        prayertimesTableView.tableFooterView = UIView()
     }
     
+
     @IBAction func dismissModal(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return prayTimesArray.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // your cell coding
         
         let cellIdentifier = "prayerTimesCell"
@@ -45,7 +42,7 @@ class DisplayPrayersViewController: UIViewController, UITableViewDelegate, UITab
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // cell selected code here
     }
 

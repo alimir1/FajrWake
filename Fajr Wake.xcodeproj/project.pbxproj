@@ -16,9 +16,8 @@
 		0152D6571CEF1071004FFC04 /* FajrWake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6561CEF1071004FFC04 /* FajrWake.swift */; };
 		0176D6B51D0E304B00A5BB01 /* DisplayPrayersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6B41D0E304B00A5BB01 /* DisplayPrayersViewController.swift */; };
 		0176D6B71D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6B61D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift */; };
-		0176D6B91D0E44A200A5BB01 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6B81D0E44A200A5BB01 /* HomeViewController.swift */; };
 		0176D6BF1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */; };
-		0176D6C31D0F0EAF00A5BB01 /* TestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6C21D0F0EAF00A5BB01 /* TestTableViewController.swift */; };
+		0176D6C71D0FA79800A5BB01 /* FajrWakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,9 +32,8 @@
 		0152D6561CEF1071004FFC04 /* FajrWake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWake.swift; sourceTree = "<group>"; };
 		0176D6B41D0E304B00A5BB01 /* DisplayPrayersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayPrayersViewController.swift; sourceTree = "<group>"; };
 		0176D6B61D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = displayPrayerTimesTableViewCell.swift; sourceTree = "<group>"; };
-		0176D6B81D0E44A200A5BB01 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmTableViewController.swift; sourceTree = "<group>"; };
-		0176D6C21D0F0EAF00A5BB01 /* TestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTableViewController.swift; sourceTree = "<group>"; };
+		0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWakeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +81,7 @@
 		0176D6BC1D0E53FE00A5BB01 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				0176D6C21D0F0EAF00A5BB01 /* TestTableViewController.swift */,
-				0176D6B81D0E44A200A5BB01 /* HomeViewController.swift */,
+				0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */,
 				0176D6B41D0E304B00A5BB01 /* DisplayPrayersViewController.swift */,
 				0176D6B61D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift */,
 				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
@@ -174,11 +171,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0152D6571CEF1071004FFC04 /* FajrWake.swift in Sources */,
-				0176D6C31D0F0EAF00A5BB01 /* TestTableViewController.swift in Sources */,
+				0176D6C71D0FA79800A5BB01 /* FajrWakeViewController.swift in Sources */,
 				0152D6551CEF105F004FFC04 /* OneShotLocation.swift in Sources */,
 				0152D6531CEF1048004FFC04 /* PrayerTimes.swift in Sources */,
 				0176D6BF1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift in Sources */,
-				0176D6B91D0E44A200A5BB01 /* HomeViewController.swift in Sources */,
 				0152D6411CEF0FCC004FFC04 /* AppDelegate.swift in Sources */,
 				0176D6B71D0E389800A5BB01 /* displayPrayerTimesTableViewCell.swift in Sources */,
 				0176D6B51D0E304B00A5BB01 /* DisplayPrayersViewController.swift in Sources */,

@@ -1,90 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Bwd-XI-JHM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lUT-mJ-Eft">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Fajr Wake-->
-        <scene sceneID="YxD-Nf-OQK">
-            <objects>
-                <tableViewController id="9Ww-Ps-yqM" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="16Z-Mg-i4C">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="9Ww-Ps-yqM" id="E3M-dL-Kua"/>
-                            <outlet property="delegate" destination="9Ww-Ps-yqM" id="uf0-9d-xBV"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems>
-                        <barButtonItem image="List 1" id="EON-4q-yYy">
-                            <connections>
-                                <segue destination="KEz-89-nnD" kind="presentation" identifier="displayPrayerTimesSegue1" id="eae-Ti-U0D"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="tJ9-Ul-31M"/>
-                        <barButtonItem image="Settings 2" id="DYM-Ad-ELc"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Fajr Wake" id="Lvi-w7-1IA">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="EpT-W5-lbQ"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0Oj-fh-IGi"/>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zs0-Kv-vEW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="420" y="-358"/>
-        </scene>
-        <!--Fajr Wake-->
-        <scene sceneID="pWk-kI-102">
-            <objects>
-                <viewController id="SKr-iP-Qfc" customClass="HomeViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="cI5-Sw-zvP"/>
-                        <viewControllerLayoutGuide type="bottom" id="XaT-cX-HJ0"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9ha-q0-Y9V">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khu-pX-V4y">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <items>
-                                    <barButtonItem image="List 1" id="CLk-4Y-ODy" userLabel="prayertimesList">
-                                        <connections>
-                                            <segue destination="KEz-89-nnD" kind="presentation" identifier="displayPrayerTimesSegue" id="UFX-PW-0bh"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="33R-OI-qnl"/>
-                                    <barButtonItem image="Settings 2" id="dUY-HC-M9o" userLabel="settings"/>
-                                </items>
-                            </toolbar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Khu-pX-V4y" secondAttribute="trailing" constant="-20" id="18B-Ks-4QX"/>
-                            <constraint firstItem="Khu-pX-V4y" firstAttribute="leading" secondItem="9ha-q0-Y9V" secondAttribute="leadingMargin" constant="-20" id="RO3-N6-RVE"/>
-                            <constraint firstItem="XaT-cX-HJ0" firstAttribute="top" secondItem="Khu-pX-V4y" secondAttribute="bottom" id="gOE-C3-eD5"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Fajr Wake" id="ITl-g9-DOF">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="tqu-dd-6C8"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="kxs-Kx-Gmj">
-                            <connections>
-                                <segue destination="NgY-ZL-nSc" kind="presentation" identifier="addAlarmSegue" id="nbg-mq-qSB"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eWn-5X-hOl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="370" y="305"/>
-        </scene>
         <!--Add Alarm-->
         <scene sceneID="1nc-C7-9my">
             <objects>
+                <exit id="ZKY-nl-q8E" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q85-vc-WaG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="OqC-Qb-um6" customClass="AddAlarmTableViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="EQ2-yJ-ilN">
@@ -94,7 +18,7 @@
                         <sections>
                             <tableViewSection id="pit-wU-FxM">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="V6e-Yx-bsN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="V6e-Yx-bsN">
                                         <rect key="frame" x="0.0" y="99" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V6e-Yx-bsN" id="qds-C8-gET">
@@ -114,7 +38,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pBZ-EX-kyq">
-                                                    <rect key="frame" x="15" y="12" width="40" height="20"/>
+                                                    <rect key="frame" x="15" y="12" width="40" height="19"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -163,8 +87,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add Alarm" id="G86-jY-ag0">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="oDp-zb-nMA"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="0b1-xE-VDU"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="oDp-zb-nMA">
+                            <connections>
+                                <segue destination="ZKY-nl-q8E" kind="unwind" unwindAction="cancelToPlayersViewController:" id="mtr-sP-Lyo"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="0b1-xE-VDU">
+                            <connections>
+                                <segue destination="ZKY-nl-q8E" kind="unwind" unwindAction="savePlayerDetail:" id="U6E-dm-HRL"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="alarmLabelDetail" destination="yW8-jY-iJH" id="bag-50-2a1"/>
@@ -174,90 +106,59 @@
             <point key="canvasLocation" x="1250" y="1131"/>
         </scene>
         <!--Prayer Times-->
-        <scene sceneID="tne-QT-ifu">
+        <scene sceneID="GTP-R1-RRo">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="DisplayPrayersViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                <tableViewController id="1ry-a4-T3U" customClass="DisplayPrayersViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="MPO-ve-Veh">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="42" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="46p-np-9wM">
-                                <rect key="frame" x="0.0" y="177" width="600" height="370"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="prayerTimesCell" rowHeight="42" id="Z5X-7t-RIV" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="42"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z5X-7t-RIV" id="dqT-f4-ZYs">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="41"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="prayerName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idg-1Y-d2J">
-                                                    <rect key="frame" x="13" y="9" width="94" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="prayertime" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMB-iD-dDM">
-                                                    <rect key="frame" x="178" y="9" width="135" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="prayerNameLabel" destination="idg-1Y-d2J" id="LUa-ED-7aa"/>
-                                            <outlet property="prayerTimeLabel" destination="CMB-iD-dDM" id="Ko0-qx-xG5"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Institute of Geophysics, University of Tehran" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOl-Mz-DgG">
-                                <rect key="frame" x="41" y="107" width="251" height="15"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Prayer Times" id="XS8-LV-3mK">
-                        <barButtonItem key="rightBarButtonItem" image="X" id="7zL-rG-sKQ">
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="prayerTimesCell" textLabel="4HX-69-0oH" detailTextLabel="mID-Yj-GIg" style="IBUITableViewCellStyleValue1" id="XnX-ia-yTr" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XnX-ia-yTr" id="Q2J-q8-FfI">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="PrayerName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4HX-69-0oH">
+                                            <rect key="frame" x="15" y="12" width="90" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="PrayerTime" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mID-Yj-GIg">
+                                            <rect key="frame" x="503" y="12" width="82" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="prayerNameLabel" destination="4HX-69-0oH" id="uX6-0Y-1ER"/>
+                                    <outlet property="prayerTimeLabel" destination="mID-Yj-GIg" id="F03-Ga-lNU"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="1ry-a4-T3U" id="TOq-Kb-prB"/>
+                            <outlet property="delegate" destination="1ry-a4-T3U" id="b1D-K8-g72"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Prayer Times" id="UcY-Bf-762">
+                        <barButtonItem key="rightBarButtonItem" image="X" id="eCS-FM-Okj">
                             <connections>
-                                <action selector="dismissModal:" destination="BYZ-38-t0r" id="JqB-Ae-NsA"/>
+                                <action selector="dismissModal:" destination="1ry-a4-T3U" id="NyU-lD-uUG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="prayertimesTableView" destination="46p-np-9wM" id="1dd-WQ-ks2"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6y3-tI-YeZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1869" y="305"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="PkR-Yu-yHN">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Cbf-C5-ERG" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dNG-Y2-MCd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="SKr-iP-Qfc" kind="relationship" relationship="rootViewController" id="4fw-HD-Cen"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fNo-oA-gTz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-442" y="305"/>
+            <point key="canvasLocation" x="2818" y="305"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TaD-DB-CE4">
@@ -270,12 +171,57 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="AbA-43-MMG"/>
+                        <segue destination="1ry-a4-T3U" kind="relationship" relationship="rootViewController" id="kfA-f4-lq5"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s9G-Nh-EQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1057" y="305"/>
+            <point key="canvasLocation" x="1869" y="305"/>
+        </scene>
+        <!--Fajr Wake View Controller-->
+        <scene sceneID="WdT-f1-caf">
+            <objects>
+                <tableViewController id="Gh6-O9-xWD" customClass="FajrWakeViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mdq-CW-Xx7">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v0K-rT-VOa">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0K-rT-VOa" id="1FJ-pm-kVv">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Gh6-O9-xWD" id="GU6-HH-K3r"/>
+                            <outlet property="delegate" destination="Gh6-O9-xWD" id="eg5-fX-e8A"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem image="List 1" id="1Ie-vF-Bko">
+                            <connections>
+                                <segue destination="KEz-89-nnD" kind="presentation" identifier="displayPrayerTimesSegue" id="iDJ-Vl-gRm"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="FMS-me-R03"/>
+                        <barButtonItem image="Settings 2" id="1wV-ue-Uvi"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="wWv-im-Nar">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="yOT-ow-Bis"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="tYA-tT-9yS">
+                            <connections>
+                                <segue destination="NgY-ZL-nSc" kind="presentation" id="CgN-Vc-8su"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gxz-ej-wtY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1132" y="340"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="y8d-yp-6pq">
@@ -296,26 +242,26 @@
             <point key="canvasLocation" x="438" y="1131"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="y30-oo-V9y">
+        <scene sceneID="dTa-4p-rWA">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Bwd-XI-JHM" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lUT-mJ-Eft" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="YBN-2m-53O">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Uum-qm-aSi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="ZKy-EQ-eck">
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="7j2-Oe-Ey6">
                         <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="9Ww-Ps-yqM" kind="relationship" relationship="rootViewController" id="oVn-UR-r0F"/>
+                        <segue destination="Gh6-O9-xWD" kind="relationship" relationship="rootViewController" id="62G-6Q-y8C"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iaC-tJ-pfX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0uw-7W-CEM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-476" y="-358"/>
+            <point key="canvasLocation" x="320" y="340"/>
         </scene>
     </scenes>
     <resources>
@@ -323,7 +269,4 @@
         <image name="Settings 2" width="22" height="22"/>
         <image name="X" width="18" height="18"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="eae-Ti-U0D"/>
-    </inferredMetricsTieBreakers>
 </document>
