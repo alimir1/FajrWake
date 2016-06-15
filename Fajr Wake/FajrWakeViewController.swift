@@ -13,7 +13,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     var prayerTimes: [String: String] = [:]
     var manager: OneShotLocationManager?
-    let defaultSettings = NSUserDefaults.standardUserDefaults()
     var userSettingsPrayTimes: PrayerTimes!
     
     // Initializing userSettingsPrayTimes (need to do other inits to satisfy requirements
@@ -46,14 +45,21 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     func setupPrayerTimes() {
         if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == true {
             print("launched before")
-            let lon = defaultSettings.doubleForKey("longitude")
-            let lat = defaultSettings.doubleForKey("latitude")
-            let gmt = defaultSettings.doubleForKey("gmt")
+            let settings = NSUserDefaults.standardUserDefaults()
+            let lon = settings.doubleForKey("longitude")
+            let lat = settings.doubleForKey("latitude")
+            let gmt = settings.doubleForKey("gmt")
             updatePrayerTimes(lat, lon: lon, gmt: gmt)
         } else {
-            // this is first launch
-            print("App launched first time")
+            // this is first launch. configure default settings and get prayertimes
+            let settings = NSUserDefaults.standardUserDefaults()
+            settings.setInteger(7, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
+            settings.setInteger(0, forKey: PrayerTimeSettingsReference.AsrJuristic.rawValue)
+            settings.setInteger(0, forKey: PrayerTimeSettingsReference.AdjustHighLats.rawValue)
+            settings.setInteger(0, forKey: PrayerTimeSettingsReference.TimeFormat.rawValue)
+            
             getLocationCoordinatesAndSetup()
+            
             // once the app launched for first time, set "launchedBefore" to true
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
         }
@@ -64,8 +70,10 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         {
             if  let navController = segue.destinationViewController as? UINavigationController,
                 let displayPrayerVC = navController.topViewController as? DisplayPrayersViewController {
-                displayPrayerVC.prayTimesArray = prayerTimes
-                displayPrayerVC.calculationMethodLabel = "This needs to be upated"
+                displayPrayerVC.prayTimesArray = prayerTimes // prayertimesDict
+                
+                let checkCalcMethod = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+                displayPrayerVC.calculationMethodLabel = getCalculationMethodString(checkCalcMethod) //displaying calc method
             }
         }
     }
@@ -81,17 +89,19 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
                 let lon = loc.coordinate.longitude
                 
                 // setting defaults
-                NSUserDefaults.standardUserDefaults().setDouble(lat, forKey: "latitude")
-                NSUserDefaults.standardUserDefaults().setDouble(lon, forKey: "longitude")
-                NSUserDefaults.standardUserDefaults().setDouble(LocalGMT.getLocalGMT(), forKey: "gmt")
+                let settings = NSUserDefaults.standardUserDefaults()
+                settings.setDouble(lat, forKey: "latitude")
+                settings.setDouble(lon, forKey: "longitude")
+                settings.setDouble(LocalGMT.getLocalGMT(), forKey: "gmt")
                 self.updatePrayerTimes(lat, lon: lon, gmt: LocalGMT.getLocalGMT())
                 
             } else if let err = error {
                 
                 // setting defaults to Qom's time if error in getting user location
-                NSUserDefaults.standardUserDefaults().setDouble(34.61, forKey: "latitude")
-                NSUserDefaults.standardUserDefaults().setDouble(50.84, forKey: "longitude")
-                NSUserDefaults.standardUserDefaults().setDouble(+4.5, forKey: "gmt")
+                let settings = NSUserDefaults.standardUserDefaults()
+                settings.setDouble(34.61, forKey: "latitude")
+                settings.setDouble(50.84, forKey: "longitude")
+                settings.setDouble(+4.5, forKey: "gmt")
                 self.updatePrayerTimes(34.61, lon: 50.84, gmt: +4.5)
                 
                 print(err.localizedDescription)

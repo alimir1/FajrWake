@@ -10,17 +10,6 @@ import Foundation
 
 // MARK: - Protocols
 
-protocol PrayerAlarmType {
-    var whenToAlarm: WakeOptions { get set }
-    var minsToAdjust: Int { get set }
-    var alarmLabel: String { get set }
-    var finalPrayTimes: [SalatsAndQadhas : String] { get }
-    
-    func setDaysToRepeat(days: [Days]) -> [Days]
-    func setLabel()
-    func alarmOnOff(alarmOn: Bool)
-}
-
 // MARK: - Error Types
 
 
@@ -46,39 +35,6 @@ class LocalGMT {
         return gmt
     }
 }
-
-//class PrayTimes {
-//    class func getPrayerTimesString(userSettings: Settings) -> [SalatsAndQadhas : String] {
-//        let myPrayerTimes = PrayerTimes(caculationmethod: userSettings.calculationMethod, asrJuristic: userSettings.asrJuristic, adjustHighLats: userSettings.adjustHighLats, timeFormat: userSettings.timeFormat)
-//        let prayerTimes = myPrayerTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: userSettings.latitude, longitude: userSettings.longitude, tZone: userSettings.localGMT())
-//        let finalPrayTimes = [SalatsAndQadhas.Fajr : prayerTimes.sort()[0], SalatsAndQadhas.Sunrise : prayerTimes.sort()[1]]
-//        
-//        return finalPrayTimes
-//    }
-//    class func getPrayerTimesInt(userSettings: Settings) -> [SalatsAndQadhas : [Int]] {
-//        let myPrayerTimes = PrayerTimes(caculationmethod: userSettings.calculationMethod, asrJuristic: userSettings.asrJuristic, adjustHighLats: userSettings.adjustHighLats, timeFormat: userSettings.timeFormat)
-//        let prayerTimes = myPrayerTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: userSettings.latitude, longitude: userSettings.longitude, tZone: userSettings.localGMT())
-//        let finalPrayTimes = [SalatsAndQadhas.Fajr : prayerTimes.sort()[0], SalatsAndQadhas.Sunrise : prayerTimes.sort()[1]]
-//        
-//        // For Fajr
-//        let fajrTime = finalPrayTimes[SalatsAndQadhas.Fajr]
-//        let componentsFajrTime = fajrTime!.characters.split { $0 == ":" } .map {
-//            (x) -> Int in return Int(String(x))!
-//        }
-//        let fajrTimeInt = [componentsFajrTime[0], componentsFajrTime[1]]
-//        
-//        // For Sunrise
-//        let sunriseTime = finalPrayTimes[SalatsAndQadhas.Sunrise]
-//        let componentsSunriseTime = sunriseTime!.characters.split { $0 == ":" } .map {
-//            (x) -> Int in return Int(String(x))!
-//        }
-//        let sunriseTimeInt = [componentsSunriseTime[0], componentsSunriseTime[1]]
-//        
-//        let finalPrayTimesInt = [SalatsAndQadhas.Fajr : fajrTimeInt, SalatsAndQadhas.Sunrise : sunriseTimeInt]
-//        
-//        return finalPrayTimesInt
-//    }
-//}
 
 class DaysToRepeatLabel {
     class func getTextToRepeatDaysLabel(days: [Days]) -> String {
@@ -135,31 +91,6 @@ class DaysToRepeatLabel {
 
 // MARK: - Concrete Types
 
-enum Months: Int {
-    case January
-    case February
-    case March
-    case April
-    case May
-    case June
-    case July
-    case August
-    case September
-    case October
-    case November
-    case December
-}
-
-//enum SalatsAndQadhas: String {
-//    case Fajr
-//    case Sunrise
-//    case Dhuhr
-//    case Asr
-//    case Sunset
-//    case Maghrib
-//    case Isha
-//}
-
 enum SalatsAndQadhas: Int {
     case Fajr
     case Sunrise
@@ -198,22 +129,6 @@ enum Days: String  {
     case Sunday
 }
 
-struct Settings {
-    var calculationMethod: PrayerTimes.CalculationMethods = .Jafari
-    var asrJuristic: PrayerTimes.AsrJuristicMethods = .Shafii
-    var adjustHighLats: PrayerTimes.AdjustingMethods = .None
-    var timeFormat: PrayerTimes.TimeForamts = .Time24
-    var todayDate = NSCalendar.currentCalendar()
-    var localGMT = LocalGMT.getLocalGMT
-    var latitude: Double
-    var longitude: Double
-    
-    init (latitude: Double, longitude: Double) {
-        self.latitude = latitude
-        self.longitude = longitude
-    }
-}
-
 class FajrWake {
     var whenToAlarm: WakeOptions
     var minsToChange: Int
@@ -238,12 +153,63 @@ class FajrWake {
 }
 
 
+/*
+ Reference from PrayerTimes.swift
+ CalculationMethods:
+ case Jafari = 0  // Ithna Ashari
+ case Karachi // University of Islamic Sciences, Karachi
+ case Isna  // Islamic Society of North America (ISNA)
+ case Mwl // Muslim World League (MWL)
+ case Makkah // Umm al-Qura, Makkah
+ case Egypt // Egyptian General Authority of Survey
+ case Custom  // Custom Setting
+ case Tehran  // Institute of Geophysics, University of Tehran
+
+ AsrJuristicMethods:
+ case Shafii // Shafii (standard)
+ case Hanafi // Hanafi
+
+AdjustingMethods:
+    case None // No adjustment
+    case MidNight  // middle of night
+    case OneSeventh // 1/7th of night
+    case AngleBased // floating point number
+
+ TimeForamts:
+ case Time24 // 24-hour format
+ case Time12 // 12-hour format
+ case Time12NS // 12-hour format with no suffix
+ case Floating // angle/60th of night
+ */
+
+enum PrayerTimeSettingsReference: String {
+    case CalculationMethod, AsrJuristic, AdjustHighLats, TimeFormat
+}
+
+func getCalculationMethodString(method: Int) -> String {
+    switch method {
+    case 0: return "Ithna Ashari"
+    case 1: return "University of Islamic Sciences, Karachi"
+    case 2: return "Islamic Society of North America (ISNA)"
+    case 3: return "Muslim World League (MWL)"
+    case 4: return "Umm al-Qura, Makkah"
+    case 5: return "Egyptian General Authority of Survey"
+    case 6: return "Custom Setting"
+    case 7: return "Institute of Geophysics, University of Tehran"
+    default: return ""
+    }
+}
+
 struct UserSettingsPrayerOptions {
     static func getUserSettings() -> PrayerTimes {
-        return PrayerTimes(caculationmethod: .Tehran, asrJuristic: .Shafii, adjustHighLats: .None, timeFormat: .Time12)
+        let settings = NSUserDefaults.standardUserDefaults()
+        let calculationMethod: Int = settings.integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+        let asrJuristic: Int = settings.integerForKey(PrayerTimeSettingsReference.AsrJuristic.rawValue)
+        let adjustHighLats: Int = settings.integerForKey(PrayerTimeSettingsReference.AdjustHighLats.rawValue)
+        let timeFormat: Int = settings.integerForKey(PrayerTimeSettingsReference.TimeFormat.rawValue)
+        
+        return PrayerTimes(caculationmethod: PrayerTimes.CalculationMethods(rawValue: calculationMethod)!, asrJuristic: PrayerTimes.AsrJuristicMethods(rawValue: asrJuristic)!, adjustHighLats: PrayerTimes.AdjustingMethods(rawValue: adjustHighLats)!, timeFormat: PrayerTimes.TimeForamts(rawValue: timeFormat)!)
     }
-//    let something = NSUserDefaults.standardUserDefaults().doubleForKey("works")
-
 }
 
 

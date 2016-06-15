@@ -66,12 +66,12 @@
 			children = (
 				0152D6401CEF0FCC004FFC04 /* AppDelegate.swift */,
 				0176D6BC1D0E53FE00A5BB01 /* ViewControllers */,
-				0176D6BD1D0E541E00A5BB01 /* Framework files */,
 				0152D6561CEF1071004FFC04 /* FajrWake.swift */,
 				0152D6441CEF0FCC004FFC04 /* Main.storyboard */,
 				0152D6471CEF0FCC004FFC04 /* Assets.xcassets */,
 				0152D6491CEF0FCC004FFC04 /* LaunchScreen.storyboard */,
 				0152D64C1CEF0FCC004FFC04 /* Info.plist */,
+				0176D6BD1D0E541E00A5BB01 /* Framework files */,
 			);
 			path = "Fajr Wake";
 			sourceTree = "<group>";

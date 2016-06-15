@@ -23,7 +23,6 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -45,7 +44,7 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Qom, Research Center"
+        return "\(calculationMethodLabel)"
     }
     
 //    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
