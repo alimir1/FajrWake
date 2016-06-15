@@ -238,9 +238,13 @@ class FajrWake {
 }
 
 
+struct UserSettingsPrayerOptions {
+    static func getUserSettings() -> PrayerTimes {
+        return PrayerTimes(caculationmethod: .Tehran, asrJuristic: .Shafii, adjustHighLats: .None, timeFormat: .Time12)
+    }
+//    let something = NSUserDefaults.standardUserDefaults().doubleForKey("works")
 
-
-
+}
 
 
 

@@ -12,10 +12,20 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var manager: OneShotLocationManager?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        NSUserDefaults.standardUserDefaults().setDouble(1234566.000, forKey: "works")
+        
+        
+        
+        
+        
+        
         return true
     }
 

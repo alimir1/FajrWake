@@ -13,33 +13,49 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     var prayerTimes: [String: String] = [:]
     var manager: OneShotLocationManager?
-    let defaults = NSUserDefaults.standardUserDefaults()
-
+    let defaultSettings = NSUserDefaults.standardUserDefaults()
+    var userSettingsPrayTimes: PrayerTimes!
+    
+    // Initializing userSettingsPrayTimes (need to do other inits to satisfy requirements
+    required convenience init(coder aDecoder: NSCoder) {
+        self.init(aDecoder)
+    }
+    
+    init(_ coder: NSCoder? = nil) {
+        self.userSettingsPrayTimes = UserSettingsPrayerOptions.getUserSettings()
+        
+        if let coder = coder {
+            super.init(coder: coder)!
+        }
+        else {
+            super.init(nibName: nil, bundle:nil)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // Uncomment the following line to preserve selection between presentations
 //         self.clearsSelectionOnViewWillAppear = false
-        isAppAlreadyLaunchedOnce()
         
+        setupPrayerTimes()
 
     }
     
-    func isAppAlreadyLaunchedOnce()->Bool{
-        if let isAppAlreadyLaunchedOnce = defaults.stringForKey("isAppAlreadyLaunchedOnce"){
-            print("App already launched : \(isAppAlreadyLaunchedOnce)")
-            
-            let lon = defaults.doubleForKey("longitude")
-            let lat = defaults.doubleForKey("latitude")
-            let gmt = defaults.doubleForKey("gmt")
+    // calls appropriate methods to perform specific tasks in order to populate prayertime dictionary
+    func setupPrayerTimes() {
+        if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == true {
+            print("launched before")
+            let lon = defaultSettings.doubleForKey("longitude")
+            let lat = defaultSettings.doubleForKey("latitude")
+            let gmt = defaultSettings.doubleForKey("gmt")
             updatePrayerTimes(lat, lon: lon, gmt: gmt)
-            return true
         } else {
-            defaults.setBool(true, forKey: "isAppAlreadyLaunchedOnce")
+            // this is first launch
             print("App launched first time")
             getLocationCoordinatesAndSetup()
-            return false
+            // once the app launched for first time, set "launchedBefore" to true
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
         }
     }
     
@@ -49,6 +65,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
             if  let navController = segue.destinationViewController as? UINavigationController,
                 let displayPrayerVC = navController.topViewController as? DisplayPrayersViewController {
                 displayPrayerVC.prayTimesArray = prayerTimes
+                displayPrayerVC.calculationMethodLabel = "This needs to be upated"
             }
         }
     }
@@ -64,18 +81,18 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
                 let lon = loc.coordinate.longitude
                 
                 // setting defaults
-                self.defaults.setDouble(lat, forKey: "latitude")
-                self.defaults.setDouble(lon, forKey: "longitude")
-                self.defaults.setDouble(LocalGMT.getLocalGMT(), forKey: "gmt")
+                NSUserDefaults.standardUserDefaults().setDouble(lat, forKey: "latitude")
+                NSUserDefaults.standardUserDefaults().setDouble(lon, forKey: "longitude")
+                NSUserDefaults.standardUserDefaults().setDouble(LocalGMT.getLocalGMT(), forKey: "gmt")
                 self.updatePrayerTimes(lat, lon: lon, gmt: LocalGMT.getLocalGMT())
                 
             } else if let err = error {
                 
                 // setting defaults to Qom's time if error in getting user location
-//                self.defaults.setDouble(34.61, forKey: "latitude")
-//                self.defaults.setDouble(50.84, forKey: "longitude")
-//                self.defaults.setDouble(+4.5, forKey: "gmt")
-//                self.updatePrayerTimes(34.61, lon: 50.84, gmt: +4.5)
+                NSUserDefaults.standardUserDefaults().setDouble(34.61, forKey: "latitude")
+                NSUserDefaults.standardUserDefaults().setDouble(50.84, forKey: "longitude")
+                NSUserDefaults.standardUserDefaults().setDouble(+4.5, forKey: "gmt")
+                self.updatePrayerTimes(34.61, lon: 50.84, gmt: +4.5)
                 
                 print(err.localizedDescription)
             }
@@ -83,13 +100,9 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         }
     }
     
+    // populates prayertime dictionary
     func updatePrayerTimes(lat: Double, lon: Double, gmt: Double) {
-        
-        // default settings
-        let myPrayTimes = PrayerTimes(caculationmethod: .Tehran, asrJuristic: .Shafii, adjustHighLats: .None, timeFormat: .Time12)
-        self.prayerTimes = myPrayTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
-        let something = myPrayTimes.julianDate(2016, month: 6, day: 14)
-        print("(FajrWakeViewController)ISHRAQ: Julian or Islamic? I'm confused.. \(something)")
+        self.prayerTimes = self.userSettingsPrayTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
     }
     
     // unwind methods for cells

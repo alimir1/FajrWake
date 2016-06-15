@@ -19,11 +19,11 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
     @IBOutlet weak var asrTimeLabel: UILabel!
     @IBOutlet weak var maghribTimeLabel: UILabel!
     @IBOutlet weak var ishaTimeLabel: UILabel!
-    
+    var calculationMethodLabel: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -44,10 +44,10 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
         return 80.0
     }
     
-//    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "Qom, Research Center"
-//    }
-//    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Qom, Research Center"
+    }
+    
 //    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 //        let vw = UIView()
 //        vw.backgroundColor = UIColor.blackColor()

@@ -8,8 +8,6 @@
         <!--Add Alarm-->
         <scene sceneID="1nc-C7-9my">
             <objects>
-                <exit id="ZKY-nl-q8E" userLabel="Exit" sceneMemberID="exit"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Q85-vc-WaG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="OqC-Qb-um6" customClass="AddAlarmTableViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="EQ2-yJ-ilN">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -102,6 +100,8 @@
                         <outlet property="alarmLabelDetail" destination="yW8-jY-iJH" id="bag-50-2a1"/>
                     </connections>
                 </tableViewController>
+                <exit id="ZKY-nl-q8E" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q85-vc-WaG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1250" y="1131"/>
         </scene>
@@ -116,7 +116,7 @@
                         <sections>
                             <tableViewSection id="aVV-wG-Peq">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="4HX-69-0oH" detailTextLabel="mID-Yj-GIg" rowHeight="50" style="IBUITableViewCellStyleValue1" id="XnX-ia-yTr" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="4HX-69-0oH" detailTextLabel="mID-Yj-GIg" rowHeight="50" style="IBUITableViewCellStyleValue1" id="XnX-ia-yTr">
                                         <rect key="frame" x="0.0" y="99" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XnX-ia-yTr" id="Q2J-q8-FfI">
@@ -139,7 +139,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="peR-ij-B2K" detailTextLabel="qTz-Id-WIz" rowHeight="50" style="IBUITableViewCellStyleValue1" id="ec4-6M-IgJ" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="peR-ij-B2K" detailTextLabel="qTz-Id-WIz" rowHeight="50" style="IBUITableViewCellStyleValue1" id="ec4-6M-IgJ">
                                         <rect key="frame" x="0.0" y="149" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ec4-6M-IgJ" id="QIc-ML-Bgz">
@@ -162,7 +162,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="oBl-HA-4sv" detailTextLabel="1cs-Dg-hGX" rowHeight="50" style="IBUITableViewCellStyleValue1" id="Ltm-xf-4pA" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="oBl-HA-4sv" detailTextLabel="1cs-Dg-hGX" rowHeight="50" style="IBUITableViewCellStyleValue1" id="Ltm-xf-4pA">
                                         <rect key="frame" x="0.0" y="199" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ltm-xf-4pA" id="swQ-83-jns">
@@ -185,7 +185,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="IDq-a1-230" detailTextLabel="JJ1-HC-Adt" rowHeight="50" style="IBUITableViewCellStyleValue1" id="lGb-kK-Gp8" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="IDq-a1-230" detailTextLabel="JJ1-HC-Adt" rowHeight="50" style="IBUITableViewCellStyleValue1" id="lGb-kK-Gp8">
                                         <rect key="frame" x="0.0" y="249" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lGb-kK-Gp8" id="Fk4-og-aE5">
@@ -208,7 +208,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="kl0-hb-Eoe" detailTextLabel="3Yo-x1-iLh" rowHeight="50" style="IBUITableViewCellStyleValue1" id="0WX-fp-DoF" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="kl0-hb-Eoe" detailTextLabel="3Yo-x1-iLh" rowHeight="50" style="IBUITableViewCellStyleValue1" id="0WX-fp-DoF">
                                         <rect key="frame" x="0.0" y="299" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0WX-fp-DoF" id="BDI-fF-6cV">
@@ -231,7 +231,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="ajx-Sz-rgi" detailTextLabel="rpi-z4-72r" rowHeight="50" style="IBUITableViewCellStyleValue1" id="iYA-l5-5b7" customClass="displayPrayerTimesTableViewCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="ajx-Sz-rgi" detailTextLabel="rpi-z4-72r" rowHeight="50" style="IBUITableViewCellStyleValue1" id="iYA-l5-5b7">
                                         <rect key="frame" x="0.0" y="349" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iYA-l5-5b7" id="qWf-Px-8uc">
@@ -348,7 +348,6 @@
         <!--Navigation Controller-->
         <scene sceneID="y8d-yp-6pq">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kzw-MC-hn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NgY-ZL-nSc" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zyv-OH-5vx">
@@ -360,6 +359,7 @@
                         <segue destination="OqC-Qb-um6" kind="relationship" relationship="rootViewController" id="LjS-lg-zTw"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kzw-MC-hn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="438" y="1131"/>
         </scene>
