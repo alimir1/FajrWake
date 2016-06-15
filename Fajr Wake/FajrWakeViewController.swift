@@ -12,31 +12,15 @@ import CoreLocation
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     var prayerTimes: [String: String] = [:]
+    var userCityName: String?
     var manager: OneShotLocationManager?
-    var userSettingsPrayTimes: PrayerTimes!
-    
-    // Initializing userSettingsPrayTimes (need to do other inits to satisfy requirements
-    required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder)
-    }
-    
-    init(_ coder: NSCoder? = nil) {
-        self.userSettingsPrayTimes = UserSettingsPrayerOptions.getUserSettings()
-        
-        if let coder = coder {
-            super.init(coder: coder)!
-        }
-        else {
-            super.init(nibName: nil, bundle:nil)
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Uncomment the following line to preserve selection between presentations
 //         self.clearsSelectionOnViewWillAppear = false
-        
+
         setupPrayerTimes()
 
     }
@@ -44,25 +28,15 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     // calls appropriate methods to perform specific tasks in order to populate prayertime dictionary
     func setupPrayerTimes() {
         if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == true {
-            print("launched before")
-            let settings = NSUserDefaults.standardUserDefaults()
-            let lon = settings.doubleForKey("longitude")
-            let lat = settings.doubleForKey("latitude")
-            let gmt = settings.doubleForKey("gmt")
-            updatePrayerTimes(lat, lon: lon, gmt: gmt)
-        } else {
-            // this is first launch. configure default settings and get prayertimes
-            let settings = NSUserDefaults.standardUserDefaults()
-            settings.setInteger(7, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
-            settings.setInteger(0, forKey: PrayerTimeSettingsReference.AsrJuristic.rawValue)
-            settings.setInteger(0, forKey: PrayerTimeSettingsReference.AdjustHighLats.rawValue)
-            settings.setInteger(0, forKey: PrayerTimeSettingsReference.TimeFormat.rawValue)
-            
+            updatePrayerTimes()
+        } else {            
+            // get prayertimes after finding location
             getLocationCoordinatesAndSetup()
             
             // once the app launched for first time, set "launchedBefore" to true
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
         }
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -70,10 +44,16 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         {
             if  let navController = segue.destinationViewController as? UINavigationController,
                 let displayPrayerVC = navController.topViewController as? DisplayPrayersViewController {
-                displayPrayerVC.prayTimesArray = prayerTimes // prayertimesDict
+                displayPrayerVC.prayTimesArray = self.prayerTimes // prayertimesDict
                 
+                //THIS WORKS THOUGH:
                 let checkCalcMethod = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
                 displayPrayerVC.calculationMethodLabel = getCalculationMethodString(checkCalcMethod) //displaying calc method
+                if let city = self.userCityName {
+                    displayPrayerVC.cityNameLabel = city
+                } else {
+                    displayPrayerVC.cityNameLabel = "Unable to retrieve your city's name"
+                }
             }
         }
     }
@@ -89,11 +69,12 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
                 let lon = loc.coordinate.longitude
                 
                 // setting defaults
+                
                 let settings = NSUserDefaults.standardUserDefaults()
                 settings.setDouble(lat, forKey: "latitude")
                 settings.setDouble(lon, forKey: "longitude")
                 settings.setDouble(LocalGMT.getLocalGMT(), forKey: "gmt")
-                self.updatePrayerTimes(lat, lon: lon, gmt: LocalGMT.getLocalGMT())
+                self.updatePrayerTimes()
                 
             } else if let err = error {
                 
@@ -102,7 +83,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
                 settings.setDouble(34.61, forKey: "latitude")
                 settings.setDouble(50.84, forKey: "longitude")
                 settings.setDouble(+4.5, forKey: "gmt")
-                self.updatePrayerTimes(34.61, lon: 50.84, gmt: +4.5)
+                self.updatePrayerTimes()
                 
                 print(err.localizedDescription)
             }
@@ -110,9 +91,17 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         }
     }
     
+    
+    
     // populates prayertime dictionary
-    func updatePrayerTimes(lat: Double, lon: Double, gmt: Double) {
-        self.prayerTimes = self.userSettingsPrayTimes.getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
+    func updatePrayerTimes() {
+        let settings = NSUserDefaults.standardUserDefaults()
+        let lon = settings.doubleForKey("longitude")
+        let lat = settings.doubleForKey("latitude")
+        let gmt = settings.doubleForKey("gmt")
+        
+        let userPrayerTime = UserSettingsPrayertimes()
+        self.prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
     }
     
     // unwind methods for cells

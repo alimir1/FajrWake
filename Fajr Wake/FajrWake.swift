@@ -200,16 +200,17 @@ func getCalculationMethodString(method: Int) -> String {
     }
 }
 
-struct UserSettingsPrayerOptions {
-    static func getUserSettings() -> PrayerTimes {
-        let settings = NSUserDefaults.standardUserDefaults()
-        let calculationMethod: Int = settings.integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
-        let asrJuristic: Int = settings.integerForKey(PrayerTimeSettingsReference.AsrJuristic.rawValue)
-        let adjustHighLats: Int = settings.integerForKey(PrayerTimeSettingsReference.AdjustHighLats.rawValue)
-        let timeFormat: Int = settings.integerForKey(PrayerTimeSettingsReference.TimeFormat.rawValue)
-        
-        return PrayerTimes(caculationmethod: PrayerTimes.CalculationMethods(rawValue: calculationMethod)!, asrJuristic: PrayerTimes.AsrJuristicMethods(rawValue: asrJuristic)!, adjustHighLats: PrayerTimes.AdjustingMethods(rawValue: adjustHighLats)!, timeFormat: PrayerTimes.TimeForamts(rawValue: timeFormat)!)
+class UserSettingsPrayertimes {
+    let calculationMethod: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+    let asrJuristic: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.AsrJuristic.rawValue)
+    let adjustHighLats: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.AdjustHighLats.rawValue)
+    let timeFormat: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.TimeFormat.rawValue)
+    
+    func getUserSettings() -> PrayerTimes {
+        let userSettings = PrayerTimes(caculationmethod: PrayerTimes.CalculationMethods(rawValue: self.calculationMethod)!, asrJuristic: PrayerTimes.AsrJuristicMethods(rawValue: self.asrJuristic)!, adjustHighLats: PrayerTimes.AdjustingMethods(rawValue: self.adjustHighLats)!, timeFormat: PrayerTimes.TimeForamts(rawValue: self.timeFormat)!)
+        return userSettings
     }
+    
 }
 
 

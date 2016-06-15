@@ -65,25 +65,25 @@
 			isa = PBXGroup;
 			children = (
 				0152D6401CEF0FCC004FFC04 /* AppDelegate.swift */,
-				0176D6BC1D0E53FE00A5BB01 /* ViewControllers */,
-				0152D6561CEF1071004FFC04 /* FajrWake.swift */,
+				0176D6BC1D0E53FE00A5BB01 /* Controllers */,
 				0152D6441CEF0FCC004FFC04 /* Main.storyboard */,
 				0152D6471CEF0FCC004FFC04 /* Assets.xcassets */,
 				0152D6491CEF0FCC004FFC04 /* LaunchScreen.storyboard */,
 				0152D64C1CEF0FCC004FFC04 /* Info.plist */,
+				0152D6561CEF1071004FFC04 /* FajrWake.swift */,
 				0176D6BD1D0E541E00A5BB01 /* Framework files */,
 			);
 			path = "Fajr Wake";
 			sourceTree = "<group>";
 		};
-		0176D6BC1D0E53FE00A5BB01 /* ViewControllers */ = {
+		0176D6BC1D0E53FE00A5BB01 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */,
 				0176D6B41D0E304B00A5BB01 /* DisplayPrayersViewController.swift */,
 				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
 			);
-			name = ViewControllers;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		0176D6BD1D0E541E00A5BB01 /* Framework files */ = {

@@ -20,6 +20,7 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
     @IBOutlet weak var maghribTimeLabel: UILabel!
     @IBOutlet weak var ishaTimeLabel: UILabel!
     var calculationMethodLabel: String!
+    var cityNameLabel: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,19 +41,17 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 80.0
+        return 57.0
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "\(calculationMethodLabel)"
     }
     
-//    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let vw = UIView()
-//        vw.backgroundColor = UIColor.blackColor()
-//        
-//        return vw
-//    }
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        cityNameLabel = "Qom, Iran"
+        return "\(cityNameLabel)"
+    }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // cell selected code here
