@@ -8,37 +8,130 @@
 
 import UIKit
 import CoreLocation
+import AddressBookUI
 
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     var prayerTimes: [String: String] = [:]
-    var userCityName: String?
-    var manager: OneShotLocationManager?
+    let locationManager = CLLocationManager()
+    var locationNameDisplay: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-//         self.clearsSelectionOnViewWillAppear = false
-
         setupPrayerTimes()
+    }
+}
 
+
+// MARK: - Geocoding
+// to get coordinates and names of cities, states, and countries
+extension FajrWakeViewController {
+    // reverse geocoding to get address of user location for display
+    func reverseGeocoding(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            if error != nil {
+                print(error)
+                return
+            }
+            else if placemarks?.count > 0 {
+                self.setLocationAddress(placemarks!)
+            }
+        })
     }
     
-    // calls appropriate methods to perform specific tasks in order to populate prayertime dictionary
-    func setupPrayerTimes() {
-        if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == true {
-            updatePrayerTimes()
-        } else {            
-            // get prayertimes after finding location
-            getLocationCoordinatesAndSetup()
-            
-            // once the app launched for first time, set "launchedBefore" to true
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
+    // sets locationNameDisplay variable appropriately
+    func setLocationAddress(placemarks: [CLPlacemark]) {
+        let pm = placemarks[0]
+        if let address = pm.addressDictionary as? [String: AnyObject] {
+            if let city = address["City"], let state = address["State"], let country = address["Country"] {
+                self.locationNameDisplay = "\(String(city)), \(String(state)), \(String(country))"
+            } else if let state = address["State"], let country = address["Country"] {
+                self.locationNameDisplay = "\(String(state)), \(String(country))"
+            } else {
+                if let country = address["Country"] {
+                    self.locationNameDisplay = "\(String(country))"
+                }
+            }
+        } else {
+            print("could not get name of the user's city or country of their location")
         }
-        
+        print("main guy: \(self.locationNameDisplay)")
+    }
+}
+
+// MARK: - Unwind methods for cells
+extension FajrWakeViewController {
+    @IBAction func cancelToPlayersViewController(segue:UIStoryboardSegue) {
     }
     
+    @IBAction func savePlayerDetail(segue:UIStoryboardSegue) {
+    }
+}
+
+// MARK: - Table view configuration
+extension FajrWakeViewController {
+    // MARK: - Table view data source
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 0
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return 0
+    }
+    
+    /*
+     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+     let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+     
+     // Configure the cell...
+     
+     return cell
+     }
+     */
+    
+    /*
+     // Override to support conditional editing of the table view.
+     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
+    /*
+     // Override to support editing the table view.
+     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+     if editingStyle == .Delete {
+     // Delete the row from the data source
+     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+     } else if editingStyle == .Insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
+    
+    /*
+     // Override to support rearranging the table view.
+     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+     
+     }
+     */
+    
+    /*
+     // Override to support conditional rearranging of the table view.
+     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+}
+
+// MARK: - Segue preperations
+extension FajrWakeViewController {
+    // prepare segue for displaying prayer tme controller
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "displayPrayerTimesSegue"
         {
@@ -49,133 +142,92 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
                 //THIS WORKS THOUGH:
                 let checkCalcMethod = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
                 displayPrayerVC.calculationMethodLabel = getCalculationMethodString(checkCalcMethod) //displaying calc method
-                if let city = self.userCityName {
-                    displayPrayerVC.cityNameLabel = city
-                } else {
-                    displayPrayerVC.cityNameLabel = "Unable to retrieve your city's name"
-                }
+                displayPrayerVC.locationNameLabel = locationNameDisplay
             }
         }
     }
-    
-    // gets location and calls updatePrayerTimes function
-    func getLocationCoordinatesAndSetup() {
-        manager = OneShotLocationManager()
-        manager!.fetchWithCompletion {location, error in
-            // fetch location or an error
-            if let loc = location {
-                // got the location!
-                let lat = loc.coordinate.latitude
-                let lon = loc.coordinate.longitude
-                
-                // setting defaults
-                
-                let settings = NSUserDefaults.standardUserDefaults()
-                settings.setDouble(lat, forKey: "latitude")
-                settings.setDouble(lon, forKey: "longitude")
-                settings.setDouble(LocalGMT.getLocalGMT(), forKey: "gmt")
-                self.updatePrayerTimes()
-                
-            } else if let err = error {
-                
-                // setting defaults to Qom's time if error in getting user location
-                let settings = NSUserDefaults.standardUserDefaults()
-                settings.setDouble(34.61, forKey: "latitude")
-                settings.setDouble(50.84, forKey: "longitude")
-                settings.setDouble(+4.5, forKey: "gmt")
-                self.updatePrayerTimes()
-                
-                print(err.localizedDescription)
-            }
-            self.manager = nil
+}
+
+// MARK: - Helper Methods
+// for prayer times
+extension FajrWakeViewController {
+    // calls appropriate methods to perform specific tasks in order to populate prayertime dictionary
+    func setupPrayerTimes() {
+        if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == true {
+            updatePrayerTimes()
+        } else {
+            // get prayertimes after finding location
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestLocation()
+            
+            // once the app launched for first time, set "launchedBefore" to true
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
         }
+        
     }
     
+    // location settings for prayer time
+    func locationSettingsForPrayerTimes (lat lat: Double, lon: Double, gmt: Double) {
+        let settings = NSUserDefaults.standardUserDefaults()
+        settings.setDouble(lat, forKey: "latitude")
+        settings.setDouble(lon, forKey: "longitude")
+        settings.setDouble(gmt, forKey: "gmt")
+        
+        self.updatePrayerTimes()
+    }
     
-    
-    // populates prayertime dictionary
+    // update prayertime dictionary
     func updatePrayerTimes() {
         let settings = NSUserDefaults.standardUserDefaults()
         let lon = settings.doubleForKey("longitude")
         let lat = settings.doubleForKey("latitude")
         let gmt = settings.doubleForKey("gmt")
         
+        self.reverseGeocoding(lat, longitude: lon)
         let userPrayerTime = UserSettingsPrayertimes()
         self.prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
     }
-    
-    // unwind methods for cells
-    @IBAction func cancelToPlayersViewController(segue:UIStoryboardSegue) {
+}
+
+// MARK: - Get location
+// Get coordinates and call functinos to get prayer times
+extension FajrWakeViewController {
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            locationManager.requestLocation()
+        }
     }
     
-    @IBAction func savePlayerDetail(segue:UIStoryboardSegue) {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            print("location:: \(location)")
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            let gmt = LocalGMT.getLocalGMT()
+            
+            // location settings for prayer times
+            self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
+
+            // call function to get city, state, and country of the given coordinates
+            self.reverseGeocoding(lat, longitude: lon)
+        }
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        
+        // setting defaults to Qom's time if error in getting user location
+        let lat = 34.6476568
+        let lon = 50.8789548
+        let gmt = +4.5
+        
+        // location settings for prayer times
+        self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
+        
+        // call function to get city, state, and country of the given coordinates
+        self.reverseGeocoding(lat, longitude: lon)
+        
+        print("error:: \(error)")
     }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

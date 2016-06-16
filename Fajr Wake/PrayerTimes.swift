@@ -325,9 +325,9 @@ public class PrayerTimes {
         let minutes = Int(floor( (Double(adujestedTime) - Double(hours)) * 60))
         var suffix: String, result: String
         if (hours >= 12) {
-            suffix = "PM"
+            suffix = "pm"
         } else {
-            suffix = "AM"
+            suffix = "am"
         }
         hours = (((hours+12)-1)%12)+1
         /*hours = (hours + 12) - 1

@@ -20,7 +20,7 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
     @IBOutlet weak var maghribTimeLabel: UILabel!
     @IBOutlet weak var ishaTimeLabel: UILabel!
     var calculationMethodLabel: String!
-    var cityNameLabel: String!
+    var locationNameLabel: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +49,7 @@ class DisplayPrayersViewController: UITableViewController, UIApplicationDelegate
     }
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        cityNameLabel = "Qom, Iran"
-        return "\(cityNameLabel)"
+        return "\(locationNameLabel)"
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
