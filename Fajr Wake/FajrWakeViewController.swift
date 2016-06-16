@@ -24,42 +24,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
 }
 
 
-// MARK: - Geocoding
-// to get coordinates and names of cities, states, and countries
-extension FajrWakeViewController {
-    // reverse geocoding to get address of user location for display
-    func reverseGeocoding(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        let location = CLLocation(latitude: latitude, longitude: longitude)
-        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
-            if error != nil {
-                print(error)
-                return
-            }
-            else if placemarks?.count > 0 {
-                self.setLocationAddress(placemarks!)
-            }
-        })
-    }
-    
-    // sets locationNameDisplay variable appropriately
-    func setLocationAddress(placemarks: [CLPlacemark]) {
-        let pm = placemarks[0]
-        if let address = pm.addressDictionary as? [String: AnyObject] {
-            if let city = address["City"], let state = address["State"], let country = address["Country"] {
-                self.locationNameDisplay = "\(String(city)), \(String(state)), \(String(country))"
-            } else if let state = address["State"], let country = address["Country"] {
-                self.locationNameDisplay = "\(String(state)), \(String(country))"
-            } else {
-                if let country = address["Country"] {
-                    self.locationNameDisplay = "\(String(country))"
-                }
-            }
-        } else {
-            print("could not get name of the user's city or country of their location")
-        }
-        print("main guy: \(self.locationNameDisplay)")
-    }
-}
 
 // MARK: - Unwind methods for cells
 extension FajrWakeViewController {
@@ -185,7 +149,6 @@ extension FajrWakeViewController {
         let lat = settings.doubleForKey("latitude")
         let gmt = settings.doubleForKey("gmt")
         
-        self.reverseGeocoding(lat, longitude: lon)
         let userPrayerTime = UserSettingsPrayertimes()
         self.prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
     }
@@ -194,6 +157,9 @@ extension FajrWakeViewController {
 // MARK: - Get location
 // Get coordinates and call functinos to get prayer times
 extension FajrWakeViewController {
+    // FIXME: Handle errors better. Eg. if user decides not to allow gps then in Settings menu when he wants
+    //        to get GPS it should take him to settings and ask him to give location permission
+    
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
             locationManager.requestLocation()
@@ -217,11 +183,15 @@ extension FajrWakeViewController {
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         
+        // FIXME: Put alert view here explaining that since system couldn't get
+        //        the location, it set Qom's location as default
+        
+        
         // setting defaults to Qom's time if error in getting user location
         let lat = 34.6476568
         let lon = 50.8789548
         let gmt = +4.5
-        
+    
         // location settings for prayer times
         self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
         
@@ -229,5 +199,43 @@ extension FajrWakeViewController {
         self.reverseGeocoding(lat, longitude: lon)
         
         print("error:: \(error)")
+    }
+}
+
+// MARK: - Geocoding
+// to get coordinates and names of cities, states, and countries
+extension FajrWakeViewController {
+    // reverse geocoding to get address of user location for display
+    func reverseGeocoding(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        // FIXME: Indicates user if network fail
+        // FIXME: Put activity indicator in the navigatino bar with text like "Updating..."
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            if error != nil {
+                print(error)
+                return
+            }
+            else if placemarks?.count > 0 {
+                self.setLocationAddress(placemarks!)
+            }
+        })
+    }
+    
+    // sets locationNameDisplay variable appropriately
+    func setLocationAddress(placemarks: [CLPlacemark]) {
+        let pm = placemarks[0]
+        if let address = pm.addressDictionary as? [String: AnyObject] {
+            if let city = address["City"], let state = address["State"], let country = address["Country"] {
+                self.locationNameDisplay = "\(String(city)), \(String(state)), \(String(country))"
+            } else if let state = address["State"], let country = address["Country"] {
+                self.locationNameDisplay = "\(String(state)), \(String(country))"
+            } else {
+                if let country = address["Country"] {
+                    self.locationNameDisplay = "\(String(country))"
+                }
+            }
+        } else {
+            print("could not get name of the user's city or country of their location")
+        }
     }
 }
