@@ -300,7 +300,7 @@
             </objects>
             <point key="canvasLocation" x="1869" y="305"/>
         </scene>
-        <!--Fajr Wake View Controller-->
+        <!--Fajr Wake-->
         <scene sceneID="WdT-f1-caf">
             <objects>
                 <tableViewController id="Gh6-O9-xWD" customClass="FajrWakeViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
@@ -332,7 +332,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="FMS-me-R03"/>
                         <barButtonItem image="Settings 2" id="1wV-ue-Uvi"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="wWv-im-Nar">
+                    <navigationItem key="navigationItem" title="Fajr Wake" id="wWv-im-Nar">
                         <barButtonItem key="leftBarButtonItem" systemItem="edit" id="yOT-ow-Bis"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="tYA-tT-9yS">
                             <connections>

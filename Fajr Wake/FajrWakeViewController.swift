@@ -11,7 +11,6 @@ import CoreLocation
 import AddressBookUI
 
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
-    
     var prayerTimes: [String: String] = [:]
     let locationManager = CLLocationManager()
     var locationNameDisplay: String = ""
@@ -22,7 +21,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         setupPrayerTimes()
     }
 }
-
 
 
 // MARK: - Unwind methods for cells
@@ -112,8 +110,7 @@ extension FajrWakeViewController {
     }
 }
 
-// MARK: - Helper Methods
-// for prayer times
+// MARK: - Setups and Settings
 extension FajrWakeViewController {
     // calls appropriate methods to perform specific tasks in order to populate prayertime dictionary
     func setupPrayerTimes() {
@@ -142,7 +139,7 @@ extension FajrWakeViewController {
         self.updatePrayerTimes()
     }
     
-    // update prayertime dictionary
+    // update prayer time dictionary
     func updatePrayerTimes() {
         let settings = NSUserDefaults.standardUserDefaults()
         let lon = settings.doubleForKey("longitude")
@@ -154,6 +151,34 @@ extension FajrWakeViewController {
     }
 }
 
+// MARK: - Helper Methods
+// for prayer times
+extension FajrWakeViewController {
+    func showActivityIndicator(title: String) {
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.White)
+        activityIndicatorView.frame = CGRectMake(0, 0, 14, 14)
+        activityIndicatorView.color = UIColor.blackColor()
+        activityIndicatorView.startAnimating()
+        
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = UIFont.italicSystemFontOfSize(14)
+        
+        let fittingSize = titleLabel.sizeThatFits(CGSizeMake(200.0, activityIndicatorView.frame.size.height))
+        titleLabel.frame = CGRectMake(activityIndicatorView.frame.origin.x + activityIndicatorView.frame.size.width + 8, activityIndicatorView.frame.origin.y, fittingSize.width, fittingSize.height)
+        
+        let titleView = UIView(frame: CGRectMake(((activityIndicatorView.frame.size.width + 8 + titleLabel.frame.size.width) / 2), ((activityIndicatorView.frame.size.height) / 2), (activityIndicatorView.frame.size.width + 8 + titleLabel.frame.size.width), (activityIndicatorView.frame.size.height)))
+        titleView.addSubview(activityIndicatorView)
+        titleView.addSubview(titleLabel)
+        
+        self.navigationItem.titleView = titleView
+    }
+    
+    func hideActivityIndicator() {
+        self.navigationItem.titleView = nil
+    }
+}
+
 // MARK: - Get location
 // Get coordinates and call functinos to get prayer times
 extension FajrWakeViewController {
@@ -162,13 +187,13 @@ extension FajrWakeViewController {
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
+            self.showActivityIndicator("Getting your address...")
             locationManager.requestLocation()
         }
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            print("location:: \(location)")
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
             let gmt = LocalGMT.getLocalGMT()
@@ -213,10 +238,12 @@ extension FajrWakeViewController {
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             if error != nil {
                 print(error)
+                self.hideActivityIndicator()
                 return
             }
             else if placemarks?.count > 0 {
                 self.setLocationAddress(placemarks!)
+                self.hideActivityIndicator()
             }
         })
     }
