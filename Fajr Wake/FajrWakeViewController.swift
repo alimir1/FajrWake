@@ -115,6 +115,7 @@ extension FajrWakeViewController {
     // calls appropriate methods to perform specific tasks in order to populate prayertime dictionary
     func setupPrayerTimes() {
         if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == true {
+            self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as! String
             updatePrayerTimes()
         } else {
             // get prayertimes after finding location
@@ -251,18 +252,21 @@ extension FajrWakeViewController {
     // sets locationNameDisplay variable appropriately
     func setLocationAddress(placemarks: [CLPlacemark]) {
         let pm = placemarks[0]
+        var saveAddress = ""
         if let address = pm.addressDictionary as? [String: AnyObject] {
             if let city = address["City"], let state = address["State"], let country = address["Country"] {
-                self.locationNameDisplay = "\(String(city)), \(String(state)), \(String(country))"
+                saveAddress = "\(String(city)), \(String(state)), \(String(country))"
             } else if let state = address["State"], let country = address["Country"] {
-                self.locationNameDisplay = "\(String(state)), \(String(country))"
+                saveAddress = "\(String(state)), \(String(country))"
             } else {
                 if let country = address["Country"] {
-                    self.locationNameDisplay = "\(String(country))"
+                    saveAddress = "\(String(country))"
                 }
             }
         } else {
-            print("could not get name of the user's city or country of their location")
+            saveAddress = "could not get name of the user's city or country of their location"
         }
+        NSUserDefaults.standardUserDefaults().setObject(saveAddress, forKey: "userAddressForDisplay")
+        self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as! String
     }
 }
