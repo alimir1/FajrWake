@@ -193,7 +193,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="T1F-BM-VDr" kind="show" id="TTr-Wu-NNP"/>
+                                            <segue destination="T1F-BM-VDr" kind="show" identifier="calcMethodPick" id="TTr-Wu-NNP"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -243,13 +243,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ypu-M7-8ap">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CalcMethodCell" id="ypu-M7-8ap">
                                 <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ypu-M7-8ap" id="I5S-4f-Q0q">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="4Rg-EW-yhv" kind="unwind" identifier="SaveSelectedCalcMethod" unwindAction="unwindWithSelectedCalcMethod:" id="rrb-gz-SR1"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -260,6 +263,7 @@
                     <navigationItem key="navigationItem" title="Calculation Methods" id="en2-cA-s81"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cB2-F6-mdb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="4Rg-EW-yhv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2566" y="340"/>
         </scene>

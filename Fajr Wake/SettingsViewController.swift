@@ -17,14 +17,28 @@ class SettingsViewController: UITableViewController {
             detail.text? = calculationMethod
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        let settingsCalcMethod = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+//        let calcMethodText = CalculationMethods(rawValue: settingsCalcMethod)!.getString()
+
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+
+        if segue.identifier == "calcMethodPick" {
+            if let calcMethodViewController = segue.destinationViewController as? CalculationMethodTableViewController {
+                calcMethodViewController.selectedCalcMethodLabel = calculationMethod
+            }
+        }
+    }
     
-    @IBAction func unwindWithSelectedCalcMethod (segue:UIStoryboardSegue) {
-        if let calcMethodPickerViewController = segue.sourceViewController as? CalculationMethodTableViewController,
-            selectedCalcMethod = calcMethodPickerViewController.selectedCalcMethod {
+    @IBAction func unwindWithSelectedCalcMethod(segue:UIStoryboardSegue) {
+        if let calcMethodViewController = segue.sourceViewController as? CalculationMethodTableViewController,
+            selectedCalcMethod = calcMethodViewController.selectedCalcMethodLabel {
             calculationMethod = selectedCalcMethod
         }
     }

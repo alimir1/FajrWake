@@ -30,10 +30,6 @@ extension FajrWakeViewController {
 
     @IBAction func savePlayerDetail(segue: UIStoryboardSegue) {
     }
-    
-    @IBAction func saveCalcMethodOption(segue: UIStoryboardSegue) {
-        
-    }
 }
 
 // MARK: - Table view configuration

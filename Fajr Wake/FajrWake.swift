@@ -194,8 +194,8 @@ enum CalculationMethods: Int {
     case Mwl
     case Makkah
     case Egypt
-    case Custom
-    case Tehran
+//    case Custom
+    case Tehran = 7
     
     func getString() -> String {
         switch self {
@@ -205,7 +205,7 @@ enum CalculationMethods: Int {
         case .Mwl: return "Muslim World League (MWL)"
         case .Makkah: return "Umm al-Qura, Makkah"
         case .Egypt: return "Egyptian General Authority of Survey"
-        case .Custom: return "Custom Setting"
+//        case .Custom: return "Custom Setting"
         case .Tehran: return "Ithna Ashari (Tehran University)"
         }
     }
