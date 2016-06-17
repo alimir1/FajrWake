@@ -10,15 +10,14 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
+
         // Default Settings for PrayerTimes
         if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == false {
-            
             // set default settings for prayertimes
             let settings = NSUserDefaults.standardUserDefaults()
             settings.setInteger(7, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
@@ -26,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             settings.setInteger(0, forKey: PrayerTimeSettingsReference.AdjustHighLats.rawValue)
             settings.setInteger(1, forKey: PrayerTimeSettingsReference.TimeFormat.rawValue)
         }
-        
+
         return true
     }
 

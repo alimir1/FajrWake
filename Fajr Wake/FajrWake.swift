@@ -186,17 +186,28 @@ enum PrayerTimeSettingsReference: String {
     case CalculationMethod, AsrJuristic, AdjustHighLats, TimeFormat
 }
 
-func getCalculationMethodString(method: Int) -> String {
-    switch method {
-    case 0: return "Ithna Ashari"
-    case 1: return "University of Islamic Sciences, Karachi"
-    case 2: return "Islamic Society of North America (ISNA)"
-    case 3: return "Muslim World League (MWL)"
-    case 4: return "Umm al-Qura, Makkah"
-    case 5: return "Egyptian General Authority of Survey"
-    case 6: return "Custom Setting"
-    case 7: return "Institute of Geophysics, University of Tehran"
-    default: return ""
+enum CalculationMethods: Int {
+    
+    case Jafari = 0
+    case Karachi
+    case Isna
+    case Mwl
+    case Makkah
+    case Egypt
+    case Custom
+    case Tehran
+    
+    func getString() -> String {
+        switch self {
+        case .Jafari: return "Ithna Ashari (Qom Research Institute)"
+        case .Karachi: return "University of Islamic Sciences, Karachi"
+        case .Isna: return "Islamic Society of North America (ISNA)"
+        case .Mwl: return "Muslim World League (MWL)"
+        case .Makkah: return "Umm al-Qura, Makkah"
+        case .Egypt: return "Egyptian General Authority of Survey"
+        case .Custom: return "Custom Setting"
+        case .Tehran: return "Ithna Ashari (Tehran University)"
+        }
     }
 }
 
