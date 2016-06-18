@@ -16,8 +16,6 @@
 		0176D6BF1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */; };
 		0176D6C71D0FA79800A5BB01 /* FajrWakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */; };
 		01A3A8201D12F43A00DE4CE9 /* OneShotLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A81F1D12F43A00DE4CE9 /* OneShotLocationManager.swift */; };
-		01A3A8221D12F7FA00DE4CE9 /* tempSaveFWCtrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A8211D12F7FA00DE4CE9 /* tempSaveFWCtrl.swift */; };
-		01A3A8241D12F81D00DE4CE9 /* tempSaveAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A8231D12F81D00DE4CE9 /* tempSaveAppDelegate.swift */; };
 		01A3A8261D13C20400DE4CE9 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A8251D13C20400DE4CE9 /* SettingsViewController.swift */; };
 		01A3A8281D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -34,8 +32,6 @@
 		0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmTableViewController.swift; sourceTree = "<group>"; };
 		0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWakeViewController.swift; sourceTree = "<group>"; };
 		01A3A81F1D12F43A00DE4CE9 /* OneShotLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneShotLocationManager.swift; sourceTree = "<group>"; };
-		01A3A8211D12F7FA00DE4CE9 /* tempSaveFWCtrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tempSaveFWCtrl.swift; sourceTree = "<group>"; };
-		01A3A8231D12F81D00DE4CE9 /* tempSaveAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = tempSaveAppDelegate.swift; path = "Fajr Wake/tempSaveAppDelegate.swift"; sourceTree = "<group>"; };
 		01A3A8251D13C20400DE4CE9 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculationMethodTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,8 +50,6 @@
 		0152D6341CEF0FCB004FFC04 = {
 			isa = PBXGroup;
 			children = (
-				01A3A8211D12F7FA00DE4CE9 /* tempSaveFWCtrl.swift */,
-				01A3A8231D12F81D00DE4CE9 /* tempSaveAppDelegate.swift */,
 				0152D63F1CEF0FCB004FFC04 /* Fajr Wake */,
 				0152D63E1CEF0FCB004FFC04 /* Products */,
 			);
@@ -184,8 +178,6 @@
 				01A3A8281D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift in Sources */,
 				0176D6BF1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift in Sources */,
 				0152D6411CEF0FCC004FFC04 /* AppDelegate.swift in Sources */,
-				01A3A8241D12F81D00DE4CE9 /* tempSaveAppDelegate.swift in Sources */,
-				01A3A8221D12F7FA00DE4CE9 /* tempSaveFWCtrl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

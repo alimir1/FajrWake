@@ -17,9 +17,13 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupPrayerTimes()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        updatePrayerTimes()
+    }
+    
 }
 
 
@@ -101,18 +105,6 @@ extension FajrWakeViewController {
 }
 
 // MARK: - Segue preperations
-//extension FajrWakeViewController {
-//    // prepare segue for displaying prayer tme controller
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "displayPrayerTimesSegue"
-//        {
-//            if  let navController = segue.destinationViewController as? UINavigationController,
-//                let displayPrayerVC = navController.topViewController as? DisplayPrayersViewController {
-//                displayPrayerVC.prayTimesArray = self.prayerTimes // prayertimesDict
-//            }
-//        }
-//    }
-//}
 
 // MARK: - Setups and Settings
 extension FajrWakeViewController {
@@ -146,6 +138,8 @@ extension FajrWakeViewController {
         
         let userPrayerTime = UserSettingsPrayertimes()
         self.prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
+        
+        self.tableView.reloadData()
     }
 }
 
@@ -194,12 +188,12 @@ extension FajrWakeViewController {
 
                 // location settings for prayer times
                 self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
-                self.updatePrayerTimes()
 
                 // call function to get city, state, and country of the given coordinates
                 self.reverseGeocoding(lat, longitude: lon)
                 
-                self.tableView.reloadData()
+                self.updatePrayerTimes()
+//                self.tableView.reloadData()
 
             } else if let err = error {
                 // setting defaults to Qom's time if error in getting user location

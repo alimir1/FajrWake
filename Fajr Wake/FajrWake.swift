@@ -199,14 +199,14 @@ enum CalculationMethods: Int {
     
     func getString() -> String {
         switch self {
-        case .Jafari: return "Ithna Ashari (Qom Research Institute)"
+        case .Jafari: return "Shia Ithna Ashari, Leva Research Institute, Qum"
         case .Karachi: return "University of Islamic Sciences, Karachi"
-        case .Isna: return "Islamic Society of North America (ISNA)"
-        case .Mwl: return "Muslim World League (MWL)"
-        case .Makkah: return "Umm al-Qura, Makkah"
+        case .Isna: return "Islamic Society of North America"
+        case .Mwl: return "Muslim World League"
+        case .Makkah: return "Umm al-Qura University, Makkah"
         case .Egypt: return "Egyptian General Authority of Survey"
 //        case .Custom: return "Custom Setting"
-        case .Tehran: return "Ithna Ashari (Tehran University)"
+        case .Tehran: return "Institute of Geophysics, Tehran University"
         }
     }
 }

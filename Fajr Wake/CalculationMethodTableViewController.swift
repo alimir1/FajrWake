@@ -6,10 +6,20 @@
 //  Copyright © 2016 Fajr Wake. All rights reserved.
 //
 
+/* ISHRAQ ABIDI MEAT:
+ if selectedCalcMethodIndex! == 6 {
+ selectedCalcMethodIndex! = 7
+ }
+ let settings = NSUserDefaults.standardUserDefaults()
+ settings.setInteger(selectedCalcMethodIndex!, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
+
+ */
+
 import UIKit
 
 class CalculationMethodTableViewController: UITableViewController {
     
+    // clean this up a little
     var selectedCalcMethodLabel: String? {
         didSet {
             if let calcMethod = selectedCalcMethodLabel {
@@ -32,42 +42,27 @@ class CalculationMethodTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if selectedCalcMethodIndex! == 6 {
-            selectedCalcMethodIndex! = 7
-        }
-        print(selectedCalcMethodIndex!)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "SaveSelectedCalcMethod" {
-            if let cell = sender as? UITableViewCell {
-                let indexPath = tableView.indexPathForCell(cell)
-                if let index = indexPath?.row {
-                    selectedCalcMethodLabel = calcMethods[index]
-                }
-            }
-        }
-    }
-
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return calcMethods.count
     }
-
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CalcMethodCell", forIndexPath: indexPath)
         cell.textLabel?.text = calcMethods[indexPath.row]
+         cell.textLabel?.numberOfLines = 0;
         
         if indexPath.row == selectedCalcMethodIndex {
             cell.accessoryType = .Checkmark
         } else {
-                cell.accessoryType = .None
+            cell.accessoryType = .None
         }
         
         return cell
@@ -89,8 +84,54 @@ class CalculationMethodTableViewController: UITableViewController {
         
         selectedCalcMethodLabel = calcMethods[indexPath.row]
         
+        if var saveSelectionIndex = selectedCalcMethodIndex {
+            if saveSelectionIndex == 6 {
+                saveSelectionIndex = 7
+            }
+            let settings = NSUserDefaults.standardUserDefaults()
+            settings.setInteger(saveSelectionIndex, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
+            FajrWakeViewController().updatePrayerTimes()
+        }
+        
         //update the checkmark for the current row
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.accessoryType = .Checkmark
     }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

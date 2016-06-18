@@ -148,7 +148,7 @@
                             </barButtonItem>
                             <barButtonItem image="Settings 2" id="OCR-6D-Zg4">
                                 <connections>
-                                    <segue destination="4Fc-jf-xkd" kind="show" id="xxC-xt-np2"/>
+                                    <segue destination="4Fc-jf-xkd" kind="show" identifier="settingsSegue" id="xxC-xt-np2"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -250,9 +250,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="4Rg-EW-yhv" kind="unwind" identifier="SaveSelectedCalcMethod" unwindAction="unwindWithSelectedCalcMethod:" id="rrb-gz-SR1"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -263,7 +260,6 @@
                     <navigationItem key="navigationItem" title="Calculation Methods" id="en2-cA-s81"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cB2-F6-mdb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="4Rg-EW-yhv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2566" y="340"/>
         </scene>

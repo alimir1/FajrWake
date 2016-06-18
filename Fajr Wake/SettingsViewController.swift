@@ -12,23 +12,21 @@ class SettingsViewController: UITableViewController {
     
     @IBOutlet weak var detail: UILabel!
     
-    var calculationMethod: String = CalculationMethods.Tehran.getString() {
-        didSet {
-            detail.text? = calculationMethod
-        }
+    var calculationMethod: String {
+        let settingsCalcMethod = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+        let calcMethodText = CalculationMethods(rawValue: settingsCalcMethod)!.getString()
+        return calcMethodText
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let settingsCalcMethod = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
-//        let calcMethodText = CalculationMethods(rawValue: settingsCalcMethod)!.getString()
-
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        detail.text = calculationMethod
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-
         if segue.identifier == "calcMethodPick" {
             if let calcMethodViewController = segue.destinationViewController as? CalculationMethodTableViewController {
                 calcMethodViewController.selectedCalcMethodLabel = calculationMethod
@@ -36,10 +34,7 @@ class SettingsViewController: UITableViewController {
         }
     }
     
-    @IBAction func unwindWithSelectedCalcMethod(segue:UIStoryboardSegue) {
-        if let calcMethodViewController = segue.sourceViewController as? CalculationMethodTableViewController,
-            selectedCalcMethod = calcMethodViewController.selectedCalcMethodLabel {
-            calculationMethod = selectedCalcMethod
-        }
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
