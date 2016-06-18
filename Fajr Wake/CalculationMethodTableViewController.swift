@@ -6,15 +6,6 @@
 //  Copyright © 2016 Fajr Wake. All rights reserved.
 //
 
-/* ISHRAQ ABIDI MEAT:
- if selectedCalcMethodIndex! == 6 {
- selectedCalcMethodIndex! = 7
- }
- let settings = NSUserDefaults.standardUserDefaults()
- settings.setInteger(selectedCalcMethodIndex!, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
-
- */
-
 import UIKit
 
 class CalculationMethodTableViewController: UITableViewController {

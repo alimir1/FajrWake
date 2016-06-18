@@ -143,40 +143,12 @@ extension FajrWakeViewController {
     }
 }
 
-// MARK: - Helper Methods
-// for prayer times
-extension FajrWakeViewController {
-    func showActivityIndicator(title: String) {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.White)
-        activityIndicatorView.frame = CGRectMake(0, 0, 14, 14)
-        activityIndicatorView.color = UIColor.blackColor()
-        activityIndicatorView.startAnimating()
-
-        let titleLabel = UILabel()
-        titleLabel.text = title
-        titleLabel.font = UIFont.italicSystemFontOfSize(14)
-
-        let fittingSize = titleLabel.sizeThatFits(CGSizeMake(200.0, activityIndicatorView.frame.size.height))
-        titleLabel.frame = CGRectMake(activityIndicatorView.frame.origin.x + activityIndicatorView.frame.size.width + 8, activityIndicatorView.frame.origin.y, fittingSize.width, fittingSize.height)
-
-        let titleView = UIView(frame: CGRectMake(((activityIndicatorView.frame.size.width + 8 + titleLabel.frame.size.width) / 2), ((activityIndicatorView.frame.size.height) / 2), (activityIndicatorView.frame.size.width + 8 + titleLabel.frame.size.width), (activityIndicatorView.frame.size.height)))
-        titleView.addSubview(activityIndicatorView)
-        titleView.addSubview(titleLabel)
-
-        self.navigationItem.titleView = titleView
-    }
-
-    func hideActivityIndicator() {
-        self.navigationItem.titleView = nil
-    }
-}
-
 // MARK: - Get location
 // Get coordinates and call functinos to get prayer times
 extension FajrWakeViewController {
 
     func startLocationDelegation() {
-        self.showActivityIndicator("Getting your address...")
+        self.navigationItem.titleView = ActivityIndicator.showActivityIndicator("Getting location...")
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
 
@@ -193,23 +165,28 @@ extension FajrWakeViewController {
                 self.reverseGeocoding(lat, longitude: lon)
                 
                 self.updatePrayerTimes()
-//                self.tableView.reloadData()
-
+                
+                // stop showing activity indicator in navigation title
+                self.navigationItem.titleView = nil
+                
             } else if let err = error {
+                print(err.localizedDescription)
+                
                 // setting defaults to Qom's time if error in getting user location
                 let lat = 34.6476568
                 let lon = 50.8789548
                 let gmt = +4.5
-
+                
                 // location settings for prayer times
                 self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
-                self.updatePrayerTimes()
-
+                
                 // call function to get city, state, and country of the given coordinates
                 self.reverseGeocoding(lat, longitude: lon)
-                print(err.localizedDescription)
                 
-                self.tableView.reloadData()
+                self.updatePrayerTimes()
+                
+                // stop showing activity indicator in navigation title
+                self.navigationItem.titleView = nil
             }
             self.manager = nil
         }
@@ -222,17 +199,15 @@ extension FajrWakeViewController {
     // reverse geocoding to get address of user location for display
     func reverseGeocoding(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         // FIXME: Indicates user if network fail
-        // FIXME: Put activity indicator in the navigatino bar with text like "Updating..."
+        
         let location = CLLocation(latitude: latitude, longitude: longitude)
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             if error != nil {
                 print(error)
-                self.hideActivityIndicator()
                 return
             }
             else if placemarks?.count > 0 {
                 self.setLocationAddress(placemarks!)
-                self.hideActivityIndicator()
             }
         })
     }

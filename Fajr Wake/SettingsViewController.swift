@@ -35,6 +35,15 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        // trigger action for "Get Current Location (GPS)" cell
+        if indexPath.section == 1 && indexPath.row == 0 {
+            // FIXME: Activity indicator should stop once the location is updated!
+            self.navigationItem.titleView = ActivityIndicator.showActivityIndicator("Updating location...")
+            FajrWakeViewController().startLocationDelegation()
+        }
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
 }
