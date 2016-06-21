@@ -17,23 +17,25 @@ class AddAlarmTableViewController: UITableViewController, UIPickerViewDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         // Connect data:
         self.prayerTimesPicker.delegate = self
         self.prayerTimesPicker.dataSource = self
         
-        pickerData = [["1min", "2min", "3min"],
-                      ["Before", "At", "After"],
-                      ["Fajr", "Sunrise"]]
+        pickerData = [[], ["Before", "At", "After"], ["Fajr", "Sunrise"]]
+        
     }
     
+
     
-    // The number of columns of data
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return pickerData.count
     }
     
-    // The number of rows of data
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        for index in 0...59 {
+            pickerData[0].append("\(index) m")
+        }
         return pickerData[component].count
     }
     
@@ -42,9 +44,6 @@ class AddAlarmTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
     
     
-    // ===================== TESTING ===================
-
-    // ===================== TESTING ===================
     
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

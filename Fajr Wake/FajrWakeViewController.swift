@@ -105,6 +105,9 @@ extension FajrWakeViewController {
 }
 
 // MARK: - Segue preperations
+extension FajrWakeViewController {
+
+}
 
 // MARK: - Setups and Settings
 extension FajrWakeViewController {
