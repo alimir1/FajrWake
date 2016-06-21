@@ -17,12 +17,22 @@
                         <sections>
                             <tableViewSection id="pit-wU-FxM">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="V6e-Yx-bsN">
-                                        <rect key="frame" x="0.0" y="99" width="600" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="218" id="V6e-Yx-bsN">
+                                        <rect key="frame" x="0.0" y="99" width="600" height="218"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V6e-Yx-bsN" id="qds-C8-gET">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="217"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ze-ZS-sHe">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="216"/>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="3ze-ZS-sHe" firstAttribute="top" secondItem="qds-C8-gET" secondAttribute="top" id="7Ha-x2-fR2"/>
+                                                <constraint firstItem="3ze-ZS-sHe" firstAttribute="leading" secondItem="qds-C8-gET" secondAttribute="leading" id="Md7-wO-cRg"/>
+                                                <constraint firstAttribute="trailing" secondItem="3ze-ZS-sHe" secondAttribute="trailing" id="yYG-hd-u0L"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -30,7 +40,7 @@
                             <tableViewSection id="ttn-Xn-P4A">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="pBZ-EX-kyq" detailTextLabel="yW8-jY-iJH" style="IBUITableViewCellStyleValue1" id="mbT-Na-ET4">
-                                        <rect key="frame" x="0.0" y="179" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="353" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbT-Na-ET4" id="K1I-WX-TLB">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -54,7 +64,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="bqn-5G-GOP">
-                                        <rect key="frame" x="0.0" y="223" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="397" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bqn-5G-GOP" id="NFU-ML-yFB">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -62,7 +72,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="g5l-SP-B9B">
-                                        <rect key="frame" x="0.0" y="267" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="441" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="g5l-SP-B9B" id="WD4-Bm-uf4">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -70,7 +80,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="pJL-IZ-Hqh">
-                                        <rect key="frame" x="0.0" y="311" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="485" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pJL-IZ-Hqh" id="U9H-aN-M94">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -99,6 +109,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="alarmLabelDetail" destination="yW8-jY-iJH" id="bag-50-2a1"/>
+                        <outlet property="prayerTimesPicker" destination="3ze-ZS-sHe" id="moi-hw-tvd"/>
                     </connections>
                 </tableViewController>
                 <exit id="ZKY-nl-q8E" userLabel="Exit" sceneMemberID="exit"/>
@@ -308,4 +319,5 @@
         <image name="List 1" width="22" height="18"/>
         <image name="Settings 2" width="22" height="22"/>
     </resources>
+    <color key="tintColor" red="1" green="0.12841629060000001" blue="0.15970916060000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>
