@@ -15,4 +15,12 @@ class AddAlarmTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return CGFloat.min
+        }
+        return tableView.sectionHeaderHeight
+
+    }
 }

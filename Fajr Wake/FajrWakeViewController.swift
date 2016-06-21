@@ -158,16 +158,7 @@ extension FajrWakeViewController {
                 let lon = loc.coordinate.longitude
                 let gmt = LocalGMT.getLocalGMT()
 
-                // location settings for prayer times
-                self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
-
-                // call function to get city, state, and country of the given coordinates
-                self.reverseGeocoding(lat, longitude: lon)
-                
-                self.updatePrayerTimes()
-                
-                // stop showing activity indicator in navigation title
-                self.navigationItem.titleView = nil
+                self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
                 
             } else if let err = error {
                 print(err.localizedDescription)
@@ -177,19 +168,23 @@ extension FajrWakeViewController {
                 let lon = 50.8789548
                 let gmt = +4.5
                 
-                // location settings for prayer times
-                self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
-                
-                // call function to get city, state, and country of the given coordinates
-                self.reverseGeocoding(lat, longitude: lon)
-                
-                self.updatePrayerTimes()
-                
-                // stop showing activity indicator in navigation title
-                self.navigationItem.titleView = nil
+                self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
             }
             self.manager = nil
         }
+    }
+    
+    func setupLocationForPrayerTimes(lat: Double, lon: Double, gmt: Double) {
+        // location settings for prayer times
+        self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
+        
+        // call function to get city, state, and country of the given coordinates
+        self.reverseGeocoding(lat, longitude: lon)
+        
+        self.updatePrayerTimes()
+        
+        // stop showing activity indicator in navigation title
+        self.navigationItem.titleView = nil
     }
 }
 
