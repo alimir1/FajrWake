@@ -49,13 +49,19 @@ extension FajrWakeViewController {
         let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
         var toDisplay = ""
         if let fajrTime = fajr, let sunriseTime = sunrise {
-            toDisplay = "Fajr: \(fajrTime)\t\tSunrise: \(sunriseTime)"
+            toDisplay = "Fajr: \(fajrTime)\tSunrise: \(sunriseTime)"
         }
         return toDisplay
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // cell selected code here
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.textLabel?.textAlignment = .Center
+        }
     }
 
     /*
