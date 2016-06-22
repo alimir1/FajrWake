@@ -14,6 +14,7 @@ class AddAlarmTableViewController: UITableViewController, UIPickerViewDelegate, 
     @IBOutlet weak var prayerTimesPicker: UIPickerView!
     var pickerData: [[String]] = [[String]]()
     var alarms: FajrWakeAlarm?
+    var pickerArrayChoices: [Int] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +34,16 @@ class AddAlarmTableViewController: UITableViewController, UIPickerViewDelegate, 
             }
         }
         
+        // Default values of picker
         prayerTimesPicker.selectRow(0, inComponent: 0, animated: true)
         prayerTimesPicker.selectRow(1, inComponent: 1, animated: true)
         prayerTimesPicker.selectRow(0, inComponent: 2, animated: true)
+        
+
+        pickerArrayChoices = [prayerTimesPicker.selectedRowInComponent(0), prayerTimesPicker.selectedRowInComponent(1),prayerTimesPicker.selectedRowInComponent(2)]
+        print(pickerArrayChoices)
+        
+        
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -48,6 +56,18 @@ class AddAlarmTableViewController: UITableViewController, UIPickerViewDelegate, 
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerData[component][row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if prayerTimesPicker.selectedRowInComponent(1) == 0 || prayerTimesPicker.selectedRowInComponent(1) == 2 {
+            if prayerTimesPicker.selectedRowInComponent(0) == 0 {
+                prayerTimesPicker.selectRow(1, inComponent: 0, animated: true)
+            }
+        }
+        
+        if prayerTimesPicker.selectedRowInComponent(1) == 1 && prayerTimesPicker.selectedRowInComponent(0) != 0 {
+            prayerTimesPicker.selectRow(0, inComponent: 0, animated: true)
+        }
     }
     
     
