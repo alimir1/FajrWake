@@ -49,7 +49,7 @@ extension FajrWakeViewController {
         let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
         var toDisplay = ""
         if let fajrTime = fajr, let sunriseTime = sunrise {
-            toDisplay = "Fajr: \(fajrTime)\tSunrise: \(sunriseTime)"
+            toDisplay = "Fajr: \(fajrTime)\t\tSunrise: \(sunriseTime)"
         }
         return toDisplay
     }

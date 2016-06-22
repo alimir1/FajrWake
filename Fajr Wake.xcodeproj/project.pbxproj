@@ -74,7 +74,6 @@
 				0152D6471CEF0FCC004FFC04 /* Assets.xcassets */,
 				0152D6491CEF0FCC004FFC04 /* LaunchScreen.storyboard */,
 				0152D64C1CEF0FCC004FFC04 /* Info.plist */,
-				0152D6561CEF1071004FFC04 /* FajrWake.swift */,
 				0176D6BD1D0E541E00A5BB01 /* Framework files */,
 			);
 			path = "Fajr Wake";
@@ -87,6 +86,7 @@
 				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
 				01A3A8251D13C20400DE4CE9 /* SettingsViewController.swift */,
 				01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */,
+				0152D6561CEF1071004FFC04 /* FajrWake.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

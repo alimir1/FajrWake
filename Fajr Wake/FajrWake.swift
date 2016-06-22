@@ -114,9 +114,9 @@ enum SalatsAndQadhas: Int {
 }
 
 enum WakeOptions: String {
-    case AtFajr = "At Fajr"
-    case BeforeFajr = "Before Fajr"
-    case BeforeSunrise = "Before Sunrise"
+    case OnTime = "On time"
+    case Before = "Before"
+    case After = "After"
 }
 
 enum Days: String  {
@@ -129,8 +129,9 @@ enum Days: String  {
     case Sunday
 }
 
-class FajrWake {
+class FajrWakeAlarm {
     var whenToAlarm: WakeOptions
+    var whatSalatToAlarm: SalatsAndQadhas
     var minsToChange: Int
     var daysToRepeat: [Days]
     var snooze: Bool
@@ -138,7 +139,7 @@ class FajrWake {
     var alarmLabel: String
     var daysToRepeatLabel: String
     
-    init(whenToAlarm: WakeOptions = .AtFajr, minsToChange: Int = 0, daysToRepeat: [Days] = [.Monday, .Tuesday, .Wednesday, .Thursday, .Friday, .Saturday, .Sunday], snooze: Bool = true, alarmOn: Bool = true, alarmLabelLabel: String = "Alarm") {
+    init(whenToAlarm: WakeOptions = .OnTime, whatSalatToAlarm: SalatsAndQadhas = .Fajr, minsToChange: Int = 0, daysToRepeat: [Days] = [.Monday, .Tuesday, .Wednesday, .Thursday, .Friday, .Saturday, .Sunday], snooze: Bool = true, alarmOn: Bool = true, alarmLabelLabel: String = "Alarm") {
         self.whenToAlarm = whenToAlarm
         self.minsToChange = minsToChange
         self.daysToRepeat = daysToRepeat
@@ -146,9 +147,7 @@ class FajrWake {
         self.alarmOn = alarmOn
         self.alarmLabel = alarmLabelLabel
         daysToRepeatLabel = DaysToRepeatLabel.getTextToRepeatDaysLabel(daysToRepeat)
-    }
-    func setAlarm() {
-        
+        self.whatSalatToAlarm = whatSalatToAlarm
     }
 }
 
