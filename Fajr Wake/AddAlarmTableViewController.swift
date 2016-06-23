@@ -27,6 +27,8 @@ class AddAlarmTableViewController: UITableViewController, UIPickerViewDelegate, 
         
         pickerData = [[], [WakeOptions.OnTime.rawValue, WakeOptions.Before.rawValue, WakeOptions.After.rawValue], [SalatsAndQadhas.Fajr.getString, "Qadha"]]
         
+        
+        // filling minutes for first components
         for index in 0...59 {
             pickerData[0].append("\(index)")
         }
@@ -36,6 +38,12 @@ class AddAlarmTableViewController: UITableViewController, UIPickerViewDelegate, 
         prayerTimesPicker.selectRow(0, inComponent: 1, animated: true)
         prayerTimesPicker.selectRow(0, inComponent: 2, animated: true)
         
+        
+        // "min" label
+        let hourLabel = UILabel(frame: CGRectMake(73, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
+        hourLabel.text = "min"
+        hourLabel.font = UIFont.boldSystemFontOfSize(14)
+        prayerTimesPicker.addSubview(hourLabel)
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
