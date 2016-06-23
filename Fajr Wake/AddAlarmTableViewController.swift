@@ -9,9 +9,12 @@
 import UIKit
 
 class AddAlarmTableViewController: UITableViewController {
-        
-    @IBOutlet weak var alarmLabelDetail: UILabel!
+    
     @IBOutlet weak var prayerTimesPicker: UIPickerView!
+    @IBOutlet weak var repeatDetailLabel: UILabel!
+    @IBOutlet weak var labelDetailLabel: UILabel!
+    @IBOutlet weak var soundDetailLabel: UILabel!
+    @IBOutlet weak var snoozeSwitch: UISwitch!
     
     let maxElements = 10000
     var locOfZero = (10000/2) - 20
@@ -75,7 +78,7 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
         pickerChoices = (minsToAdjust: minsToAdjust, whenToAlarm: whenToAlarm, whatSalatToAlarm: whatSalatToAlarm)
         
         // "min" label
-        let hourLabel = UILabel(frame: CGRectMake(73, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
+        let hourLabel = UILabel(frame: CGRectMake(85, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
         hourLabel.text = "min"
         hourLabel.font = UIFont.boldSystemFontOfSize(14)
         prayerTimesPicker.addSubview(hourLabel)
