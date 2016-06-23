@@ -8,13 +8,6 @@
 
 import Foundation
 
-// MARK: - Protocols
-
-// MARK: - Error Types
-
-
-// MARK: - Helper Methods
-
 // local GMT
 class LocalGMT {
     class func getLocalGMT() -> Double {
@@ -113,10 +106,10 @@ enum SalatsAndQadhas: Int {
     }
 }
 
-enum WakeOptions: String {
-    case OnTime = "On time"
-    case Before = "Before"
-    case After = "After"
+enum WakeOptions: Int {
+    case OnTime
+    case Before
+    case After
 }
 
 enum Days: String  {
@@ -129,57 +122,15 @@ enum Days: String  {
     case Sunday
 }
 
-class FajrWakeAlarm {
+struct FajrWakeAlarm {
     var whenToAlarm: WakeOptions
     var whatSalatToAlarm: SalatsAndQadhas
-    var minsToChange: Int
-    var daysToRepeat: [Days]
+    var minsToAdjust: Int
+    var daysToRepeat: [Days]?
     var snooze: Bool
     var alarmOn: Bool
     var alarmLabel: String
-    var daysToRepeatLabel: String
-    
-    init(whenToAlarm: WakeOptions = .OnTime, whatSalatToAlarm: SalatsAndQadhas = .Fajr, minsToChange: Int = 0, daysToRepeat: [Days] = [.Monday, .Tuesday, .Wednesday, .Thursday, .Friday, .Saturday, .Sunday], snooze: Bool = true, alarmOn: Bool = true, alarmLabelLabel: String = "Alarm") {
-        self.whenToAlarm = whenToAlarm
-        self.minsToChange = minsToChange
-        self.daysToRepeat = daysToRepeat
-        self.snooze = snooze
-        self.alarmOn = alarmOn
-        self.alarmLabel = alarmLabelLabel
-        daysToRepeatLabel = DaysToRepeatLabel.getTextToRepeatDaysLabel(daysToRepeat)
-        self.whatSalatToAlarm = whatSalatToAlarm
-    }
 }
-
-
-/*
- Reference from PrayerTimes.swift
- CalculationMethods:
- case Jafari = 0  // Ithna Ashari
- case Karachi // University of Islamic Sciences, Karachi
- case Isna  // Islamic Society of North America (ISNA)
- case Mwl // Muslim World League (MWL)
- case Makkah // Umm al-Qura, Makkah
- case Egypt // Egyptian General Authority of Survey
- case Custom  // Custom Setting
- case Tehran  // Institute of Geophysics, University of Tehran
-
- AsrJuristicMethods:
- case Shafii // Shafii (standard)
- case Hanafi // Hanafi
-
-AdjustingMethods:
-    case None // No adjustment
-    case MidNight  // middle of night
-    case OneSeventh // 1/7th of night
-    case AngleBased // floating point number
-
- TimeForamts:
- case Time24 // 24-hour format
- case Time12 // 12-hour format
- case Time12NS // 12-hour format with no suffix
- case Floating // angle/60th of night
- */
 
 enum PrayerTimeSettingsReference: String {
     case CalculationMethod, AsrJuristic, AdjustHighLats, TimeFormat
@@ -193,7 +144,6 @@ enum CalculationMethods: Int {
     case Mwl
     case Makkah
     case Egypt
-//    case Custom
     case Tehran = 7
     
     func getString() -> String {
@@ -204,7 +154,6 @@ enum CalculationMethods: Int {
         case .Mwl: return "Muslim World League"
         case .Makkah: return "Umm al-Qura University, Makkah"
         case .Egypt: return "Egyptian General Authority of Survey"
-//        case .Custom: return "Custom Setting"
         case .Tehran: return "Institute of Geophysics, Tehran University"
         }
     }
