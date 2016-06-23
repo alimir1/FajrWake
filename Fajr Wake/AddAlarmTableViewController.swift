@@ -20,27 +20,30 @@ class AddAlarmTableViewController: UITableViewController {
     
     // MARK: - Variables related to pickerview
     var pickerData: [[String]] = [[], ["On time", "Before", "After"], [SalatsAndQadhas.Fajr.getString, SalatsAndQadhas.Sunrise.getString]]
-    var pickerChoices: [Int]? {
+    var pickerChoices: (minsToAdjust: Int, whenToAlarm: Int, whatSalatToAlarm: Int)? {
         didSet {
             if let choices = pickerChoices {
-                fajrWakeAlarm.minsToAdjust = choices[0]
-                fajrWakeAlarm.whenToAlarm = WakeOptions(rawValue: choices[1])!
-                fajrWakeAlarm.whatSalatToAlarm = SalatsAndQadhas(rawValue: choices[2])!
+                fajrWakeAlarm.minsToAdjust = choices.minsToAdjust
+                fajrWakeAlarm.whenToAlarm = WakeOptions(rawValue: choices.whenToAlarm)!
+                fajrWakeAlarm.whatSalatToAlarm = SalatsAndQadhas(rawValue: choices.whatSalatToAlarm)!
+                print("\(fajrWakeAlarm.minsToAdjust) min \(fajrWakeAlarm.whenToAlarm) \(fajrWakeAlarm.whatSalatToAlarm)\n")
             }
         }
     }
-    var minsToAdjust: Int{
-        return Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(0), forComponent: 0)!)!
-    }
-    var whenToAlarm: Int {
-        return prayerTimesPicker.selectedRowInComponent(1)
-    }
-    var whatSalatToAlarm: Int {
-        return prayerTimesPicker.selectedRowInComponent(2)
-    }
+    
     let minsToAdjustComponent: Int = 0
     let whenToAlarmComponent: Int = 1
     let whatSalatToAlarmComponent: Int = 2
+    
+    var minsToAdjust: Int {
+        return Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
+    }
+    var whenToAlarm: Int {
+        return prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
+    }
+    var whatSalatToAlarm: Int {
+        return prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
+    }
 }
 
 // MARK: - Initial cycle of view controller
@@ -62,14 +65,14 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     func setupPicker() {
         // filling minutes for first components
         for index in 0...59 {
-            pickerData[0].append("\(index)")
+            pickerData[minsToAdjustComponent].append("\(index)")
         }
         
         // Default values of picker
-        prayerTimesPicker.selectRow(locOfZero+10, inComponent: 0, animated: true)
-        prayerTimesPicker.selectRow(fajrWakeAlarm.whenToAlarm.rawValue, inComponent: 1, animated: true)
-        prayerTimesPicker.selectRow(fajrWakeAlarm.whatSalatToAlarm.rawValue, inComponent: 2, animated: true)
-        pickerChoices = [minsToAdjust, whenToAlarm, whatSalatToAlarm]
+        prayerTimesPicker.selectRow(locOfZero+10, inComponent: minsToAdjustComponent, animated: true)
+        prayerTimesPicker.selectRow(fajrWakeAlarm.whenToAlarm.rawValue, inComponent: whenToAlarmComponent, animated: true)
+        prayerTimesPicker.selectRow(fajrWakeAlarm.whatSalatToAlarm.rawValue, inComponent: whatSalatToAlarmComponent, animated: true)
+        pickerChoices = (minsToAdjust: minsToAdjust, whenToAlarm: whenToAlarm, whatSalatToAlarm: whatSalatToAlarm)
         
         // "min" label
         let hourLabel = UILabel(frame: CGRectMake(73, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
@@ -83,7 +86,7 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if component == 0 {
+        if component == minsToAdjustComponent {
             return maxElements // to create illusion of infinite scrolling for minutes
         } else {
             return pickerData[component].count
@@ -91,9 +94,9 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component == 0 {
-            let myRow = row % pickerData[0].count
-            let numbers = pickerData[0][myRow]
+        if component == minsToAdjustComponent {
+            let myRow = row % pickerData[minsToAdjustComponent].count
+            let numbers = pickerData[minsToAdjustComponent][myRow]
             return numbers
         } else {
             return pickerData[component][row]
@@ -103,13 +106,13 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if whenToAlarm == 1 || whenToAlarm == 2 {
             if minsToAdjust == 0 {
-                prayerTimesPicker.selectRow(locOfZero+1, inComponent: 0, animated: true)
+                prayerTimesPicker.selectRow(locOfZero+1, inComponent: minsToAdjustComponent, animated: true)
             }
         } else if whenToAlarm == 0 && minsToAdjust != 0 {
-            prayerTimesPicker.selectRow(locOfZero, inComponent: 0, animated: true)
+            prayerTimesPicker.selectRow(locOfZero, inComponent: minsToAdjustComponent, animated: true)
         }
         
-        pickerChoices = [minsToAdjust, whenToAlarm, whatSalatToAlarm]
+        pickerChoices = (minsToAdjust: minsToAdjust, whenToAlarm: whenToAlarm, whatSalatToAlarm: whatSalatToAlarm)
     }
 }
 
