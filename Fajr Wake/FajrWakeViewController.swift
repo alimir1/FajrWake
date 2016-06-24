@@ -18,8 +18,13 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        displayNoAlarms()
         loadSampleAlarms()
         setupPrayerTimes()
+        
+
+        
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -27,10 +32,30 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     func loadSampleAlarms() {
-        let alarm1 = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
-        let alarm2 = FajrWakeAlarm(whenToAlarm: .After, whatSalatToAlarm: .Fajr, minsToAdjust: 5, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
-        
-        fajrAlarms += [alarm1, alarm2]
+//        let alarm1 = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
+//        let alarm2 = FajrWakeAlarm(whenToAlarm: .After, whatSalatToAlarm: .Fajr, minsToAdjust: 5, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
+//        
+//        fajrAlarms += [alarm1, alarm2]
+    }
+    
+    func displayNoAlarms() {
+        if fajrAlarms.count == 0 {
+            let NoAlarmsLabel: UILabel = UILabel(frame: CGRectZero)
+            NoAlarmsLabel.text = "No Alarms"
+            NoAlarmsLabel.baselineAdjustment = .AlignBaselines
+            NoAlarmsLabel.backgroundColor = UIColor.clearColor()
+            NoAlarmsLabel.textColor = UIColor.lightGrayColor()
+            NoAlarmsLabel.textAlignment = .Center
+            NoAlarmsLabel.font = UIFont(name: "Helvetica", size: 25.0)
+            NoAlarmsLabel.translatesAutoresizingMaskIntoConstraints = false
+            self.view!.addSubview(NoAlarmsLabel)
+            
+            let xConstraint = NSLayoutConstraint(item: NoAlarmsLabel, attribute: .CenterX, relatedBy: .Equal, toItem: self.tableView, attribute: .CenterX, multiplier: 1, constant: 0)
+            
+            let yConstraint = NSLayoutConstraint(item: NoAlarmsLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self.tableView, attribute: .CenterY, multiplier: 1, constant: -30.0)
+            
+            NSLayoutConstraint.activateConstraints([xConstraint, yConstraint])
+        }
     }
     
 }
