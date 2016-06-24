@@ -16,6 +16,8 @@ class AddAlarmTableViewController: UITableViewController {
     @IBOutlet weak var labelDetailLabel: UILabel!
     @IBOutlet weak var soundDetailLabel: UILabel!
     @IBOutlet weak var snoozeSwitch: UISwitch!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var cancel: UIBarButtonItem!
     
     var labelObserver: String? {
         didSet {
@@ -79,6 +81,10 @@ class AddAlarmTableViewController: UITableViewController {
     var whatSalatToAlarm: Int {
         return prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
     }
+    
+    @IBAction func cancel (sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 // MARK: - Initial cycle of view controller
@@ -98,7 +104,16 @@ extension AddAlarmTableViewController {
     }
 }
 
-// MARK: - UIPickerView Configuration
+// MARK: Navigation
+extension AddAlarmTableViewController {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if saveButton === sender {
+            
+        }
+    }
+}
+
+// MARK: - UIPickerView
 extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     // picker setup
     func setupPicker() {
@@ -156,7 +171,7 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
 }
 
 
-// MARK: - UITableView Configuration
+// MARK: - UITableView
 extension AddAlarmTableViewController {
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {

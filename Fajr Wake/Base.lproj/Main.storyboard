@@ -156,19 +156,21 @@
                     <navigationItem key="navigationItem" title="Add Alarm" id="G86-jY-ag0">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="oDp-zb-nMA">
                             <connections>
-                                <segue destination="ZKY-nl-q8E" kind="unwind" unwindAction="cancelToPlayersViewController:" id="mtr-sP-Lyo"/>
+                                <action selector="cancel:" destination="OqC-Qb-um6" id="pkh-bg-0JP"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="0b1-xE-VDU">
                             <connections>
-                                <segue destination="ZKY-nl-q8E" kind="unwind" unwindAction="savePlayerDetail:" id="U6E-dm-HRL"/>
+                                <segue destination="ZKY-nl-q8E" kind="unwind" unwindAction="unwindToAlarms:" id="q9j-Jf-c0p"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cancel" destination="oDp-zb-nMA" id="xDH-s2-PkY"/>
                         <outlet property="labelDetailLabel" destination="HMS-mY-Wfg" id="grt-ZG-H9Z"/>
                         <outlet property="prayerTimesPicker" destination="3ze-ZS-sHe" id="moi-hw-tvd"/>
                         <outlet property="repeatDetailLabel" destination="yW8-jY-iJH" id="RJG-Bo-0vg"/>
+                        <outlet property="saveButton" destination="0b1-xE-VDU" id="lNi-bQ-qnj"/>
                         <outlet property="snoozeSwitch" destination="Jfj-nl-Y9O" id="0Tn-un-ZZl"/>
                         <outlet property="soundDetailLabel" destination="xM6-zI-Hhv" id="MtA-xz-IXR"/>
                     </connections>
@@ -340,7 +342,6 @@
                         <barButtonItem image="Settings 2" id="1wV-ue-Uvi"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Fajr Wake" id="wWv-im-Nar">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="yOT-ow-Bis"/>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="tYA-tT-9yS">
                                 <connections>
