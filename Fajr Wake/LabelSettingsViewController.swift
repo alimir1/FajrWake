@@ -15,6 +15,6 @@ class LabelSettingsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UIScreen.mainScreen().bounds.height/2
+        return UIScreen.mainScreen().bounds.height/4
     }
 }

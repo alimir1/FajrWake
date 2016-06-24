@@ -63,6 +63,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="q0E-6v-1Vm" kind="show" id="Ejf-xj-yVO"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="YeI-Nb-VoU" detailTextLabel="HMS-mY-Wfg" style="IBUITableViewCellStyleValue1" id="bqn-5G-GOP">
                                         <rect key="frame" x="0.0" y="397" width="600" height="44"/>
@@ -114,6 +117,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Htn-Is-i9a" kind="show" id="Tyl-UY-BET"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="yLP-PT-xL1" style="IBUITableViewCellStyleDefault" id="pJL-IZ-Hqh">
                                         <rect key="frame" x="0.0" y="485" width="600" height="44"/>
@@ -172,10 +178,39 @@
             </objects>
             <point key="canvasLocation" x="1250" y="1131"/>
         </scene>
+        <!--Repeat-->
+        <scene sceneID="kil-Gi-GLW">
+            <objects>
+                <tableViewController id="q0E-6v-1Vm" customClass="RepeatSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="o4P-8i-hqs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="daysID" id="g5P-6c-hoq">
+                                <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="g5P-6c-hoq" id="o3T-fT-aap">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="q0E-6v-1Vm" id="J1T-IP-xwc"/>
+                            <outlet property="delegate" destination="q0E-6v-1Vm" id="ohI-Ez-hxW"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Repeat" id="DcW-Yy-WBi"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pFV-dx-wR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1250" y="1900"/>
+        </scene>
         <!--Label-->
         <scene sceneID="qtv-bV-itf">
             <objects>
-                <tableViewController id="SMS-hI-HCE" sceneMemberID="viewController">
+                <tableViewController id="SMS-hI-HCE" customClass="LabelSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="m5f-Tr-MY4">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -193,7 +228,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="34M-mC-ouq">
                                                     <rect key="frame" x="8" y="7" width="584" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -218,28 +253,82 @@
             </objects>
             <point key="canvasLocation" x="1941" y="1131"/>
         </scene>
+        <!--Sound-->
+        <scene sceneID="FDj-S8-ITP">
+            <objects>
+                <tableViewController id="Htn-Is-i9a" customClass="SoundSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="0Ww-cG-tjm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="soundID" id="JAo-7F-JOn">
+                                <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JAo-7F-JOn" id="etw-iQ-Rn1">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Htn-Is-i9a" id="MWi-8j-U9d"/>
+                            <outlet property="delegate" destination="Htn-Is-i9a" id="Gwf-1E-BMx"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Sound" id="RXZ-XL-Xzt"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FtZ-l4-fJd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1970" y="1900"/>
+        </scene>
         <!--Fajr Wake-->
         <scene sceneID="WdT-f1-caf">
             <objects>
                 <tableViewController id="Gh6-O9-xWD" customClass="FajrWakeViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="mdq-CW-Xx7">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="70" sectionHeaderHeight="18" sectionFooterHeight="18" id="mdq-CW-Xx7">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <sections>
-                            <tableViewSection id="YfL-1i-JCF">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v0K-rT-VOa">
-                                        <rect key="frame" x="0.0" y="99" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0K-rT-VOa" id="1FJ-pm-kVv">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FajrWakeCell" textLabel="oly-jz-6Cp" detailTextLabel="9e7-x3-DGF" rowHeight="70" style="IBUITableViewCellStyleSubtitle" id="v0K-rT-VOa" customClass="FajrWakeCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="114" width="600" height="70"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0K-rT-VOa" id="1FJ-pm-kVv">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="69"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="5 mins before fajr" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oly-jz-6Cp">
+                                            <rect key="frame" x="15" y="14" width="156" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alarm, Mon Tue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9e7-x3-DGF">
+                                            <rect key="frame" x="15" y="38" width="108" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xQB-bM-h6V">
+                                            <rect key="frame" x="530" y="19" width="51" height="31"/>
+                                        </switch>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="xQB-bM-h6V" secondAttribute="trailing" constant="13" id="cmW-rm-vZL"/>
+                                        <constraint firstItem="xQB-bM-h6V" firstAttribute="centerY" secondItem="1FJ-pm-kVv" secondAttribute="centerY" id="fRZ-Vr-V7m"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="alarmDetailLabel" destination="9e7-x3-DGF" id="AYR-dT-K55"/>
+                                    <outlet property="alarmLabel" destination="oly-jz-6Cp" id="7l2-AD-KLy"/>
+                                    <outlet property="alarmSwitch" destination="xQB-bM-h6V" id="aQX-wp-qJb"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
                         <connections>
                             <outlet property="dataSource" destination="Gh6-O9-xWD" id="GU6-HH-K3r"/>
                             <outlet property="delegate" destination="Gh6-O9-xWD" id="eg5-fX-e8A"/>

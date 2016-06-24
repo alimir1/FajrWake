@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 class AddAlarmTableViewController: UITableViewController {
     
@@ -16,9 +17,38 @@ class AddAlarmTableViewController: UITableViewController {
     @IBOutlet weak var soundDetailLabel: UILabel!
     @IBOutlet weak var snoozeSwitch: UISwitch!
     
+    var labelObserver: String? {
+        didSet {
+            if let label = labelObserver {
+                labelDetailLabel.text = label
+                fajrWakeAlarm.alarmLabel = label
+            }
+        }
+    }
+    
+    var repeatDaysObserver: [Days]? {
+        didSet {
+            if let daysToRepeat = repeatDaysObserver {
+                repeatDetailLabel.text = DaysToRepeatLabel.getTextToRepeatDaysLabel(daysToRepeat)
+                fajrWakeAlarm.daysToRepeat = daysToRepeat
+            } else {
+                repeatDetailLabel.text = "Never"
+            }
+        }
+    }
+    
+    var soundObserver: String? {
+        didSet {
+            if let sound = soundObserver {
+                soundDetailLabel.text = sound
+                fajrWakeAlarm.sound = sound
+            }
+        }
+    }
+    
     let maxElements = 10000
     var locOfZero = (10000/2) - 20
-    var fajrWakeAlarm = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: nil, snooze: true, alarmOn: true, alarmLabel: "Alarm")
+    var fajrWakeAlarm = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: nil, snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Munajat Imam Ali")
 
     
     // MARK: - Variables related to pickerview
@@ -29,6 +59,8 @@ class AddAlarmTableViewController: UITableViewController {
                 fajrWakeAlarm.minsToAdjust = choices.minsToAdjust
                 fajrWakeAlarm.whenToAlarm = WakeOptions(rawValue: choices.whenToAlarm)!
                 fajrWakeAlarm.whatSalatToAlarm = SalatsAndQadhas(rawValue: choices.whatSalatToAlarm)!
+                
+                // testing...
                 print("\(fajrWakeAlarm.minsToAdjust) min \(fajrWakeAlarm.whenToAlarm) \(fajrWakeAlarm.whatSalatToAlarm)\n")
             }
         }
@@ -58,6 +90,10 @@ extension AddAlarmTableViewController {
         self.prayerTimesPicker.dataSource = self
         
         setupPicker()
+        
+        labelObserver = "Alarm"
+        repeatDaysObserver = nil
+        soundObserver = "Munajat Imam Ali"
         
     }
 }
@@ -127,6 +163,9 @@ extension AddAlarmTableViewController {
             return CGFloat.min
         }
         return tableView.sectionHeaderHeight
+    }
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
 

@@ -14,14 +14,23 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var manager: OneShotLocationManager?
     var prayerTimes: [String: String] = [:]
     var locationNameDisplay: String = ""
-
+    var fajrAlarms = [FajrWakeAlarm]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadSampleAlarms()
         setupPrayerTimes()
     }
     
     override func viewWillAppear(animated: Bool) {
         updatePrayerTimes()
+    }
+    
+    func loadSampleAlarms() {
+        let alarm1 = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
+        let alarm2 = FajrWakeAlarm(whenToAlarm: .After, whatSalatToAlarm: .Fajr, minsToAdjust: 5, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
+        
+        fajrAlarms += [alarm1, alarm2]
     }
     
 }
@@ -39,7 +48,18 @@ extension FajrWakeViewController {
 // MARK: - Table view configuration
 extension FajrWakeViewController {
     // MARK: - Table view data source
-
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return fajrAlarms.count
+    }
+    
+//    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return 0.0
+//    }
+    
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30.0
     }
@@ -54,9 +74,6 @@ extension FajrWakeViewController {
         return toDisplay
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // cell selected code here
-    }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
@@ -64,50 +81,20 @@ extension FajrWakeViewController {
         }
     }
 
-    /*
+    
      override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-     // Configure the cell...
-
-     return cell
+        let cellIdentifier = "FajrWakeCell"
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
+        
+        let alarm = fajrAlarms[indexPath.row]
+        let alarmLabel = "\(String(alarm.minsToAdjust)) mins \(alarm.whenToAlarm) \(alarm.whatSalatToAlarm)"
+        let alarmDetailLabel = "\(alarm.alarmLabel), Tue Wed"
+        cell.alarmLabel.text = alarmLabel
+        cell.alarmDetailLabel.text = alarmDetailLabel
+        
+        return cell
      }
-     */
-
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-
-    /*
-     // Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-     // Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-     }
-     */
-
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
+ 
 }
 
 // MARK: - Segue preperations

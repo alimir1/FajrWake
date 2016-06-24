@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		014104401D1C8E0700CE85F7 /* LabelSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141043F1D1C8E0700CE85F7 /* LabelSettingsViewController.swift */; };
+		014104431D1C972000CE85F7 /* RepeatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014104421D1C972000CE85F7 /* RepeatSettingsViewController.swift */; };
+		014104461D1CB70E00CE85F7 /* SoundSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014104451D1CB70E00CE85F7 /* SoundSettingsViewController.swift */; };
+		0141044A1D1D364200CE85F7 /* FajrWakeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014104491D1D364200CE85F7 /* FajrWakeCell.swift */; };
 		0152D6411CEF0FCC004FFC04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6401CEF0FCC004FFC04 /* AppDelegate.swift */; };
 		0152D6461CEF0FCC004FFC04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0152D6441CEF0FCC004FFC04 /* Main.storyboard */; };
 		0152D6481CEF0FCC004FFC04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0152D6471CEF0FCC004FFC04 /* Assets.xcassets */; };
@@ -24,6 +27,9 @@
 
 /* Begin PBXFileReference section */
 		0141043F1D1C8E0700CE85F7 /* LabelSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSettingsViewController.swift; sourceTree = "<group>"; };
+		014104421D1C972000CE85F7 /* RepeatSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSettingsViewController.swift; sourceTree = "<group>"; };
+		014104451D1CB70E00CE85F7 /* SoundSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundSettingsViewController.swift; sourceTree = "<group>"; };
+		014104491D1D364200CE85F7 /* FajrWakeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWakeCell.swift; sourceTree = "<group>"; };
 		0152D63D1CEF0FCB004FFC04 /* Fajr Wake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fajr Wake.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0152D6401CEF0FCC004FFC04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0152D6451CEF0FCC004FFC04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -51,11 +57,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		014104411D1C8E1200CE85F7 /* Settings */ = {
+		014104411D1C8E1200CE85F7 /* AddAlarmSettings */ = {
+			isa = PBXGroup;
+			children = (
+				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
+				0141043F1D1C8E0700CE85F7 /* LabelSettingsViewController.swift */,
+				014104421D1C972000CE85F7 /* RepeatSettingsViewController.swift */,
+				014104451D1CB70E00CE85F7 /* SoundSettingsViewController.swift */,
+			);
+			name = AddAlarmSettings;
+			sourceTree = "<group>";
+		};
+		014104441D1C99AB00CE85F7 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				01A3A8251D13C20400DE4CE9 /* SettingsViewController.swift */,
-				0141043F1D1C8E0700CE85F7 /* LabelSettingsViewController.swift */,
+				01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -93,10 +110,10 @@
 		0176D6BC1D0E53FE00A5BB01 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				014104411D1C8E1200CE85F7 /* Settings */,
 				0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */,
-				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
-				01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */,
+				014104491D1D364200CE85F7 /* FajrWakeCell.swift */,
+				014104411D1C8E1200CE85F7 /* AddAlarmSettings */,
+				014104441D1C99AB00CE85F7 /* Settings */,
 				0152D6561CEF1071004FFC04 /* FajrWake.swift */,
 			);
 			name = Controllers;
@@ -191,9 +208,12 @@
 				01A3A8201D12F43A00DE4CE9 /* OneShotLocationManager.swift in Sources */,
 				019342D01D14E7A100F98775 /* ActivityIndicator.swift in Sources */,
 				014104401D1C8E0700CE85F7 /* LabelSettingsViewController.swift in Sources */,
+				014104431D1C972000CE85F7 /* RepeatSettingsViewController.swift in Sources */,
 				01A3A8281D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift in Sources */,
 				0176D6BF1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift in Sources */,
+				0141044A1D1D364200CE85F7 /* FajrWakeCell.swift in Sources */,
 				0152D6411CEF0FCC004FFC04 /* AppDelegate.swift in Sources */,
+				014104461D1CB70E00CE85F7 /* SoundSettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

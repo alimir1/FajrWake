@@ -130,6 +130,7 @@ struct FajrWakeAlarm {
     var snooze: Bool
     var alarmOn: Bool
     var alarmLabel: String
+    var sound: String
 }
 
 enum PrayerTimeSettingsReference: String {
