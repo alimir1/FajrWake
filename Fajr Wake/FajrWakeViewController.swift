@@ -32,14 +32,16 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     func loadSampleAlarms() {
-//        let alarm1 = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
-//        let alarm2 = FajrWakeAlarm(whenToAlarm: .After, whatSalatToAlarm: .Fajr, minsToAdjust: 5, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
-//        
-//        fajrAlarms += [alarm1, alarm2]
+        let alarm1 = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
+        let alarm2 = FajrWakeAlarm(whenToAlarm: .After, whatSalatToAlarm: .Fajr, minsToAdjust: 5, daysToRepeat: [.Saturday, .Sunday], snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Mozenzadeh")
+        
+        fajrAlarms += [alarm1, alarm2]
     }
     
     func displayNoAlarms() {
         if fajrAlarms.count == 0 {
+            self.tableView.scrollEnabled = false
+            
             let NoAlarmsLabel: UILabel = UILabel(frame: CGRectZero)
             NoAlarmsLabel.text = "No Alarms"
             NoAlarmsLabel.baselineAdjustment = .AlignBaselines
@@ -57,7 +59,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
             NSLayoutConstraint.activateConstraints([xConstraint, yConstraint])
         }
     }
-    
 }
 
 
