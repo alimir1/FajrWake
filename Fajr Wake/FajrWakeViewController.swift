@@ -52,7 +52,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     }
 }
 
-// MARK: - Table view configuration
+// MARK: - TableView
 extension FajrWakeViewController {
     // MARK: - Table view data source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -120,11 +120,16 @@ extension FajrWakeViewController {
     }
     
     @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.sourceViewController as? AddAlarmTableViewController {
-            let alarm = sourceViewController.fajrWakeAlarm
-            let newIndexPath = NSIndexPath(forRow: fajrAlarms.count, inSection: 0)
-            fajrAlarms.append(alarm!)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+        if let sourceViewController = sender.sourceViewController as? AddAlarmTableViewController, let alarm = sourceViewController.fajrWakeAlarm {
+            // if alarm was edited - update it. if not, create new alarm
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                fajrAlarms[selectedIndexPath.row] = alarm
+                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+            } else {
+                let newIndexPath = NSIndexPath(forRow: fajrAlarms.count, inSection: 0)
+                fajrAlarms.append(alarm)
+                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+            }
         }
     }
 }
