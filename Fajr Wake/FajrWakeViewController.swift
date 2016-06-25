@@ -101,8 +101,7 @@ extension FajrWakeViewController {
         
         return cell
      }
- 
-}
+ }
 
 // MARK: - Navigation
 extension FajrWakeViewController {
