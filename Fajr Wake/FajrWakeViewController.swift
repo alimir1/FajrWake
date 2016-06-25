@@ -108,8 +108,11 @@ extension FajrWakeViewController {
 extension FajrWakeViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDetail" {
-            let alarmDetailVC = segue.destinationViewController as! AddAlarmTableViewController
+            let alarmDetailVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmTableViewController
             if let selectedAlarmCell = sender as? FajrWakeCell {
+                
+                // change navigation title of top to "Edit Item"
+                
                 let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
                 let selectedAlarm = fajrAlarms[indexPath.row]
                 alarmDetailVC.fajrWakeAlarm = selectedAlarm

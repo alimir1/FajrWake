@@ -327,7 +327,7 @@
                                     <outlet property="alarmDetailLabel" destination="9e7-x3-DGF" id="AYR-dT-K55"/>
                                     <outlet property="alarmLabel" destination="oly-jz-6Cp" id="7l2-AD-KLy"/>
                                     <outlet property="alarmSwitch" destination="xQB-bM-h6V" id="aQX-wp-qJb"/>
-                                    <segue destination="OqC-Qb-um6" kind="show" identifier="ShowDetail" id="Zcj-gu-B1K"/>
+                                    <segue destination="NgY-ZL-nSc" kind="presentation" identifier="ShowDetail" id="JYW-td-i19"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -482,7 +482,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kzw-MC-hn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="438" y="1131"/>
+            <point key="canvasLocation" x="557" y="1131"/>
         </scene>
         <!--FajrWake Navigation Controller-->
         <scene sceneID="dTa-4p-rWA">
@@ -508,7 +508,7 @@
         <image name="Settings 2" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Zcj-gu-B1K"/>
+        <segue reference="JYW-td-i19"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.12841629060000001" blue="0.15970916060000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>
