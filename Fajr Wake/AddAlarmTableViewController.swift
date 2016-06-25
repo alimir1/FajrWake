@@ -16,71 +16,66 @@ class AddAlarmTableViewController: UITableViewController {
     @IBOutlet weak var labelDetailLabel: UILabel!
     @IBOutlet weak var soundDetailLabel: UILabel!
     @IBOutlet weak var snoozeSwitch: UISwitch!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var cancel: UIBarButtonItem!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
-    var labelObserver: String? {
+    var alarmLabel: String? {
         didSet {
-            if let label = labelObserver {
+            if let label = alarmLabel {
                 labelDetailLabel.text = label
-                fajrWakeAlarm.alarmLabel = label
             }
         }
     }
     
-    var repeatDaysObserver: [Days]? {
+    var daysToRepeat: [Days]? {
         didSet {
-            if let daysToRepeat = repeatDaysObserver {
+            if let daysToRepeat = daysToRepeat {
                 repeatDetailLabel.text = DaysToRepeatLabel.getTextToRepeatDaysLabel(daysToRepeat)
-                fajrWakeAlarm.daysToRepeat = daysToRepeat
             } else {
                 repeatDetailLabel.text = "Never"
             }
         }
     }
     
-    var soundObserver: String? {
+    var selectedSound: String? {
         didSet {
-            if let sound = soundObserver {
+            if let sound = selectedSound {
                 soundDetailLabel.text = sound
-                fajrWakeAlarm.sound = sound
             }
         }
     }
     
+    var whenToAlarm: WakeOptions {
+        let whenToAlarmINT = prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
+        return WakeOptions(rawValue: whenToAlarmINT)!
+    }
+    var salatToAlarm: SalatsAndQadhas {
+        let salatToAlarmINT = prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
+        return SalatsAndQadhas(rawValue: salatToAlarmINT)!
+    }
+    var minsToAdjustAlarm: Int {
+        return Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
+    }
+    var snooze: Bool?
+    
+    
+    
     let maxElements = 10000
     var locOfZero = (10000/2) - 20
-    var fajrWakeAlarm = FajrWakeAlarm(whenToAlarm: .Before, whatSalatToAlarm: .Sunrise, minsToAdjust: 10, daysToRepeat: nil, snooze: true, alarmOn: true, alarmLabel: "Alarm", sound: "Munajat Imam Ali")
+    
+    /*
+     This value is either passed by `FajrWakeTableViewController` in `prepareForSegue(_:sender:)`
+     or constructed as part of adding a new meal.
+     */
+    var fajrWakeAlarm: FajrWakeAlarm?
 
     
     // MARK: - Variables related to pickerview
     var pickerData: [[String]] = [[], ["On time", "Before", "After"], [SalatsAndQadhas.Fajr.getString, SalatsAndQadhas.Sunrise.getString]]
-    var pickerChoices: (minsToAdjust: Int, whenToAlarm: Int, whatSalatToAlarm: Int)? {
-        didSet {
-            if let choices = pickerChoices {
-                fajrWakeAlarm.minsToAdjust = choices.minsToAdjust
-                fajrWakeAlarm.whenToAlarm = WakeOptions(rawValue: choices.whenToAlarm)!
-                fajrWakeAlarm.whatSalatToAlarm = SalatsAndQadhas(rawValue: choices.whatSalatToAlarm)!
-                
-                // testing...
-                print("\(fajrWakeAlarm.minsToAdjust) min \(fajrWakeAlarm.whenToAlarm) \(fajrWakeAlarm.whatSalatToAlarm)\n")
-            }
-        }
-    }
     
     let minsToAdjustComponent: Int = 0
     let whenToAlarmComponent: Int = 1
     let whatSalatToAlarmComponent: Int = 2
-    
-    var minsToAdjust: Int {
-        return Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
-    }
-    var whenToAlarm: Int {
-        return prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
-    }
-    var whatSalatToAlarm: Int {
-        return prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
-    }
     
     @IBAction func cancel (sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -95,12 +90,18 @@ extension AddAlarmTableViewController {
         self.prayerTimesPicker.delegate = self
         self.prayerTimesPicker.dataSource = self
         
-        setupPicker()
+        // Set up alarm
+        if let alarm = fajrWakeAlarm {
+            setupFajrAlarm(minsToAdjust: alarm.minsToAdjust, whenToAlarm: alarm.whenToAlarm.rawValue, whatSalatToAlarm: alarm.whatSalatToAlarm.rawValue, daysToRepeat: alarm.daysToRepeat, snooze: alarm.snooze, alarmLabel: alarm.alarmLabel, selectedSound: alarm.sound)
+        }else {
+            setupFajrAlarm()
+        }
         
-        labelObserver = "Alarm"
-        repeatDaysObserver = nil
-        soundObserver = "Munajat Imam Ali"
-        
+        // "min" label
+        let hourLabel = UILabel(frame: CGRectMake(85, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
+        hourLabel.text = "min"
+        hourLabel.font = UIFont.boldSystemFontOfSize(14)
+        prayerTimesPicker.addSubview(hourLabel)
     }
 }
 
@@ -108,31 +109,28 @@ extension AddAlarmTableViewController {
 extension AddAlarmTableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if saveButton === sender {
-            
+            fajrWakeAlarm = FajrWakeAlarm(whenToAlarm: whenToAlarm, whatSalatToAlarm: salatToAlarm, minsToAdjust: minsToAdjustAlarm, daysToRepeat: daysToRepeat, snooze: snooze!, alarmLabel: alarmLabel!, sound: selectedSound!)
         }
     }
 }
 
 // MARK: - UIPickerView
 extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    // picker setup
-    func setupPicker() {
-        // filling minutes for first components
+    // setup alarm
+    func setupFajrAlarm(minsToAdjust minsToAdjust: Int = 10, whenToAlarm: Int = 1, whatSalatToAlarm: Int = 2, daysToRepeat: [Days]? = nil, snooze: Bool = true, alarmLabel: String = "Alarm", selectedSound: String = "Munajat Imam Ali") {
+        
+        // populate first components with minutes
         for index in 0...59 {
             pickerData[minsToAdjustComponent].append("\(index)")
         }
         
-        // Default values of picker
-        prayerTimesPicker.selectRow(locOfZero+10, inComponent: minsToAdjustComponent, animated: true)
-        prayerTimesPicker.selectRow(fajrWakeAlarm.whenToAlarm.rawValue, inComponent: whenToAlarmComponent, animated: true)
-        prayerTimesPicker.selectRow(fajrWakeAlarm.whatSalatToAlarm.rawValue, inComponent: whatSalatToAlarmComponent, animated: true)
-        pickerChoices = (minsToAdjust: minsToAdjust, whenToAlarm: whenToAlarm, whatSalatToAlarm: whatSalatToAlarm)
-        
-        // "min" label
-        let hourLabel = UILabel(frame: CGRectMake(85, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
-        hourLabel.text = "min"
-        hourLabel.font = UIFont.boldSystemFontOfSize(14)
-        prayerTimesPicker.addSubview(hourLabel)
+        prayerTimesPicker.selectRow(locOfZero+minsToAdjust, inComponent: minsToAdjustComponent, animated: true)
+        prayerTimesPicker.selectRow(whenToAlarm, inComponent: whenToAlarmComponent, animated: true)
+        prayerTimesPicker.selectRow(whatSalatToAlarm, inComponent: whatSalatToAlarmComponent, animated: true)
+        self.daysToRepeat = daysToRepeat
+        self.snooze = snooze
+        self.alarmLabel = alarmLabel
+        self.selectedSound = selectedSound
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -158,15 +156,13 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if whenToAlarm == 1 || whenToAlarm == 2 {
-            if minsToAdjust == 0 {
+        if whenToAlarm.rawValue == 1 || whenToAlarm.rawValue == 2 {
+            if minsToAdjustAlarm == 0 {
                 prayerTimesPicker.selectRow(locOfZero+1, inComponent: minsToAdjustComponent, animated: true)
             }
-        } else if whenToAlarm == 0 && minsToAdjust != 0 {
+        } else if whenToAlarm.rawValue == 0 && minsToAdjustAlarm != 0 {
             prayerTimesPicker.selectRow(locOfZero, inComponent: minsToAdjustComponent, animated: true)
         }
-        
-        pickerChoices = (minsToAdjust: minsToAdjust, whenToAlarm: whenToAlarm, whatSalatToAlarm: whatSalatToAlarm)
     }
 }
 

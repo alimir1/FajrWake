@@ -128,7 +128,6 @@ struct FajrWakeAlarm {
     var minsToAdjust: Int
     var daysToRepeat: [Days]?
     var snooze: Bool
-    var alarmOn: Bool
     var alarmLabel: String
     var sound: String
 }

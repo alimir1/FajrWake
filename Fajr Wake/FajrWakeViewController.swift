@@ -52,19 +52,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     }
 }
 
-
-// MARK: - Unwind methods for cells
-extension FajrWakeViewController {
-    @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.sourceViewController as? AddAlarmTableViewController {
-            let alarm = sourceViewController.fajrWakeAlarm
-            let newIndexPath = NSIndexPath(forRow: fajrAlarms.count, inSection: 0)
-            fajrAlarms.append(alarm)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-        }
-    }
-}
-
 // MARK: - Table view configuration
 extension FajrWakeViewController {
     // MARK: - Table view data source
@@ -117,9 +104,29 @@ extension FajrWakeViewController {
  
 }
 
-// MARK: - Segue preperations
+// MARK: - Navigation
 extension FajrWakeViewController {
-
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowDetail" {
+            let alarmDetailVC = segue.destinationViewController as! AddAlarmTableViewController
+            if let selectedAlarmCell = sender as? FajrWakeCell {
+                let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
+                let selectedAlarm = fajrAlarms[indexPath.row]
+                alarmDetailVC.fajrWakeAlarm = selectedAlarm
+            }
+        } else if segue.identifier == "AddItem" {
+            print("Adding new alarm.")
+        }
+    }
+    
+    @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.sourceViewController as? AddAlarmTableViewController {
+            let alarm = sourceViewController.fajrWakeAlarm
+            let newIndexPath = NSIndexPath(forRow: fajrAlarms.count, inSection: 0)
+            fajrAlarms.append(alarm!)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+        }
+    }
 }
 
 // MARK: - Setups and Settings
@@ -162,7 +169,6 @@ extension FajrWakeViewController {
 // MARK: - Get location
 // Get coordinates and call functinos to get prayer times
 extension FajrWakeViewController {
-
     func startLocationDelegation() {
         self.navigationItem.titleView = ActivityIndicator.showActivityIndicator("Getting location...")
         manager = OneShotLocationManager()

@@ -170,7 +170,7 @@
                         <outlet property="labelDetailLabel" destination="HMS-mY-Wfg" id="grt-ZG-H9Z"/>
                         <outlet property="prayerTimesPicker" destination="3ze-ZS-sHe" id="moi-hw-tvd"/>
                         <outlet property="repeatDetailLabel" destination="yW8-jY-iJH" id="RJG-Bo-0vg"/>
-                        <outlet property="saveButton" destination="0b1-xE-VDU" id="lNi-bQ-qnj"/>
+                        <outlet property="saveButton" destination="0b1-xE-VDU" id="9t7-b2-qVo"/>
                         <outlet property="snoozeSwitch" destination="Jfj-nl-Y9O" id="0Tn-un-ZZl"/>
                         <outlet property="soundDetailLabel" destination="xM6-zI-Hhv" id="MtA-xz-IXR"/>
                     </connections>
@@ -293,7 +293,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FajrWakeCell" textLabel="oly-jz-6Cp" detailTextLabel="9e7-x3-DGF" rowHeight="70" style="IBUITableViewCellStyleSubtitle" id="v0K-rT-VOa" customClass="FajrWakeCell" customModule="Fajr_Wake" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FajrWakeCell" textLabel="oly-jz-6Cp" detailTextLabel="9e7-x3-DGF" rowHeight="70" style="IBUITableViewCellStyleSubtitle" id="v0K-rT-VOa" customClass="FajrWakeCell" customModule="Fajr_Wake" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="114" width="600" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0K-rT-VOa" id="1FJ-pm-kVv">
@@ -327,6 +327,7 @@
                                     <outlet property="alarmDetailLabel" destination="9e7-x3-DGF" id="AYR-dT-K55"/>
                                     <outlet property="alarmLabel" destination="oly-jz-6Cp" id="7l2-AD-KLy"/>
                                     <outlet property="alarmSwitch" destination="xQB-bM-h6V" id="aQX-wp-qJb"/>
+                                    <segue destination="OqC-Qb-um6" kind="show" identifier="ShowDetail" id="Zcj-gu-B1K"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -345,7 +346,7 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="tYA-tT-9yS">
                                 <connections>
-                                    <segue destination="NgY-ZL-nSc" kind="presentation" id="CgN-Vc-8su"/>
+                                    <segue destination="NgY-ZL-nSc" kind="presentation" identifier="addItem" id="CgN-Vc-8su"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="Settings 2" id="OCR-6D-Zg4">
@@ -506,5 +507,8 @@
         <image name="List 1" width="22" height="18"/>
         <image name="Settings 2" width="22" height="22"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Zcj-gu-B1K"/>
+    </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.12841629060000001" blue="0.15970916060000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>
