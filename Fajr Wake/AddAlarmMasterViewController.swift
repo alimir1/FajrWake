@@ -35,15 +35,12 @@ class AddAlarmMasterViewController: UIViewController {
             case "fajrWakePickerContainer":
                 let fajrAlarmPickerVCContainer = segue.destinationViewController as! FajrAlarmPickerVCContainer
                 fajrAlarmPickerVCContainer.AddAlarmMasterVCReference = self
-                print("yerp")
             case "customAlarmPickerContainer":
                 let customAlarmPickerVCContainer = segue.destinationViewController as! CustomAlarmPickerVCContainer
                 customAlarmPickerVCContainer.AddAlarmMasterVCReference = self
-                print("yerp")
             case "addAlarmChoicesContainer":
                 let addAlarmChoicesContainer = segue.destinationViewController as! AddAlarmChoicesContainer
                 addAlarmChoicesContainer.AddAlarmMasterVCReference = self
-                print("yerpp")
             default:
                 break
             }
