@@ -12,39 +12,9 @@ import MediaPlayer
 class AddAlarmTableViewController: UITableViewController {
     
     @IBOutlet weak var prayerTimesPicker: UIPickerView!
-    @IBOutlet weak var repeatDetailLabel: UILabel!
-    @IBOutlet weak var labelDetailLabel: UILabel!
-    @IBOutlet weak var soundDetailLabel: UILabel!
-    @IBOutlet weak var snoozeSwitch: UISwitch!
     @IBOutlet weak var cancel: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    
-    var alarmLabel: String? {
-        didSet {
-            if let label = alarmLabel {
-                labelDetailLabel.text = label
-            }
-        }
-    }
-    
-    var daysToRepeat: [Days]? {
-        didSet {
-            if let daysToRepeat = daysToRepeat {
-                repeatDetailLabel.text = DaysToRepeatLabel.getTextToRepeatDaysLabel(daysToRepeat)
-            } else {
-                repeatDetailLabel.text = "Never"
-            }
-        }
-    }
-    
-    var selectedSound: String? {
-        didSet {
-            if let sound = selectedSound {
-                soundDetailLabel.text = sound
-            }
-        }
-    }
-    
+
     var whenToAlarm: WakeOptions {
         let whenToAlarmINT = prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
         return WakeOptions(rawValue: whenToAlarmINT)!
@@ -56,9 +26,6 @@ class AddAlarmTableViewController: UITableViewController {
     var minsToAdjustAlarm: Int {
         return Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
     }
-    var snooze: Bool?
-    
-    
     
     let maxElements = 10000
     var locOfZero = (10000/2) - 20
@@ -105,14 +72,14 @@ extension AddAlarmTableViewController {
     }
 }
 
-// MARK: Navigation
-extension AddAlarmTableViewController {
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if saveButton === sender {
-            fajrWakeAlarm = FajrWakeAlarm(whenToAlarm: whenToAlarm, whatSalatToAlarm: salatToAlarm, minsToAdjust: minsToAdjustAlarm, daysToRepeat: daysToRepeat, snooze: snooze!, alarmLabel: alarmLabel!, sound: selectedSound!)
-        }
-    }
-}
+//// MARK: Navigation
+//extension AddAlarmTableViewController {
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if saveButton === sender {
+//            fajrWakeAlarm = FajrWakeAlarm(whenToAlarm: whenToAlarm, whatSalatToAlarm: salatToAlarm, minsToAdjust: minsToAdjustAlarm, daysToRepeat: daysToRepeat, snooze: snooze!, alarmLabel: alarmLabel!, sound: selectedSound!)
+//        }
+//    }
+//}
 
 // MARK: - UIPickerView
 extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
@@ -127,10 +94,6 @@ extension AddAlarmTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
         prayerTimesPicker.selectRow(locOfZero+minsToAdjust, inComponent: minsToAdjustComponent, animated: true)
         prayerTimesPicker.selectRow(whenToAlarm, inComponent: whenToAlarmComponent, animated: true)
         prayerTimesPicker.selectRow(whatSalatToAlarm, inComponent: whatSalatToAlarmComponent, animated: true)
-        self.daysToRepeat = daysToRepeat
-        self.snooze = snooze
-        self.alarmLabel = alarmLabel
-        self.selectedSound = selectedSound
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
