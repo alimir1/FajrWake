@@ -6,7 +6,7 @@
 //  Copyright © 2016 FajrWake. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 // local GMT
 class LocalGMT {
@@ -50,13 +50,13 @@ class DaysToRepeatLabel {
         }
         
         if days.count == 1 {
-            daysForLabel += "\(days[0].rawValue)"
+            daysForLabel += "\(days[0].getString)"
             return daysForLabel
         }
         
         // storing enum raw values in array to check if array contains (for array.contains method)
         for day in days {
-            daysInString.append(day.rawValue)
+            daysInString.append(day.getString)
         }
         
         if days.count == 2 {
@@ -74,7 +74,7 @@ class DaysToRepeatLabel {
         }
         
         for day in days {
-            let str = day.rawValue
+            let str = day.getString
             daysForLabel += str[str.startIndex.advancedBy(0)...str.startIndex.advancedBy(2)] + " "
         }
         
@@ -110,30 +110,36 @@ enum WakeOptions: Int {
     case OnTime
     case Before
     case After
+    
+    var getString: String {
+        switch self {
+        case OnTime:
+            return "On Time"
+        case Before:
+            return "Before"
+        case After:
+            return "After"
+        }
+    }
 }
 
-enum Days: String  {
+enum AlarmType: Int {
+    case FajrWakeAlarm
+    case CustomAlarm
+}
+
+enum Days: Int  {
+    case Sunday
     case Monday
     case Tuesday
     case Wednesday
     case Thursday
     case Friday
     case Saturday
-    case Sunday
-}
-
-struct FajrWakeAlarm {
-    var whenToAlarm: WakeOptions
-    var whatSalatToAlarm: SalatsAndQadhas
-    var minsToAdjust: Int
-    var daysToRepeat: [Days]?
-    var snooze: Bool
-    var alarmLabel: String
-    var sound: String
-}
-
-enum PrayerTimeSettingsReference: String {
-    case CalculationMethod, AsrJuristic, AdjustHighLats, TimeFormat
+    
+    var getString: String {
+        return String(self)
+    }
 }
 
 enum CalculationMethods: Int {
@@ -159,6 +165,20 @@ enum CalculationMethods: Int {
     }
 }
 
+enum PrayerTimeSettingsReference: String {
+    case CalculationMethod, AsrJuristic, AdjustHighLats, TimeFormat
+}
+
+struct FajrWakeAlarm {
+    var whenToAlarm: WakeOptions
+    var whatSalatToAlarm: SalatsAndQadhas
+    var minsToAdjust: Int
+    var daysToRepeat: [Days]?
+    var snooze: Bool
+    var alarmLabel: String
+    var sound: String
+}
+
 class UserSettingsPrayertimes {
     let calculationMethod: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
     let asrJuristic: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.AsrJuristic.rawValue)
@@ -169,8 +189,142 @@ class UserSettingsPrayertimes {
         let userSettings = PrayerTimes(caculationmethod: PrayerTimes.CalculationMethods(rawValue: self.calculationMethod)!, asrJuristic: PrayerTimes.AsrJuristicMethods(rawValue: self.asrJuristic)!, adjustHighLats: PrayerTimes.AdjustingMethods(rawValue: self.adjustHighLats)!, timeFormat: PrayerTimes.TimeForamts(rawValue: self.timeFormat)!)
         return userSettings
     }
-    
 }
+
+
+
+
+
+
+// MARK: - Protocols
+protocol AlarmClockType {
+    var alarmLabel: String { get set }
+    var daysToRepeat: [Days]? { get set }
+    var sound: String { get set }
+    var snooze: Bool { get set }
+    
+    // one more variable for NSTimer!!
+    
+    var attributedTitle: NSMutableAttributedString { get }
+}
+
+extension AlarmClockType {
+    var repeatDaysDisplayString: String? {
+        var repeatDaysString: String?
+        if let days = daysToRepeat {
+            repeatDaysString = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
+        }
+        return repeatDaysString
+    }
+    
+    var attributedSubtitle: NSMutableAttributedString {
+        var label = self.alarmLabel
+        let alarmSubtitle: String
+        let alarmSubtitleAttributedString: NSMutableAttributedString
+        if var days = repeatDaysDisplayString {
+            label += ","
+            days = " \(days)"
+            alarmSubtitle = label + days
+            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
+            let rangeOfDays = (alarmSubtitle as NSString).rangeOfString(days)
+            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
+            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
+            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue", size: 15)!, range: rangeOfDays)
+        } else {
+            alarmSubtitle = label
+            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
+            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
+            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
+        }
+        return alarmSubtitleAttributedString
+    }
+}
+
+
+
+struct CustomAlarm: AlarmClockType {
+    var alarmLabel: String
+    var daysToRepeat: [Days]?
+    var sound: String
+    var snooze: Bool
+    var time: NSDate
+    
+    var timeToString: String {
+        let outputFormatter = NSDateFormatter()
+        outputFormatter.dateFormat = "h:mm a"
+        let stringFromDate = outputFormatter.stringFromDate(time)
+        return stringFromDate
+    }
+    
+    var attributedTitle: NSMutableAttributedString {
+        let alarmAttributedTitle = NSMutableAttributedString(string: timeToString)
+        let amOrPm: String
+        if timeToString.rangeOfString("AM") != nil {
+            amOrPm = "AM"
+        } else {
+            amOrPm = "PM"
+        }
+        let amPMRange = (timeToString as NSString).rangeOfString(" \(amOrPm)")
+        timeToString.characters.count
+        let alarmTimeRange: NSRange = NSMakeRange(0, amPMRange.location)
+        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: alarmTimeRange)
+        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: amPMRange)
+        return alarmAttributedTitle
+    }
+}
+
+struct FajrWakeAlarm2: AlarmClockType {
+    var alarmLabel: String
+    var daysToRepeat: [Days]?
+    var sound: String
+    var snooze: Bool
+    var minsToAdjust: Int
+    var whenToWake: WakeOptions
+    var whatSalatToWake: SalatsAndQadhas
+    
+    var title: String {
+        if whenToWake == .OnTime {
+            return "\(whatSalatToWake.getString)"
+        } else {
+            return "\(minsToAdjust) MIN \(whenToWake.getString) \(whatSalatToWake.getString)"
+        }
+    }
+    
+    var attributedTitle: NSMutableAttributedString {
+        let alarmAttributedTitle = NSMutableAttributedString(string: title)
+        let rangeOfMinutesToAdjust = (title as NSString).rangeOfString(String(minsToAdjust))
+        let rangeOfMinText = (title as NSString).rangeOfString(" MIN")
+        var rangeOfRestOfText: NSRange
+        if whenToWake == .OnTime {
+            rangeOfRestOfText = (title as NSString).rangeOfString("\(whatSalatToWake.getString)")
+        } else {
+            rangeOfRestOfText = (title as NSString).rangeOfString("\(whenToWake.getString) \(whatSalatToWake.getString)")
+        }
+        
+        if whatSalatToWake == .Sunrise {
+            if whenToWake == .Before || whenToWake == .After {
+                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 7)!, range: rangeOfMinText)
+                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfMinutesToAdjust)
+                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
+            } else {
+                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfRestOfText)
+            }
+        } else {
+            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: rangeOfMinText)
+            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfMinutesToAdjust)
+        }
+        
+        return alarmAttributedTitle
+    }
+}
+
+
+
+
+
+
+
+
 
 
 

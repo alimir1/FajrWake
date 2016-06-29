@@ -63,10 +63,6 @@ extension FajrWakeViewController {
         return fajrAlarms.count
     }
     
-//    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 0.0
-//    }
-    
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30.0
     }
@@ -103,38 +99,38 @@ extension FajrWakeViewController {
      }
  }
 
-// MARK: - Navigation
-extension FajrWakeViewController {
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowDetail" {
-            let alarmDetailVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmTableViewController
-            if let selectedAlarmCell = sender as? FajrWakeCell {
-                
-                // change navigation title of top to "Edit Item"
-                
-                let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
-                let selectedAlarm = fajrAlarms[indexPath.row]
-                alarmDetailVC.fajrWakeAlarm = selectedAlarm
-            }
-        } else if segue.identifier == "AddItem" {
-            print("Adding new alarm.")
-        }
-    }
-    
-    @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.sourceViewController as? AddAlarmTableViewController, let alarm = sourceViewController.fajrWakeAlarm {
-            // if alarm was edited - update it. if not, create new alarm
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                fajrAlarms[selectedIndexPath.row] = alarm
-                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
-            } else {
-                let newIndexPath = NSIndexPath(forRow: fajrAlarms.count, inSection: 0)
-                fajrAlarms.append(alarm)
-                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-            }
-        }
-    }
-}
+//// MARK: - Navigation
+//extension FajrWakeViewController {
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "ShowDetail" {
+//            let alarmDetailVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmTableViewController
+//            if let selectedAlarmCell = sender as? FajrWakeCell {
+//                
+//                // change navigation title of top to "Edit Item"
+//                
+//                let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
+//                let selectedAlarm = fajrAlarms[indexPath.row]
+//                alarmDetailVC.fajrWakeAlarm = selectedAlarm
+//            }
+//        } else if segue.identifier == "AddItem" {
+//            print("Adding new alarm.")
+//        }
+//    }
+//    
+//    @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
+//        if let sourceViewController = sender.sourceViewController as? AddAlarmTableViewController, let alarm = sourceViewController.fajrWakeAlarm {
+//            // if alarm was edited - update it. if not, create new alarm
+//            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+//                fajrAlarms[selectedIndexPath.row] = alarm
+//                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+//            } else {
+//                let newIndexPath = NSIndexPath(forRow: fajrAlarms.count, inSection: 0)
+//                fajrAlarms.append(alarm)
+//                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+//            }
+//        }
+//    }
+//}
 
 // MARK: - Setups and Settings
 extension FajrWakeViewController {

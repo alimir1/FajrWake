@@ -10,6 +10,39 @@ import UIKit
 
 class RepeatSettingsViewController: UITableViewController {
     
+    var addAlarmChoicesListReference: AddAlarmChoicesContainer?
+    var repeatDays: [Days] = []
+    
+    var selectedIndexPath: NSIndexPath? {
+        didSet {
+            if let row = selectedIndexPath?.row {
+                dayItems[row].selected = !dayItems[row].selected
+                if dayItems[row].selected == true {
+                    repeatDays.append(Days(rawValue: row)!)
+                } else {
+                    if let testIndex = repeatDays.indexOf(Days(rawValue: row)!) {
+                        repeatDays.removeAtIndex(testIndex)
+                    }
+                }
+            }
+            ///////////// sorting array //////////////////
+            repeatDays.sortInPlace { (first, second) in
+                let dayNames = [Days.Sunday, Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday, Days.Saturday]
+                guard let index1 = dayNames.indexOf(first), index2 = dayNames.indexOf(second) else {
+                    return false
+                }
+                return index1 < index2
+            }
+            //////////////////////////////////////////////
+            print(DaysToRepeatLabel.getTextToRepeatDaysLabel(repeatDays))
+            if repeatDays.count != 0 {
+                addAlarmChoicesListReference?.repeatDays = repeatDays
+            } else {
+                addAlarmChoicesListReference?.repeatDays = nil
+            }
+        }
+    }
+    
     struct Day {
         var name: String
         var selected: Bool
@@ -20,10 +53,9 @@ class RepeatSettingsViewController: UITableViewController {
         }
     }
     
-    var selectionStateIndicator = false
     var dayItems: [Day] = {
         var _days = [Day]()
-        var dayNames = [Days.Sunday.rawValue, Days.Monday.rawValue, Days.Tuesday.rawValue, Days.Wednesday.rawValue, Days.Thursday.rawValue, Days.Friday.rawValue, Days.Saturday.rawValue]
+        let dayNames = [Days.Sunday.getString, Days.Monday.getString, Days.Tuesday.getString, Days.Wednesday.getString, Days.Thursday.getString, Days.Friday.getString, Days.Saturday.getString]
         
         for day in dayNames {
             _days.append(Day(day, false))
@@ -45,21 +77,22 @@ class RepeatSettingsViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dayItems.count
     }
-
-    
+        
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("daysID", forIndexPath: indexPath)
 
         cell.textLabel?.text = "Every \(self.dayItems[indexPath.row].name)"
         cell.accessoryType = self.dayItems[indexPath.row].selected ? .Checkmark : .None
-
+        
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let cell = tableView.cellForRowAtIndexPath(indexPath)
-        dayItems[indexPath.row].selected = !dayItems[indexPath.row].selected
+        
+        selectedIndexPath = indexPath
+        
         if !dayItems[indexPath.row].selected {
             cell?.accessoryType = .None
         } else {
