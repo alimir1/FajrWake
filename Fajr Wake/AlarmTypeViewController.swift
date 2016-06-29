@@ -48,8 +48,4 @@ class AlarmTypeViewController: UITableViewController {
             customCell.accessoryType = .Checkmark
         }
     }
-    
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
-    }
 }

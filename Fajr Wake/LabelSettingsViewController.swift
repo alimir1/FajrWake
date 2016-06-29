@@ -8,13 +8,46 @@
 
 import UIKit
 
-class LabelSettingsViewController: UITableViewController {
+class LabelSettingsViewController: UITableViewController, UITextFieldDelegate {
+    @IBOutlet weak var textField: UITextField!
+    
+    var addAlarmChoicesListReference: AddAlarmChoicesContainer?
+    var alarmLabelText: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        textField.becomeFirstResponder()
+        textField.clearButtonMode = .WhileEditing
+        self.textField.delegate = self
+        textField.text = alarmLabelText
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        performSegueWithIdentifier("unwindAlarmLabelSegue", sender: self)
+        return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let newText = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        textField.text = newText
+        let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
+        let whiteSpacerange = string.rangeOfCharacterFromSet(whitespaceSet)
+        if textField.text == "" || whiteSpacerange != nil {
+            addAlarmChoicesListReference?.alarmLabelText = "Alarm"
+        } else {
+            addAlarmChoicesListReference?.alarmLabelText = newText
+        }
+        return false
+    }
+    
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        textField.text = ""
+        addAlarmChoicesListReference?.alarmLabelText = "Alarm"
+        return true
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return self.view.frame.size.width/4
+        return self.view.frame.size.width/2
     }
+    
 }

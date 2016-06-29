@@ -43,14 +43,23 @@ class AddAlarmChoicesContainer: UITableViewController {
         }
     }
     
+    var alarmLabelText: String? {
+        didSet {
+            labelDetailLabel.text = alarmLabelText
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // these needs to change... depending on if user wants to "adds new alarm" or if they edit it
         alarmType = .FajrWakeAlarm
         repeatDays = nil
-
+        alarmLabelText = "Alarm"
+        
     }
+    
+    @IBAction func unwindAlarmLabel(sender: UIStoryboardSegue) {}
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let segueIdentifier = segue.identifier {
@@ -68,6 +77,11 @@ class AddAlarmChoicesContainer: UITableViewController {
                             repeatDaysVC.selectedIndexPath = NSIndexPath(forRow: day.rawValue, inSection: 0)
                         }
                     }
+                }
+            case "alarmLabelSegue":
+                if let alarmLabelVC = segue.destinationViewController as? LabelSettingsViewController {
+                    alarmLabelVC.addAlarmChoicesListReference = self
+                    alarmLabelVC.alarmLabelText = alarmLabelText
                 }
             default:
                 break

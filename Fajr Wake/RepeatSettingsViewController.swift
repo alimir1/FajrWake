@@ -34,7 +34,6 @@ class RepeatSettingsViewController: UITableViewController {
                 return index1 < index2
             }
             //////////////////////////////////////////////
-            print(DaysToRepeatLabel.getTextToRepeatDaysLabel(repeatDays))
             if repeatDays.count != 0 {
                 addAlarmChoicesListReference?.repeatDays = repeatDays
             } else {

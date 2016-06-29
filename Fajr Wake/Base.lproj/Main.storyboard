@@ -34,14 +34,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pFV-dx-wR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2932" y="1579"/>
+            <point key="canvasLocation" x="3400" y="1369"/>
         </scene>
         <!--Label-->
         <scene sceneID="qtv-bV-itf">
             <objects>
                 <tableViewController id="SMS-hI-HCE" customClass="LabelSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="m5f-Tr-MY4">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -77,10 +77,15 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Label" id="o64-ju-gnH"/>
+                    <connections>
+                        <outlet property="textField" destination="34M-mC-ouq" id="jTc-o8-4dZ"/>
+                        <segue destination="xif-gd-z0p" kind="unwind" identifier="unwindAlarmLabelSegue" unwindAction="unwindAlarmLabel:" id="sed-Ps-gAs"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veg-iK-Ska" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="xif-gd-z0p" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2932" y="2111"/>
+            <point key="canvasLocation" x="3400" y="1748"/>
         </scene>
         <!--Sound-->
         <scene sceneID="FDj-S8-ITP">
@@ -540,6 +545,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="SMS-hI-HCE" kind="show" identifier="alarmLabelSegue" id="F60-ar-dRz"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="LRq-P5-nf2" detailTextLabel="3ai-CG-CzS" style="IBUITableViewCellStyleValue1" id="Dv6-8k-Bm0">
                                         <rect key="frame" x="0.0" y="167" width="600" height="44"/>
@@ -638,8 +646,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="4oq-ZO-lEU">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="sectionIndexBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="IOh-Sp-prI">
                                 <cells>
@@ -693,7 +700,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wCE-9u-Mua" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2932" y="1206"/>
+            <point key="canvasLocation" x="3400" y="991"/>
         </scene>
     </scenes>
     <resources>
