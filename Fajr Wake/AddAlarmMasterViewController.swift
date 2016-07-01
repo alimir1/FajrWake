@@ -12,6 +12,9 @@ class AddAlarmMasterViewController: UIViewController {
     @IBOutlet weak var fajrAlarmContainer: UIView!
     @IBOutlet weak var customAlarmContainer: UIView!
     @IBOutlet weak var choicesTableViewContainer: UIView!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    var alarmClock: AlarmClockType?
     
     var alarmType: AlarmType? {
         didSet {
@@ -27,12 +30,16 @@ class AddAlarmMasterViewController: UIViewController {
     var alarm: AlarmClockType?
     var alarmLabel: String?
     var daysToRepeat: [Days]?
-    var sound: String?
+    var sound: AlarmSound?
     var snooze: Bool?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         alphaSettingsForAlarmContainers(fajrAlpha: 1.0, customAlpha: 0.0)
+    }
+    
+    @IBAction func cancel (sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func alphaSettingsForAlarmContainers(fajrAlpha fajrAlpha: CGFloat, customAlpha: CGFloat) {
@@ -41,6 +48,16 @@ class AddAlarmMasterViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if saveButton === sender {
+            if alarmType != nil {
+                if alarmType! == .FajrWakeAlarm {
+                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, minsToAdjust: 0, whenToWake: .OnTime, whatSalatToWake: .Fajr)
+                } else if alarmType! == .CustomAlarm {
+                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, time: NSDate())
+                }
+            }
+        }
+        
         if let segueIdentifier = segue.identifier {
             switch segueIdentifier {
             case "fajrWakePickerContainer":

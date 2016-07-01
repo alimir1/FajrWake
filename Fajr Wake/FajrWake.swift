@@ -193,16 +193,6 @@ struct AlarmSound {
     var alarmSectionTitle: AlarmSoundsSectionTitles
 }
 
-struct FajrWakeAlarm {
-    var whenToAlarm: WakeOptions
-    var whatSalatToAlarm: SalatsAndQadhas
-    var minsToAdjust: Int
-    var daysToRepeat: [Days]?
-    var snooze: Bool
-    var alarmLabel: String
-    var sound: String
-}
-
 class UserSettingsPrayertimes {
     let calculationMethod: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
     let asrJuristic: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.AsrJuristic.rawValue)
@@ -215,16 +205,11 @@ class UserSettingsPrayertimes {
     }
 }
 
-
-
-
-
-
 // MARK: - Protocols
 protocol AlarmClockType {
     var alarmLabel: String { get set }
     var daysToRepeat: [Days]? { get set }
-    var sound: String { get set }
+    var sound: AlarmSound { get set }
     var snooze: Bool { get set }
     
     // one more variable for NSTimer!!
@@ -269,7 +254,7 @@ extension AlarmClockType {
 struct CustomAlarm: AlarmClockType {
     var alarmLabel: String
     var daysToRepeat: [Days]?
-    var sound: String
+    var sound: AlarmSound
     var snooze: Bool
     var time: NSDate
     
@@ -297,10 +282,10 @@ struct CustomAlarm: AlarmClockType {
     }
 }
 
-struct FajrWakeAlarm2: AlarmClockType {
+struct FajrWakeAlarm: AlarmClockType {
     var alarmLabel: String
     var daysToRepeat: [Days]?
-    var sound: String
+    var sound: AlarmSound
     var snooze: Bool
     var minsToAdjust: Int
     var whenToWake: WakeOptions
@@ -325,18 +310,23 @@ struct FajrWakeAlarm2: AlarmClockType {
             rangeOfRestOfText = (title as NSString).rangeOfString("\(whenToWake.getString) \(whatSalatToWake.getString)")
         }
         
-        if whatSalatToWake == .Sunrise {
-            if whenToWake == .Before || whenToWake == .After {
-                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 7)!, range: rangeOfMinText)
-                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfMinutesToAdjust)
-                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
-            } else {
-                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfRestOfText)
-            }
-        } else {
-            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: rangeOfMinText)
-            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfMinutesToAdjust)
-        }
+        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 10)!, range: rangeOfMinText)
+        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfMinutesToAdjust)
+        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
+
+        
+//        if whatSalatToWake == .Sunrise {
+//            if whenToWake == .Before || whenToWake == .After {
+//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 7)!, range: rangeOfMinText)
+//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfMinutesToAdjust)
+//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
+//            } else {
+//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfRestOfText)
+//            }
+//        } else {
+//            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: rangeOfMinText)
+//            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfMinutesToAdjust)
+//        }
         
         return alarmAttributedTitle
     }

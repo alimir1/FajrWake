@@ -55,6 +55,14 @@ class SoundSettingsViewController: UITableViewController {
             print("could not play sound")
         }
     }
+    
+    func stopSound() {
+        if alarmSoundPlayer != nil {
+            alarmSoundPlayer.stop()
+            alarmSoundPlayer = nil
+        }
+    }
+
 
     // MARK: - Table view data source
 
@@ -102,6 +110,8 @@ class SoundSettingsViewController: UITableViewController {
         
         if sound != .None {
             playSound(sound.URL)
+        } else {
+            
         }
         
         //update the checkmark for the current row

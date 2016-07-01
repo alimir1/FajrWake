@@ -17,7 +17,7 @@ class FajrAlarmPickerVCContainer: UIViewController {
      This value is either passed by `FajrWakeTableViewController` in `prepareForSegue(_:sender:)`
      or constructed as part of adding a new meal.
      */
-    var fajrWakeAlarm: FajrWakeAlarm2?
+    var fajrWakeAlarm: FajrWakeAlarm?
     
     var whenToAlarm: WakeOptions {
         let whenToAlarmINT = prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)

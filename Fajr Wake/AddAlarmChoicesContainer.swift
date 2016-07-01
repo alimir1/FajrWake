@@ -18,6 +18,10 @@ class AddAlarmChoicesContainer: UITableViewController {
     
     var AddAlarmMasterVCReference: AddAlarmMasterViewController?
     
+    @IBAction func switchSnooze(sender: UISwitch) {
+        snooze = sender.on
+    }
+    
     var alarmType: AlarmType? {
         didSet {
             if let alarmtype = alarmType {
@@ -39,6 +43,7 @@ class AddAlarmChoicesContainer: UITableViewController {
                 AddAlarmMasterVCReference?.daysToRepeat = days
             } else {
                 repeatDetailLabel.text = "Never"
+                AddAlarmMasterVCReference?.daysToRepeat = nil
             }
         }
     }
@@ -46,12 +51,23 @@ class AddAlarmChoicesContainer: UITableViewController {
     var alarmLabelText: String? {
         didSet {
             labelDetailLabel.text = alarmLabelText
+            AddAlarmMasterVCReference?.alarmLabel = alarmLabelText
         }
     }
     
     var alarmSound: AlarmSound? {
         didSet {
             soundDetailLabel.text = alarmSound?.alarmSound.rawValue
+            AddAlarmMasterVCReference?.sound = alarmSound
+        }
+    }
+    
+    var snooze: Bool? {
+        didSet {
+            if snooze != nil {
+                snoozeSwitch.setOn(snooze!, animated: true)
+                AddAlarmMasterVCReference?.snooze = snooze
+            }
         }
     }
     
@@ -65,6 +81,7 @@ class AddAlarmChoicesContainer: UITableViewController {
         let defaultSound = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSound") as? String
         let defaultSoundTitle = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSoundTitle") as? String
         alarmSound = AlarmSound(alarmSound: AlarmSounds(rawValue: defaultSound!)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: defaultSoundTitle!)!)
+        snooze = true
     }
     
     @IBAction func unwindAlarmLabel(sender: UIStoryboardSegue) {}

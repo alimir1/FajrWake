@@ -120,27 +120,27 @@
         <scene sceneID="WdT-f1-caf">
             <objects>
                 <tableViewController id="Gh6-O9-xWD" customClass="FajrWakeViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="70" sectionHeaderHeight="18" sectionFooterHeight="18" id="mdq-CW-Xx7">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="93" sectionHeaderHeight="18" sectionFooterHeight="18" id="mdq-CW-Xx7">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FajrWakeCell" textLabel="oly-jz-6Cp" detailTextLabel="9e7-x3-DGF" rowHeight="70" style="IBUITableViewCellStyleSubtitle" id="v0K-rT-VOa" customClass="FajrWakeCell" customModule="Fajr_Wake" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="600" height="70"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FajrWakeCell" textLabel="oly-jz-6Cp" detailTextLabel="9e7-x3-DGF" rowHeight="93" style="IBUITableViewCellStyleSubtitle" id="v0K-rT-VOa" customClass="FajrWakeCell" customModule="Fajr_Wake" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="114" width="600" height="93"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0K-rT-VOa" id="1FJ-pm-kVv">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="69"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="92"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="5 mins before fajr" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oly-jz-6Cp">
-                                            <rect key="frame" x="15" y="14" width="156" height="24"/>
+                                            <rect key="frame" x="15" y="25" width="156" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alarm, Mon Tue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9e7-x3-DGF">
-                                            <rect key="frame" x="15" y="38" width="108" height="18"/>
+                                            <rect key="frame" x="15" y="49" width="108" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -364,16 +364,26 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Alarm" id="9pg-lJ-HT0">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Okx-ev-S93"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="bPh-tB-rIc"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Okx-ev-S93">
+                            <connections>
+                                <action selector="cancel:" destination="Cvb-5m-uUt" id="3Zp-v5-k74"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="bPh-tB-rIc">
+                            <connections>
+                                <segue destination="E4R-6p-dzb" kind="unwind" unwindAction="unwindToAlarms:" id="ham-x3-iR0"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="choicesTableViewContainer" destination="bfm-AP-ibk" id="aoh-Ep-62e"/>
                         <outlet property="customAlarmContainer" destination="a7V-C7-esb" id="utk-Pf-gBZ"/>
                         <outlet property="fajrAlarmContainer" destination="HpS-p9-mZG" id="gtk-oi-TMj"/>
+                        <outlet property="saveButton" destination="bPh-tB-rIc" id="RqT-m6-d0Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQv-2A-Qg9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="E4R-6p-dzb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1278" y="1131"/>
         </scene>
@@ -592,6 +602,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cu7-AN-MM0">
                                                     <rect key="frame" x="532" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="switchSnooze:" destination="IyY-Jl-AXb" eventType="valueChanged" id="YIi-Pl-YSo"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>

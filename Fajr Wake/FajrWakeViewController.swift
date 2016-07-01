@@ -14,7 +14,9 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var manager: OneShotLocationManager?
     var prayerTimes: [String: String] = [:]
     var locationNameDisplay: String = ""
-    var fajrAlarms = [FajrWakeAlarm]()
+    
+    var alarmType: AlarmType?
+    var alarms = [AlarmClockType]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +43,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         let yConstraint = NSLayoutConstraint(item: NoAlarmsLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self.tableView, attribute: .CenterY, multiplier: 1, constant: -30.0)
         NSLayoutConstraint.activateConstraints([xConstraint, yConstraint])
         
-        if fajrAlarms.count == 0 {
+        if alarms.count == 0 {
             self.tableView.scrollEnabled = false
             NoAlarmsLabel.hidden = false
 
@@ -60,7 +62,7 @@ extension FajrWakeViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fajrAlarms.count
+        return alarms.count
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -88,18 +90,25 @@ extension FajrWakeViewController {
         let cellIdentifier = "FajrWakeCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
         
-        let alarm = fajrAlarms[indexPath.row]
-        let alarmLabel = "\(String(alarm.minsToAdjust)) mins \(alarm.whenToAlarm) \(alarm.whatSalatToAlarm)"
-        let alarmDetailLabel = "\(alarm.alarmLabel), Tue Wed"
-        cell.alarmLabel.text = alarmLabel
-        cell.alarmDetailLabel.text = alarmDetailLabel
-        
+        let alarm = alarms[indexPath.row]
+        cell.alarmLabel.attributedText = alarm.attributedTitle
+        cell.alarmDetailLabel.attributedText = alarm.attributedSubtitle
+
         return cell
      }
  }
 
 //// MARK: - Navigation
-//extension FajrWakeViewController {
+extension FajrWakeViewController {
+    @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.sourceViewController as? AddAlarmMasterViewController, let alarm = sourceViewController.alarmClock {
+            alarmType = sourceViewController.alarmType
+            let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
+            alarms.append(alarm)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+            print("alarm: \(alarm)")
+        }
+    }
 //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 //        if segue.identifier == "ShowDetail" {
 //            let alarmDetailVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmTableViewController
@@ -129,7 +138,7 @@ extension FajrWakeViewController {
 //            }
 //        }
 //    }
-//}
+}
 
 // MARK: - Setups and Settings
 extension FajrWakeViewController {
