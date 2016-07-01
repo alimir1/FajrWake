@@ -49,6 +49,12 @@ class AddAlarmChoicesContainer: UITableViewController {
         }
     }
     
+    var alarmSound: AlarmSound? {
+        didSet {
+            soundDetailLabel.text = alarmSound?.alarmSound.rawValue
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,7 +62,7 @@ class AddAlarmChoicesContainer: UITableViewController {
         alarmType = .FajrWakeAlarm
         repeatDays = nil
         alarmLabelText = "Alarm"
-        
+        alarmSound = AlarmSound(alarmSound: .AdhanAbdulBasit, alarmSectionTitle: .Adhan)
     }
     
     @IBAction func unwindAlarmLabel(sender: UIStoryboardSegue) {}
@@ -83,10 +89,19 @@ class AddAlarmChoicesContainer: UITableViewController {
                     alarmLabelVC.addAlarmChoicesListReference = self
                     alarmLabelVC.alarmLabelText = alarmLabelText
                 }
+            case "soundSegue":
+                if let soundSettingsVC = segue.destinationViewController as? SoundSettingsViewController {
+                    soundSettingsVC.addAlarmChoicesListReference = self
+                    soundSettingsVC.selectedSound = alarmSound
+                }
             default:
                 break
             }
         }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
 

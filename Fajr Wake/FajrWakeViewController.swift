@@ -83,7 +83,6 @@ extension FajrWakeViewController {
             headerView.textLabel?.textAlignment = .Center
         }
     }
-
     
      override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "FajrWakeCell"

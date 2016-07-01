@@ -30,9 +30,7 @@ class LabelSettingsViewController: UITableViewController, UITextFieldDelegate {
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         let newText = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         textField.text = newText
-        let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
-        let whiteSpacerange = string.rangeOfCharacterFromSet(whitespaceSet)
-        if textField.text == "" || whiteSpacerange != nil {
+        if textField.text == "" {
             addAlarmChoicesListReference?.alarmLabelText = "Alarm"
         } else {
             addAlarmChoicesListReference?.alarmLabelText = newText

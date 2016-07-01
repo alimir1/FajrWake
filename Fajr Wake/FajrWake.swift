@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 // local GMT
 class LocalGMT {
@@ -94,15 +95,7 @@ enum SalatsAndQadhas: Int {
     case Isha
     
     var getString: String {
-        switch self {
-        case Fajr: return "Fajr"
-        case Sunrise: return "Sunrise"
-        case Dhuhr: return "Dhuhr"
-        case Asr: return "Asr"
-        case Sunset: return "Sunset"
-        case Maghrib: return "Maghrib"
-        case Isha: return "Isha"
-        }
+        return String(self)
     }
 }
 
@@ -167,6 +160,37 @@ enum CalculationMethods: Int {
 
 enum PrayerTimeSettingsReference: String {
     case CalculationMethod, AsrJuristic, AdjustHighLats, TimeFormat
+}
+
+enum AlarmSounds: String {
+    case AdhanMozenZadeh = "Moazen Zadeh", AdhanSyria = "Adhan Syria", AdhanAbatherAlHalawaji = "Abather Al-Halawaji", AdhanAbdulBasit = "Abdul Basit", AdhanRoohullahKazimzadeh = "Roohullah Kazimzadeh", AdhanMisharyRashidAlafasy = "Minshary Rashid Alafasy"
+    case DuaKumayl = "Dua Kumayl", DuaJaushanKabeer = "Dua Jaushan Kabeer", DuaMujeer = "Dua Mujeer", MunajatImamAli = "Munajat Imam Ali", MunajatMuhibeen = "Munajat Muhibbeen"
+    case SurahAleImran = "Surah Ale Imran", SurahAlHamd = "Surah Al-Hamd", SurahAlAnbia = "Surah Anbiya", SurahYaSin = "Surah Yasin"
+    case Alarm, Radar, Apex, Chimes, Crickets, NightOwl = "Night Owl", Presto, Timba, Pinball, Harp
+    case None = "None"
+    
+    var URL: NSURL {
+        switch self {
+        case .Alarm, .Radar, .Apex, .Chimes, .Crickets, .NightOwl, .Presto, .Timba, .Pinball, .Harp: return NSURL(fileURLWithPath: "/Library/Ringtones/\(self).m4r")
+        default:
+            let path = NSBundle.mainBundle().pathForResource("\(self)", ofType: "mp3", inDirectory: "Sounds")
+            let url = NSURL(fileURLWithPath: path!)
+            return url
+        }
+    }
+}
+
+enum AlarmSoundsSectionTitles: String {
+    case Adhan
+    case DuasMunajat = "Duas/Munajat"
+    case Quran = "Quran"
+    case SystemRingtones = "System Ringtones"
+    case None = ""
+}
+
+struct AlarmSound {
+    var alarmSound: AlarmSounds
+    var alarmSectionTitle: AlarmSoundsSectionTitles
 }
 
 struct FajrWakeAlarm {

@@ -18,6 +18,7 @@
 		0152D6531CEF1048004FFC04 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6521CEF1048004FFC04 /* PrayerTimes.swift */; };
 		0152D6571CEF1071004FFC04 /* FajrWake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6561CEF1071004FFC04 /* FajrWake.swift */; };
 		0153F0251D22BA0200C08FB0 /* AlarmTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0153F0241D22BA0200C08FB0 /* AlarmTypeViewController.swift */; };
+		0153F04B1D26697300C08FB0 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 0153F04A1D26697300C08FB0 /* Sounds */; };
 		01591FE01D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01591FDF1D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift */; };
 		01591FE21D1ED3DA00D5DF73 /* AddAlarmMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01591FE11D1ED3DA00D5DF73 /* AddAlarmMasterViewController.swift */; };
 		01591FE61D1FC64B00D5DF73 /* FajrAlarmPickerVCContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01591FE51D1FC64B00D5DF73 /* FajrAlarmPickerVCContainer.swift */; };
@@ -44,6 +45,7 @@
 		0152D6521CEF1048004FFC04 /* PrayerTimes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayerTimes.swift; sourceTree = "<group>"; };
 		0152D6561CEF1071004FFC04 /* FajrWake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWake.swift; sourceTree = "<group>"; };
 		0153F0241D22BA0200C08FB0 /* AlarmTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmTypeViewController.swift; sourceTree = "<group>"; };
+		0153F04A1D26697300C08FB0 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 		01591FDF1D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmChoicesContainer.swift; sourceTree = "<group>"; };
 		01591FE11D1ED3DA00D5DF73 /* AddAlarmMasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmMasterViewController.swift; sourceTree = "<group>"; };
 		01591FE51D1FC64B00D5DF73 /* FajrAlarmPickerVCContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrAlarmPickerVCContainer.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				0176D6BC1D0E53FE00A5BB01 /* Controllers */,
 				0152D6441CEF0FCC004FFC04 /* Main.storyboard */,
 				0152D6471CEF0FCC004FFC04 /* Assets.xcassets */,
+				0153F04A1D26697300C08FB0 /* Sounds */,
 				0152D6491CEF0FCC004FFC04 /* LaunchScreen.storyboard */,
 				0152D64C1CEF0FCC004FFC04 /* Info.plist */,
 				0176D6BD1D0E541E00A5BB01 /* Framework files */,
@@ -205,6 +208,7 @@
 			files = (
 				0152D64B1CEF0FCC004FFC04 /* LaunchScreen.storyboard in Resources */,
 				0152D6481CEF0FCC004FFC04 /* Assets.xcassets in Resources */,
+				0153F04B1D26697300C08FB0 /* Sounds in Resources */,
 				0152D6461CEF0FCC004FFC04 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

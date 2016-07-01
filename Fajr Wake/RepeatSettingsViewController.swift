@@ -27,7 +27,7 @@ class RepeatSettingsViewController: UITableViewController {
             }
             ///////////// sorting array //////////////////
             repeatDays.sortInPlace { (first, second) in
-                let dayNames = [Days.Sunday, Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday, Days.Saturday]
+                let dayNames = [Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday, Days.Saturday, Days.Sunday]
                 guard let index1 = dayNames.indexOf(first), index2 = dayNames.indexOf(second) else {
                     return false
                 }
