@@ -20,7 +20,7 @@ class SoundSettingsViewController: UITableViewController {
         [[.AdhanMozenZadeh, .AdhanSyria, .AdhanAbatherAlHalawaji, .AdhanAbdulBasit, .AdhanRoohullahKazimzadeh, .AdhanMisharyRashidAlafasy],
          [.DuaKumayl, .DuaJaushanKabeer, .DuaMujeer, .MunajatImamAli, .MunajatMuhibeen],
          [.SurahAleImran, .SurahAlHamd, .SurahAlAnbia, .SurahYaSin],
-         [.Alarm, .Radar, .Apex, .Chimes, .Crickets, .NightOwl, .Presto, .Timba, .Pinball, .Harp],
+         [.Alarm, .Radar, .Apex, .Chimes, .Crickets, .Presto, .Timba, .Pinball, .Harp],
          [.None]]
     
     var selectedSound: AlarmSound? {
@@ -28,6 +28,7 @@ class SoundSettingsViewController: UITableViewController {
             if let sound = selectedSound {
                 selectedSoundSectionIndex = alarmSoundsSectionTitles.indexOf(sound.alarmSectionTitle)!
                 selectedSoundRowIndex = alarmSounds[selectedSoundSectionIndex!].indexOf(sound.alarmSound)!
+                addAlarmChoicesListReference?.alarmSound = sound
             }
         }
     }
