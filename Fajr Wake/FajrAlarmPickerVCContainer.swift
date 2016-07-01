@@ -13,22 +13,19 @@ class FajrAlarmPickerVCContainer: UIViewController {
     
     var AddAlarmMasterVCReference: AddAlarmMasterViewController?
     
-    /*
-     This value is either passed by `FajrWakeTableViewController` in `prepareForSegue(_:sender:)`
-     or constructed as part of adding a new meal.
-     */
-    var fajrWakeAlarm: FajrWakeAlarm?
-    
     var whenToAlarm: WakeOptions {
         let whenToAlarmINT = prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
+        AddAlarmMasterVCReference?.whenToWake = WakeOptions(rawValue: whenToAlarmINT)!
         return WakeOptions(rawValue: whenToAlarmINT)!
     }
     var salatToAlarm: SalatsAndQadhas {
         let salatToAlarmINT = prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
+        AddAlarmMasterVCReference?.whatSalatToWake = SalatsAndQadhas(rawValue: salatToAlarmINT)!
         return SalatsAndQadhas(rawValue: salatToAlarmINT)!
     }
     var minsToAdjustAlarm: Int {
         let minsToAdjust = self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!
+        AddAlarmMasterVCReference?.minsToAdjust = Int(minsToAdjust)!
         return Int(minsToAdjust)!
     }
     
@@ -44,12 +41,7 @@ class FajrAlarmPickerVCContainer: UIViewController {
         self.prayerTimesPicker.delegate = self
         self.prayerTimesPicker.dataSource = self
         
-        // Set up alarm
-        if let alarm = fajrWakeAlarm {
-            setupFajrAlarm(minsToAdjust: alarm.minsToAdjust, whenToAlarm: alarm.whenToWake.rawValue, whatSalatToAlarm: alarm.whatSalatToWake.rawValue)
-        }else {
-            setupFajrAlarm()
-        }
+        setupFajrAlarm(minsToAdjust: (AddAlarmMasterVCReference?.minsToAdjust)!, whenToAlarm: (AddAlarmMasterVCReference?.whenToWake!.rawValue)!, whatSalatToAlarm: (AddAlarmMasterVCReference?.whatSalatToWake?.rawValue)!)
         
         // "min" label
         let hourLabel = UILabel(frame: CGRectMake(85, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
@@ -63,7 +55,6 @@ class FajrAlarmPickerVCContainer: UIViewController {
 extension FajrAlarmPickerVCContainer: UIPickerViewDelegate, UIPickerViewDataSource {
     // setup alarm
     func setupFajrAlarm(minsToAdjust minsToAdjust: Int = 10, whenToAlarm: Int = 1, whatSalatToAlarm: Int = 2) {
-        
         // populate first components with minutes
         for index in 0...59 {
             pickerData[minsToAdjustComponent].append("\(index)")
