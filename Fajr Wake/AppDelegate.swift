@@ -15,8 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
+
         let settings = NSUserDefaults.standardUserDefaults()
+        
         // Default Settings for PrayerTimes
         if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == false {
             // set default settings for prayertimes
@@ -24,8 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             settings.setInteger(0, forKey: PrayerTimeSettingsReference.AsrJuristic.rawValue)
             settings.setInteger(0, forKey: PrayerTimeSettingsReference.AdjustHighLats.rawValue)
             settings.setInteger(1, forKey: PrayerTimeSettingsReference.TimeFormat.rawValue)
+            settings.setObject(AlarmSounds.AdhanAbdulBasit.rawValue, forKey: "DefaultSound")
+            settings.setObject(AlarmSoundsSectionTitles.Adhan.rawValue, forKey: "DefaultSoundTitle")
         }
-
+        
         return true
     }
 

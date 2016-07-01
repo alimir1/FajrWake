@@ -62,7 +62,9 @@ class AddAlarmChoicesContainer: UITableViewController {
         alarmType = .FajrWakeAlarm
         repeatDays = nil
         alarmLabelText = "Alarm"
-        alarmSound = AlarmSound(alarmSound: .AdhanAbdulBasit, alarmSectionTitle: .Adhan)
+        let defaultSound = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSound") as? String
+        let defaultSoundTitle = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSoundTitle") as? String
+        alarmSound = AlarmSound(alarmSound: AlarmSounds(rawValue: defaultSound!)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: defaultSoundTitle!)!)
     }
     
     @IBAction func unwindAlarmLabel(sender: UIStoryboardSegue) {}

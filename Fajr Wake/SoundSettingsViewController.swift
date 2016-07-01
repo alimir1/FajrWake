@@ -96,6 +96,9 @@ class SoundSettingsViewController: UITableViewController {
         let sound = self.alarmSounds[indexPath.section][indexPath.row]
         let title = self.alarmSoundsSectionTitles[indexPath.section]
         selectedSound = AlarmSound(alarmSound: sound, alarmSectionTitle: title)
+        let settings = NSUserDefaults.standardUserDefaults()
+        settings.setObject(sound.rawValue, forKey: "DefaultSound")
+        settings.setObject(title.rawValue, forKey: "DefaultSoundTitle")
         
         if sound != .None {
             playSound(sound.URL)
