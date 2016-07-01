@@ -17,7 +17,7 @@ class AddAlarmChoicesContainer: UITableViewController {
     @IBOutlet weak var deleteAlarmButton: UILabel!
     
     var AddAlarmMasterVCReference: AddAlarmMasterViewController?
-    
+
     @IBAction func switchSnooze(sender: UISwitch) {
         snooze = sender.on
     }
@@ -41,7 +41,7 @@ class AddAlarmChoicesContainer: UITableViewController {
             if let days = repeatDays {
                 repeatDetailLabel.text = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
                 AddAlarmMasterVCReference?.daysToRepeat = days
-            } else {
+            } else if repeatDays == nil {
                 repeatDetailLabel.text = "Never"
                 AddAlarmMasterVCReference?.daysToRepeat = nil
             }
@@ -74,14 +74,13 @@ class AddAlarmChoicesContainer: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // these needs to change... depending on if user wants to "adds new alarm" or if they edit it
-        alarmType = .FajrWakeAlarm
-        repeatDays = nil
-        alarmLabelText = "Alarm"
-        let defaultSound = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSound") as? String
-        let defaultSoundTitle = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSoundTitle") as? String
-        alarmSound = AlarmSound(alarmSound: AlarmSounds(rawValue: defaultSound!)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: defaultSoundTitle!)!)
-        snooze = true
+        // first load defaults (in case of "Add Alarm") OR load saved alarm (in case of "edit alarm")
+        //   variables declared in "prepareForSegue" in AddAlarmMasterVC
+        alarmType = AddAlarmMasterVCReference?.alarmType
+        repeatDays = AddAlarmMasterVCReference?.daysToRepeat
+        alarmLabelText = AddAlarmMasterVCReference?.alarmLabel
+        alarmSound = AddAlarmMasterVCReference?.sound
+        snooze = AddAlarmMasterVCReference?.snooze
     }
     
     @IBAction func unwindAlarmLabel(sender: UIStoryboardSegue) {}

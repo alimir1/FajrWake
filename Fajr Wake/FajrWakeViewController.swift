@@ -15,7 +15,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var prayerTimes: [String: String] = [:]
     var locationNameDisplay: String = ""
     
-    var alarmType: AlarmType?
     var alarms = [AlarmClockType]()
     
     override func viewDidLoad() {
@@ -98,46 +97,34 @@ extension FajrWakeViewController {
      }
  }
 
-//// MARK: - Navigation
+// MARK: - Navigation
 extension FajrWakeViewController {
     @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? AddAlarmMasterViewController, let alarm = sourceViewController.alarmClock {
-            alarmType = sourceViewController.alarmType
-            let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
-            alarms.append(alarm)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-            print("alarm: \(alarm)")
+            // if alarm was edited - update it. if not, create new alarm
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                alarms[selectedIndexPath.row] = alarm
+                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+            } else {
+                let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
+                alarms.append(alarm)
+                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+            }
         }
     }
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "ShowDetail" {
-//            let alarmDetailVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmTableViewController
-//            if let selectedAlarmCell = sender as? FajrWakeCell {
-//                
-//                // change navigation title of top to "Edit Item"
-//                
-//                let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
-//                let selectedAlarm = fajrAlarms[indexPath.row]
-//                alarmDetailVC.fajrWakeAlarm = selectedAlarm
-//            }
-//        } else if segue.identifier == "AddItem" {
-//            print("Adding new alarm.")
-//        }
-//    }
-//    
-//    @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
-//        if let sourceViewController = sender.sourceViewController as? AddAlarmTableViewController, let alarm = sourceViewController.fajrWakeAlarm {
-//            // if alarm was edited - update it. if not, create new alarm
-//            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-//                fajrAlarms[selectedIndexPath.row] = alarm
-//                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
-//            } else {
-//                let newIndexPath = NSIndexPath(forRow: fajrAlarms.count, inSection: 0)
-//                fajrAlarms.append(alarm)
-//                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-//            }
-//        }
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showDetail" {
+            let alarmDetailVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmMasterViewController
+            if let selectedAlarmCell = sender as? FajrWakeCell {
+                // FIXME: - change navigation title of top to "Edit Item"
+                let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
+                let selectedAlarm = alarms[indexPath.row]
+                alarmDetailVC.alarmClock = selectedAlarm
+            }
+        } else if segue.identifier == "addItem" {
+            print("Adding new alarm.")
+        }
+    }
 }
 
 // MARK: - Setups and Settings

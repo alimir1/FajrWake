@@ -211,6 +211,7 @@ protocol AlarmClockType {
     var daysToRepeat: [Days]? { get set }
     var sound: AlarmSound { get set }
     var snooze: Bool { get set }
+    var alarmType: AlarmType { get set }
     
     // one more variable for NSTimer!!
     
@@ -257,6 +258,7 @@ struct CustomAlarm: AlarmClockType {
     var sound: AlarmSound
     var snooze: Bool
     var time: NSDate
+    var alarmType: AlarmType
     
     var timeToString: String {
         let outputFormatter = NSDateFormatter()
@@ -290,6 +292,7 @@ struct FajrWakeAlarm: AlarmClockType {
     var minsToAdjust: Int
     var whenToWake: WakeOptions
     var whatSalatToWake: SalatsAndQadhas
+    var alarmType: AlarmType
     
     var title: String {
         if whenToWake == .OnTime {
@@ -314,20 +317,6 @@ struct FajrWakeAlarm: AlarmClockType {
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfMinutesToAdjust)
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
 
-        
-//        if whatSalatToWake == .Sunrise {
-//            if whenToWake == .Before || whenToWake == .After {
-//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 7)!, range: rangeOfMinText)
-//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfMinutesToAdjust)
-//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
-//            } else {
-//                alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfRestOfText)
-//            }
-//        } else {
-//            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: rangeOfMinText)
-//            alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: rangeOfMinutesToAdjust)
-//        }
-        
         return alarmAttributedTitle
     }
 }

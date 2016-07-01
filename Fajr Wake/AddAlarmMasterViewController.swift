@@ -32,6 +32,9 @@ class AddAlarmMasterViewController: UIViewController {
     var daysToRepeat: [Days]?
     var sound: AlarmSound?
     var snooze: Bool?
+    var minsToAdjust: Int?
+    var whenToWake: WakeOptions?
+    var whatSalatToWake: SalatsAndQadhas?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,9 +54,9 @@ class AddAlarmMasterViewController: UIViewController {
         if saveButton === sender {
             if alarmType != nil {
                 if alarmType! == .FajrWakeAlarm {
-                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, minsToAdjust: 0, whenToWake: .OnTime, whatSalatToWake: .Fajr)
+                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, minsToAdjust: 0, whenToWake: .OnTime, whatSalatToWake: .Fajr, alarmType: self.alarmType!)
                 } else if alarmType! == .CustomAlarm {
-                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, time: NSDate())
+                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, time: NSDate(), alarmType: .CustomAlarm)
                 }
             }
         }
@@ -63,12 +66,44 @@ class AddAlarmMasterViewController: UIViewController {
             case "fajrWakePickerContainer":
                 let fajrAlarmPickerVCContainer = segue.destinationViewController as! FajrAlarmPickerVCContainer
                 fajrAlarmPickerVCContainer.AddAlarmMasterVCReference = self
+//                fajrAlarmPickerVCContainer.setupFajrAlarm(minsToAdjust: minsToAdjust!, whenToAlarm: self.whenToWake!.rawValue, whatSalatToAlarm: whatSalatToWake!.rawValue)
             case "customAlarmPickerContainer":
                 let customAlarmPickerVCContainer = segue.destinationViewController as! CustomAlarmPickerVCContainer
                 customAlarmPickerVCContainer.AddAlarmMasterVCReference = self
             case "addAlarmChoicesContainer":
                 let addAlarmChoicesContainer = segue.destinationViewController as! AddAlarmChoicesContainer
                 addAlarmChoicesContainer.AddAlarmMasterVCReference = self
+                
+                // DEFAULTS or EDITS
+                if let alarm = alarmClock {
+                    if alarm.alarmType == .CustomAlarm {
+                        if let customAlarm = alarm as? CustomAlarm {
+                            alarmType = customAlarm.alarmType
+                            daysToRepeat = customAlarm.daysToRepeat
+                            alarmLabel = customAlarm.alarmLabel
+                            sound = customAlarm.sound
+                            snooze = customAlarm.snooze
+                        }
+                    } else if alarm.alarmType == .FajrWakeAlarm {
+                        if let fajrWakeAlarm = alarm as? FajrWakeAlarm {
+                            alarmType = fajrWakeAlarm.alarmType
+                            daysToRepeat = fajrWakeAlarm.daysToRepeat
+                            alarmLabel = fajrWakeAlarm.alarmLabel
+                            sound = fajrWakeAlarm.sound
+                            snooze = fajrWakeAlarm.snooze
+                        }
+                    }
+                } else {
+                    // DEFAULTS
+                    alarmType = .FajrWakeAlarm
+                    daysToRepeat = nil
+                    alarmLabel = "Alarm"
+                    let defaultSound = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSound") as? String
+                    let defaultSoundTitle = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSoundTitle") as? String
+                    sound = AlarmSound(alarmSound: AlarmSounds(rawValue: defaultSound!)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: defaultSoundTitle!)!)
+                    snooze = true
+                }
+                
             default:
                 break
             }

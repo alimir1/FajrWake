@@ -50,7 +50,7 @@
 		01591FE11D1ED3DA00D5DF73 /* AddAlarmMasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmMasterViewController.swift; sourceTree = "<group>"; };
 		01591FE51D1FC64B00D5DF73 /* FajrAlarmPickerVCContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrAlarmPickerVCContainer.swift; sourceTree = "<group>"; };
 		01591FE91D2008E500D5DF73 /* CustomAlarmPickerVCContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlarmPickerVCContainer.swift; sourceTree = "<group>"; };
-		0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmTableViewController.swift; sourceTree = "<group>"; };
+		0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddAlarmTableViewController.swift; path = "Fajr Wake/AddAlarmTableViewController.swift"; sourceTree = "<group>"; };
 		0176D6C61D0FA79800A5BB01 /* FajrWakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWakeViewController.swift; sourceTree = "<group>"; };
 		019342CF1D14E7A100F98775 /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		01A3A81F1D12F43A00DE4CE9 /* OneShotLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneShotLocationManager.swift; sourceTree = "<group>"; };
@@ -72,7 +72,6 @@
 		014104411D1C8E1200CE85F7 /* AddAlarm */ = {
 			isa = PBXGroup;
 			children = (
-				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
 				01591FE11D1ED3DA00D5DF73 /* AddAlarmMasterViewController.swift */,
 				01591FDF1D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift */,
 				01591FE51D1FC64B00D5DF73 /* FajrAlarmPickerVCContainer.swift */,
@@ -97,6 +96,7 @@
 		0152D6341CEF0FCB004FFC04 = {
 			isa = PBXGroup;
 			children = (
+				0176D6BE1D0EFC5400A5BB01 /* AddAlarmTableViewController.swift */,
 				0152D63F1CEF0FCB004FFC04 /* Fajr Wake */,
 				0152D63E1CEF0FCB004FFC04 /* Products */,
 			);
