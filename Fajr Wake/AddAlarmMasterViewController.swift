@@ -129,8 +129,6 @@ class AddAlarmMasterViewController: UIViewController {
                     }
                 } else {
                     // Add Alarm
-                    addAlarmChoicesContainer.tableView.scrollEnabled = false
-                    addAlarmChoicesContainer.deleteAlarmCell.hidden = true
                     alarmType = .FajrWakeAlarm
                     daysToRepeat = nil
                     alarmLabel = "Alarm"
@@ -138,6 +136,8 @@ class AddAlarmMasterViewController: UIViewController {
                     let defaultSoundTitle = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSoundTitle") as? String
                     sound = AlarmSound(alarmSound: AlarmSounds(rawValue: defaultSound!)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: defaultSoundTitle!)!)
                     snooze = true
+                    addAlarmChoicesContainer.tableView.scrollEnabled = false
+                    addAlarmChoicesContainer.deleteAlarmCell.hidden = true
                 }
                 
             default:

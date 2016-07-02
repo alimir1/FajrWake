@@ -27,10 +27,10 @@ class AddAlarmChoicesContainer: UITableViewController {
             if let alarmtype = alarmType {
                 if alarmtype == .FajrWakeAlarm {
                     AddAlarmMasterVCReference?.alarmType = .FajrWakeAlarm
-                    alarmTypeDetailLabel.text = "Fajr Wake Alarm"
+                    alarmTypeDetailLabel.text = AlarmType.FajrWakeAlarm.getString
                 } else if alarmtype == .CustomAlarm {
                     AddAlarmMasterVCReference?.alarmType = .CustomAlarm
-                    alarmTypeDetailLabel.text = "Custom Alarm"
+                    alarmTypeDetailLabel.text = AlarmType.CustomAlarm.getString
                 }
             }
         }

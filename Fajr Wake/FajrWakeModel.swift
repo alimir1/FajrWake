@@ -119,6 +119,13 @@ enum WakeOptions: Int {
 enum AlarmType: Int {
     case FajrWakeAlarm
     case CustomAlarm
+    
+    var getString: String {
+        switch self {
+        case .FajrWakeAlarm: return "Fajr Wake Alarm"
+        case .CustomAlarm: return "Custom Alarm"
+        }
+    }
 }
 
 enum Days: Int  {

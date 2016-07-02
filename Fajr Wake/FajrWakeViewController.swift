@@ -128,6 +128,13 @@ extension FajrWakeViewController {
         }
     }
     
+    @IBAction func unwindToAlarmsDelete(sender: UIStoryboardSegue) {
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            alarms.removeAtIndex(selectedIndexPath.row)
+            tableView.deleteRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Fade)
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
             let addAlarmMasterVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmMasterViewController
