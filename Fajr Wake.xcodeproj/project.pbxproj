@@ -16,7 +16,7 @@
 		0152D6481CEF0FCC004FFC04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0152D6471CEF0FCC004FFC04 /* Assets.xcassets */; };
 		0152D64B1CEF0FCC004FFC04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0152D6491CEF0FCC004FFC04 /* LaunchScreen.storyboard */; };
 		0152D6531CEF1048004FFC04 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6521CEF1048004FFC04 /* PrayerTimes.swift */; };
-		0152D6571CEF1071004FFC04 /* FajrWake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6561CEF1071004FFC04 /* FajrWake.swift */; };
+		0152D6571CEF1071004FFC04 /* FajrWakeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0152D6561CEF1071004FFC04 /* FajrWakeModel.swift */; };
 		0153F0251D22BA0200C08FB0 /* AlarmTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0153F0241D22BA0200C08FB0 /* AlarmTypeViewController.swift */; };
 		0153F04B1D26697300C08FB0 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 0153F04A1D26697300C08FB0 /* Sounds */; };
 		01591FE01D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01591FDF1D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift */; };
@@ -42,7 +42,7 @@
 		0152D64A1CEF0FCC004FFC04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0152D64C1CEF0FCC004FFC04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0152D6521CEF1048004FFC04 /* PrayerTimes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayerTimes.swift; sourceTree = "<group>"; };
-		0152D6561CEF1071004FFC04 /* FajrWake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWake.swift; sourceTree = "<group>"; };
+		0152D6561CEF1071004FFC04 /* FajrWakeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FajrWakeModel.swift; sourceTree = "<group>"; };
 		0153F0241D22BA0200C08FB0 /* AlarmTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmTypeViewController.swift; sourceTree = "<group>"; };
 		0153F04A1D26697300C08FB0 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 		01591FDF1D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmChoicesContainer.swift; sourceTree = "<group>"; };
@@ -71,13 +71,8 @@
 			isa = PBXGroup;
 			children = (
 				01591FE11D1ED3DA00D5DF73 /* AddAlarmMasterViewController.swift */,
-				01591FDF1D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift */,
-				01591FE51D1FC64B00D5DF73 /* FajrAlarmPickerVCContainer.swift */,
-				01591FE91D2008E500D5DF73 /* CustomAlarmPickerVCContainer.swift */,
-				0153F0241D22BA0200C08FB0 /* AlarmTypeViewController.swift */,
-				014104421D1C972000CE85F7 /* RepeatSettingsViewController.swift */,
-				0141043F1D1C8E0700CE85F7 /* LabelSettingsViewController.swift */,
-				014104451D1CB70E00CE85F7 /* SoundSettingsViewController.swift */,
+				0153F0501D27FBBA00C08FB0 /* Pickers */,
+				0153F0511D27FC0300C08FB0 /* Choices */,
 			);
 			name = AddAlarm;
 			sourceTree = "<group>";
@@ -122,6 +117,27 @@
 			path = "Fajr Wake";
 			sourceTree = "<group>";
 		};
+		0153F0501D27FBBA00C08FB0 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				01591FE51D1FC64B00D5DF73 /* FajrAlarmPickerVCContainer.swift */,
+				01591FE91D2008E500D5DF73 /* CustomAlarmPickerVCContainer.swift */,
+			);
+			name = Pickers;
+			sourceTree = "<group>";
+		};
+		0153F0511D27FC0300C08FB0 /* Choices */ = {
+			isa = PBXGroup;
+			children = (
+				01591FDF1D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift */,
+				0153F0241D22BA0200C08FB0 /* AlarmTypeViewController.swift */,
+				014104421D1C972000CE85F7 /* RepeatSettingsViewController.swift */,
+				0141043F1D1C8E0700CE85F7 /* LabelSettingsViewController.swift */,
+				014104451D1CB70E00CE85F7 /* SoundSettingsViewController.swift */,
+			);
+			name = Choices;
+			sourceTree = "<group>";
+		};
 		0176D6BC1D0E53FE00A5BB01 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,7 +145,8 @@
 				014104491D1D364200CE85F7 /* FajrWakeCell.swift */,
 				014104411D1C8E1200CE85F7 /* AddAlarm */,
 				014104441D1C99AB00CE85F7 /* Settings */,
-				0152D6561CEF1071004FFC04 /* FajrWake.swift */,
+				0152D6561CEF1071004FFC04 /* FajrWakeModel.swift */,
+				019342CF1D14E7A100F98775 /* ActivityIndicator.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -137,7 +154,6 @@
 		0176D6BD1D0E541E00A5BB01 /* Framework files */ = {
 			isa = PBXGroup;
 			children = (
-				019342CF1D14E7A100F98775 /* ActivityIndicator.swift */,
 				0152D6521CEF1048004FFC04 /* PrayerTimes.swift */,
 				01A3A81F1D12F43A00DE4CE9 /* OneShotLocationManager.swift */,
 			);
@@ -218,7 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01591FE01D1ED21E00D5DF73 /* AddAlarmChoicesContainer.swift in Sources */,
-				0152D6571CEF1071004FFC04 /* FajrWake.swift in Sources */,
+				0152D6571CEF1071004FFC04 /* FajrWakeModel.swift in Sources */,
 				0176D6C71D0FA79800A5BB01 /* FajrWakeViewController.swift in Sources */,
 				0152D6531CEF1048004FFC04 /* PrayerTimes.swift in Sources */,
 				01A3A8261D13C20400DE4CE9 /* SettingsViewController.swift in Sources */,

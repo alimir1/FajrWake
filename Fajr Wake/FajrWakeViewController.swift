@@ -122,7 +122,7 @@ extension FajrWakeViewController {
                 alarmDetailVC.alarmClock = selectedAlarm
             }
         } else if segue.identifier == "addItem" {
-            print("Adding new alarm.")
+            //new item
         }
     }
 }
