@@ -650,7 +650,7 @@
                     </tableView>
                     <connections>
                         <outlet property="alarmTypeDetailLabel" destination="aoC-ST-F5i" id="wEl-dx-h77"/>
-                        <outlet property="deleteAlarmButton" destination="ije-ae-wDM" id="iex-Zj-fTz"/>
+                        <outlet property="deleteAlarmCell" destination="AU9-qc-Pe8" id="jdv-5X-Qri"/>
                         <outlet property="labelDetailLabel" destination="NHG-5I-aZl" id="Su6-hH-d4f"/>
                         <outlet property="repeatDetailLabel" destination="10R-KS-Rc3" id="s57-ci-Sls"/>
                         <outlet property="snoozeSwitch" destination="cu7-AN-MM0" id="oUr-nf-Roe"/>

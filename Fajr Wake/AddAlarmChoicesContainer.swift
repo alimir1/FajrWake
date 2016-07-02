@@ -14,7 +14,7 @@ class AddAlarmChoicesContainer: UITableViewController {
     @IBOutlet weak var soundDetailLabel: UILabel!
     @IBOutlet weak var alarmTypeDetailLabel: UILabel!
     @IBOutlet weak var snoozeSwitch: UISwitch!
-    @IBOutlet weak var deleteAlarmButton: UILabel!
+    @IBOutlet weak var deleteAlarmCell: UITableViewCell!
     
     var AddAlarmMasterVCReference: AddAlarmMasterViewController?
 

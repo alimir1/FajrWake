@@ -65,8 +65,8 @@ class AddAlarmMasterViewController: UIViewController {
         
         if let segueIdentifier = segue.identifier {
             
-            // DEFAULTS or EDITS
             if let alarm = alarmClock {
+                // Edit Alarm
                 alarmType = alarm.alarmType
                 if alarm.alarmType == .FajrWakeAlarm {
                     // Reset (default) for CustomAlarm
@@ -88,7 +88,7 @@ class AddAlarmMasterViewController: UIViewController {
                     pickerTime = customAlarm.time
                 }
             } else {
-                // All default values (new alarm)
+                // Add Alarm
                 pickerTime = NSDate()
                 minsToAdjust = 10
                 whenToWake = .Before
@@ -108,8 +108,8 @@ class AddAlarmMasterViewController: UIViewController {
                 let addAlarmChoicesContainer = segue.destinationViewController as! AddAlarmChoicesContainer
                 addAlarmChoicesContainer.AddAlarmMasterVCReference = self
                 
-                // DEFAULTS or EDITS
                 if let alarm = alarmClock {
+                    // Edit Alarm
                     if alarm.alarmType == .CustomAlarm {
                         if let customAlarm = alarm as? CustomAlarm {
                             alarmType = customAlarm.alarmType
@@ -128,7 +128,9 @@ class AddAlarmMasterViewController: UIViewController {
                         }
                     }
                 } else {
-                    // DEFAULTS
+                    // Add Alarm
+                    addAlarmChoicesContainer.tableView.scrollEnabled = false
+                    addAlarmChoicesContainer.deleteAlarmCell.hidden = true
                     alarmType = .FajrWakeAlarm
                     daysToRepeat = nil
                     alarmLabel = "Alarm"

@@ -112,17 +112,17 @@ extension FajrWakeViewController {
             }
         }
     }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let addAlarmMasterVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmMasterViewController
         if segue.identifier == "showDetail" {
-            let alarmDetailVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmMasterViewController
             if let selectedAlarmCell = sender as? FajrWakeCell {
                 // FIXME: - change navigation title of top to "Edit Item"
                 let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
                 let selectedAlarm = alarms[indexPath.row]
-                alarmDetailVC.alarmClock = selectedAlarm
+                addAlarmMasterVC.alarmClock = selectedAlarm
             }
         } else if segue.identifier == "addItem" {
-            //new item
         }
     }
 }
