@@ -20,16 +20,12 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPrayerTimes()
+        navigationItem.leftBarButtonItem = editButtonItem()
 //        displaySettingsTableView()
     }
     
     override func viewWillAppear(animated: Bool) {
         updatePrayerTimes()
-        if alarms.count > 0 {
-            navigationItem.leftBarButtonItem = editButtonItem()
-        } else {
-            navigationItem.leftBarButtonItem = nil
-        }
     }
     
     func displaySettingsTableView() {
@@ -83,7 +79,6 @@ extension FajrWakeViewController {
         return toDisplay
     }
     
-    
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textAlignment = .Center
@@ -100,6 +95,21 @@ extension FajrWakeViewController {
 
         return cell
      }
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            // Delete the row from the data source
+            alarms.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            
+        } else if editingStyle == .Insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
  }
 
 // MARK: - Navigation
