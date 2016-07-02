@@ -20,11 +20,16 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPrayerTimes()
+//        displaySettingsTableView()
     }
     
     override func viewWillAppear(animated: Bool) {
         updatePrayerTimes()
-//        displaySettingsTableView()
+        if alarms.count > 0 {
+            navigationItem.leftBarButtonItem = editButtonItem()
+        } else {
+            navigationItem.leftBarButtonItem = nil
+        }
     }
     
     func displaySettingsTableView() {
@@ -114,8 +119,8 @@ extension FajrWakeViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let addAlarmMasterVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmMasterViewController
         if segue.identifier == "showDetail" {
+            let addAlarmMasterVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmMasterViewController
             if let selectedAlarmCell = sender as? FajrWakeCell {
                 // FIXME: - change navigation title of top to "Edit Item"
                 let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
