@@ -13,20 +13,20 @@ class FajrAlarmPickerVCContainer: UIViewController {
     
     var AddAlarmMasterVCReference: AddAlarmMasterViewController?
     
-    var whenToAlarm: WakeOptions {
-        let whenToAlarmINT = prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
-        AddAlarmMasterVCReference?.whenToWake = WakeOptions(rawValue: whenToAlarmINT)!
-        return WakeOptions(rawValue: whenToAlarmINT)!
+    var whenToAlarm: WakeOptions? {
+        didSet {
+            AddAlarmMasterVCReference?.whenToWake = whenToAlarm
+        }
     }
-    var salatToAlarm: SalatsAndQadhas {
-        let salatToAlarmINT = prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
-        AddAlarmMasterVCReference?.whatSalatToWake = SalatsAndQadhas(rawValue: salatToAlarmINT)!
-        return SalatsAndQadhas(rawValue: salatToAlarmINT)!
+    var salatToAlarm: SalatsAndQadhas? {
+        didSet {
+            AddAlarmMasterVCReference?.whatSalatToWake = salatToAlarm
+        }
     }
-    var minsToAdjustAlarm: Int {
-        let minsToAdjust = self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!
-        AddAlarmMasterVCReference?.minsToAdjust = Int(minsToAdjust)!
-        return Int(minsToAdjust)!
+    var minsToAdjustAlarm: Int? {
+        didSet {
+            AddAlarmMasterVCReference?.minsToAdjust = minsToAdjustAlarm
+        }
     }
     
     let maxElements = 10000
@@ -41,7 +41,14 @@ class FajrAlarmPickerVCContainer: UIViewController {
         self.prayerTimesPicker.delegate = self
         self.prayerTimesPicker.dataSource = self
         
-        setupFajrAlarm(minsToAdjust: (AddAlarmMasterVCReference?.minsToAdjust)!, whenToAlarm: (AddAlarmMasterVCReference?.whenToWake!.rawValue)!, whatSalatToAlarm: (AddAlarmMasterVCReference?.whatSalatToWake?.rawValue)!)
+        if let minAdj = AddAlarmMasterVCReference!.minsToAdjust, let whenAlarm = AddAlarmMasterVCReference!.whenToWake, let salatAlarm = AddAlarmMasterVCReference!.whatSalatToWake {
+            setupFajrAlarm(minsToAdjust: minAdj, whenToAlarm: whenAlarm.rawValue, whatSalatToAlarm: salatAlarm.rawValue)
+        } else {
+            print("oh dear... something went wrong in viewDidLoad() of FajrAlarmPickerVCContainer")
+        }
+        whenToAlarm = WakeOptions(rawValue: prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent))!
+        salatToAlarm = SalatsAndQadhas(rawValue: prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent))!
+        minsToAdjustAlarm = Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
         
         // "min" label
         let hourLabel = UILabel(frame: CGRectMake(85, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
@@ -87,13 +94,24 @@ extension FajrAlarmPickerVCContainer: UIPickerViewDelegate, UIPickerViewDataSour
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if whenToAlarm.rawValue == 1 || whenToAlarm.rawValue == 2 {
-            if minsToAdjustAlarm == 0 {
+        let selectedWhenToAlarm = prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
+        var selectedMinsToAdjust = Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
+        let selectedSalatAndQadha = prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
+        
+        // Adjust the picker if user makes invalid selections
+        if (selectedWhenToAlarm == 1 || selectedWhenToAlarm == 2){
+            if selectedMinsToAdjust == 0 {
                 prayerTimesPicker.selectRow(locOfZero+1, inComponent: minsToAdjustComponent, animated: true)
+                selectedMinsToAdjust = 1
             }
-        } else if whenToAlarm.rawValue == 0 && minsToAdjustAlarm != 0 {
+        } else if (selectedWhenToAlarm == 0 && selectedMinsToAdjust != 0) {
             prayerTimesPicker.selectRow(locOfZero, inComponent: minsToAdjustComponent, animated: true)
+            selectedMinsToAdjust = 0
         }
+        
+        whenToAlarm = WakeOptions(rawValue: selectedWhenToAlarm)!
+        salatToAlarm = SalatsAndQadhas(rawValue: selectedSalatAndQadha)
+        minsToAdjustAlarm = selectedMinsToAdjust
     }
 }
 

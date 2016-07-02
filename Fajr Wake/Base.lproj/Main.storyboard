@@ -453,6 +453,9 @@
                                 <date key="date" timeIntervalSinceReferenceDate="488813198.12026">
                                     <!--2016-06-28 13:26:38 +0000-->
                                 </date>
+                                <connections>
+                                    <action selector="datePickerAction:" destination="Y4d-kI-82q" eventType="valueChanged" id="h9j-jP-1z4"/>
+                                </connections>
                             </datePicker>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -462,6 +465,9 @@
                             <constraint firstItem="icA-nd-NVO" firstAttribute="top" secondItem="AMw-2M-QKp" secondAttribute="top" id="rzS-nT-snK"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="datePicker" destination="icA-nd-NVO" id="to5-Pj-wbA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zXD-Vn-47h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

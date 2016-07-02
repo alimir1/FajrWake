@@ -132,7 +132,11 @@ extension FajrWakeViewController {
     // calls appropriate methods to perform specific tasks in order to populate prayertime dictionary
     func setupPrayerTimes() {
         if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == true {
-            self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as! String
+            if let displayAddress = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String {
+                self.locationNameDisplay = displayAddress
+            } else {
+                self.locationNameDisplay = "Could not get name of your city, state or country"
+            }
             updatePrayerTimes()
             
         } else {
