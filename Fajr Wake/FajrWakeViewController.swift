@@ -14,42 +14,43 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var manager: OneShotLocationManager?
     var prayerTimes: [String: String] = [:]
     var locationNameDisplay: String = ""
-    
     var alarms = [AlarmClockType]()
+    var noAlarmsLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupPrayerTimes()
         navigationItem.leftBarButtonItem = editButtonItem()
-//        displaySettingsTableView()
+        noAlarmsLabelConfig()
     }
     
     override func viewWillAppear(animated: Bool) {
         updatePrayerTimes()
     }
     
-    func displaySettingsTableView() {
-        
-        let NoAlarmsLabel: UILabel = UILabel(frame: CGRectZero)
-        NoAlarmsLabel.text = "No Alarms"
-        NoAlarmsLabel.baselineAdjustment = .AlignBaselines
-        NoAlarmsLabel.backgroundColor = UIColor.clearColor()
-        NoAlarmsLabel.textColor = UIColor.lightGrayColor()
-        NoAlarmsLabel.textAlignment = .Center
-        NoAlarmsLabel.font = UIFont(name: "Helvetica", size: 25.0)
-        NoAlarmsLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.view!.addSubview(NoAlarmsLabel)
-        let xConstraint = NSLayoutConstraint(item: NoAlarmsLabel, attribute: .CenterX, relatedBy: .Equal, toItem: self.tableView, attribute: .CenterX, multiplier: 1, constant: 0)
-        let yConstraint = NSLayoutConstraint(item: NoAlarmsLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self.tableView, attribute: .CenterY, multiplier: 1, constant: -30.0)
+    func noAlarmsLabelConfig() {
+        noAlarmsLabel = UILabel(frame: CGRectZero)
+        noAlarmsLabel.text = "No Alarms"
+        noAlarmsLabel.baselineAdjustment = .AlignBaselines
+        noAlarmsLabel.backgroundColor = UIColor.clearColor()
+        noAlarmsLabel.textColor = UIColor.lightGrayColor()
+        noAlarmsLabel.textAlignment = .Center
+        noAlarmsLabel.font = UIFont(name: "Helvetica", size: 25.0)
+        noAlarmsLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view!.addSubview(noAlarmsLabel)
+        let xConstraint = NSLayoutConstraint(item: noAlarmsLabel, attribute: .CenterX, relatedBy: .Equal, toItem: self.tableView, attribute: .CenterX, multiplier: 1, constant: 0)
+        let yConstraint = NSLayoutConstraint(item: noAlarmsLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self.tableView, attribute: .CenterY, multiplier: 1, constant: -30.0)
         NSLayoutConstraint.activateConstraints([xConstraint, yConstraint])
-        
+    }
+    
+    func displaySettingsTableView() {
         if alarms.count == 0 {
             self.tableView.scrollEnabled = false
-            NoAlarmsLabel.hidden = false
-
+            self.noAlarmsLabel.hidden = false
         } else {
             self.tableView.scrollEnabled = true
-            NoAlarmsLabel.hidden = true
+            self.noAlarmsLabel.hidden = true
         }
     }
 }
@@ -66,6 +67,7 @@ extension FajrWakeViewController {
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        self.displaySettingsTableView()
         return 30.0
     }
 
