@@ -23,6 +23,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         setupPrayerTimes()
         navigationItem.leftBarButtonItem = editButtonItem()
         noAlarmsLabelConfig()
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -94,21 +95,28 @@ extension FajrWakeViewController {
         let alarm = alarms[indexPath.row]
         cell.alarmLabel.attributedText = alarm.attributedTitle
         cell.alarmDetailLabel.attributedText = alarm.attributedSubtitle
-
+        
         return cell
      }
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
         if editingStyle == .Delete {
             // Delete the row from the data source
             alarms.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let cellIdentifier = "FajrWakeCell"
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
+        
+        if tableView.editing == true {
+//            cell.alarmSwitch.hidden = true
+//            cell.alarmSwitch.on = false
+        } else {
+//            cell.alarmSwitch.hidden = false
+        }
         return true
     }
 
@@ -118,14 +126,58 @@ extension FajrWakeViewController {
 extension FajrWakeViewController {
     @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? AddAlarmMasterViewController, let alarm = sourceViewController.alarmClock {
-            // if alarm was edited - update it. if not, create new alarm
+            
+            let cellIdentifier = "FajrWakeCell"
+            
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // add new alarm
                 alarms[selectedIndexPath.row] = alarm
                 tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+                
+                
+                let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: selectedIndexPath) as! FajrWakeCell
+                cell.alarmSwitch.on = true
+
+                
+                // testing ////////////////////////////////////////////////////////////////
+                if alarm.alarmType == .FajrWakeAlarm {
+                    let alarm2 = alarm as! FajrWakeAlarm
+                    let calendar = NSCalendar.currentCalendar()
+                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(prayerTimes)!)
+                    print("test time: \(components.hour):\(components.minute)")
+                } else if alarm.alarmType == .CustomAlarm {
+                    let alarm2 = alarm as! CustomAlarm
+                    let calendar = NSCalendar.currentCalendar()
+                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(nil)!)
+                    print("test time: \(components.hour):\(components.minute)")
+                }
+                ///////////////////////////////////////////////////////////////////////////
+                
+                
+                
             } else {
+                // edit alarm
                 let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
                 alarms.append(alarm)
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                
+                let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: newIndexPath) as! FajrWakeCell
+                cell.alarmSwitch.on = true
+                
+                // testing /////////////////////////////////////////////////////////////
+                if alarm.alarmType == .FajrWakeAlarm {
+                    let alarm2 = alarm as! FajrWakeAlarm
+                    let calendar = NSCalendar.currentCalendar()
+                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(prayerTimes)!)
+                    print("test time: \(components.hour):\(components.minute)")
+                } else if alarm.alarmType == .CustomAlarm {
+                    let alarm2 = alarm as! CustomAlarm
+                    let calendar = NSCalendar.currentCalendar()
+                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(nil)!)
+                    print("test time: \(components.hour):\(components.minute)")
+                }
+                ///////////////////////////////////////////////////////////////////////////
+                
             }
         }
     }

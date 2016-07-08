@@ -218,13 +218,13 @@ protocol AlarmClockType {
     var sound: AlarmSound { get set }
     var snooze: Bool { get set }
     var alarmType: AlarmType { get set }
-    
-    // one more variable for NSTimer!!
+    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate?
     
     var attributedTitle: NSMutableAttributedString { get }
 }
 
 extension AlarmClockType {
+    
     var repeatDaysDisplayString: String? {
         var repeatDaysString: String?
         if let days = daysToRepeat {
@@ -264,6 +264,23 @@ struct CustomAlarm: AlarmClockType {
     var time: NSDate
     var alarmType: AlarmType
     
+    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
+        let currentDate = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
+        let pickerTimeComponents = calendar.components([.Hour, .Minute], fromDate: time)
+        let timeToAlarmComponents = NSDateComponents()
+        timeToAlarmComponents.year = currentDateComponents.year
+        timeToAlarmComponents.month = currentDateComponents.month
+        timeToAlarmComponents.day = currentDateComponents.day
+        timeToAlarmComponents.hour = pickerTimeComponents.hour
+        timeToAlarmComponents.minute = pickerTimeComponents.minute
+        timeToAlarmComponents.second = 0
+        let timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)
+        
+        return timeToAlarm
+    }
+    
     var timeToString: String {
         let outputFormatter = NSDateFormatter()
         outputFormatter.dateFormat = "h:mm a"
@@ -297,6 +314,37 @@ struct FajrWakeAlarm: AlarmClockType {
     var whenToWake: WakeOptions
     var whatSalatToWake: SalatsAndQadhas
     var alarmType: AlarmType
+    
+    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        let salatOrQadhaTime = dateFormatter.dateFromString(prayerTimes![whatSalatToWake.getString]!)
+        
+        let calendar = NSCalendar.currentCalendar()
+        var adjustedTime: NSDate?
+        
+        if whenToWake == .OnTime {
+           adjustedTime = salatOrQadhaTime
+        } else if whenToWake == .Before {
+            adjustedTime = calendar.dateByAddingUnit(.Minute, value: -minsToAdjust, toDate: salatOrQadhaTime!, options: [])
+        } else if whenToWake == .After {
+            adjustedTime = calendar.dateByAddingUnit(.Minute, value: minsToAdjust, toDate: salatOrQadhaTime!, options: [])
+        }
+        
+        let currentDate = NSDate()
+        let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
+        let adjustedTimeComponents = calendar.components([.Hour, .Minute], fromDate: adjustedTime!)
+        let timeToAlarmComponents = NSDateComponents()
+        timeToAlarmComponents.year = currentDateComponents.year
+        timeToAlarmComponents.month = currentDateComponents.month
+        timeToAlarmComponents.day = currentDateComponents.day
+        timeToAlarmComponents.hour = adjustedTimeComponents.hour
+        timeToAlarmComponents.minute = adjustedTimeComponents.minute
+        timeToAlarmComponents.second = 0
+        let timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)
+        
+        return timeToAlarm
+    }
     
     var title: String {
         if whenToWake == .OnTime {
