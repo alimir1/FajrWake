@@ -46,15 +46,7 @@ public class PrayerTimes {
         case Isha
         
         var getString: String {
-            switch self {
-            case Fajr: return "Fajr"
-            case Sunrise: return "Sunrise"
-            case Dhuhr: return "Dhuhr"
-            case Asr: return "Asr"
-            case Sunset: return "Sunset"
-            case Maghrib: return "Maghrib"
-            case Isha: return "Isha"
-            }
+            return String(self)
         }
     }
     
@@ -325,9 +317,9 @@ public class PrayerTimes {
         let minutes = Int(floor( (Double(adujestedTime) - Double(hours)) * 60))
         var suffix: String, result: String
         if (hours >= 12) {
-            suffix = "pm"
+            suffix = "PM"
         } else {
-            suffix = "am"
+            suffix = "AM"
         }
         hours = (((hours+12)-1)%12)+1
         /*hours = (hours + 12) - 1

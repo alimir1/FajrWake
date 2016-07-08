@@ -139,7 +139,6 @@ class AddAlarmMasterViewController: UIViewController {
                     addAlarmChoicesContainer.tableView.scrollEnabled = false
                     addAlarmChoicesContainer.deleteAlarmCell.hidden = true
                 }
-                
             default:
                 break
             }

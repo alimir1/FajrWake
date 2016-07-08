@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVFoundation
 
 // local GMT
 class LocalGMT {
@@ -256,8 +255,6 @@ extension AlarmClockType {
         return alarmSubtitleAttributedString
     }
 }
-
-
 
 struct CustomAlarm: AlarmClockType {
     var alarmLabel: String
