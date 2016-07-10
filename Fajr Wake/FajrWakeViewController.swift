@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import AddressBookUI
+import AVFoundation
 
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var manager: OneShotLocationManager?
@@ -17,6 +18,8 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var alarms = [AlarmClockType]()
     var noAlarmsLabel = UILabel()
     var isEditingMode = false
+    var timer = NSTimer()
+    var alarmSoundPlayer: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,42 +151,95 @@ extension FajrWakeViewController {
                 alarms[selectedIndexPath.row] = alarm
                 tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
                 
-                // testing ////////////////////////////////////////////////////////////////
-                if alarm.alarmType == .FajrWakeAlarm {
-                    let alarm2 = alarm as! FajrWakeAlarm
-                    let calendar = NSCalendar.currentCalendar()
-                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(prayerTimes)!)
-                    print("test time: \(components.hour):\(components.minute)")
-                } else if alarm.alarmType == .CustomAlarm {
-                    let alarm2 = alarm as! CustomAlarm
-                    let calendar = NSCalendar.currentCalendar()
-                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(nil)!)
-                    print("test time: \(components.hour):\(components.minute)")
-                }
+                // Alarming ////////////////////////////////////////////////////////////////
+                    fireAlarm(alarm)
                 ///////////////////////////////////////////////////////////////////////////
                 
             } else {
+                // edit alarm
                 let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
                 alarms.append(alarm)
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
                 
-                // testing /////////////////////////////////////////////////////////////
-                if alarm.alarmType == .FajrWakeAlarm {
-                    let alarm2 = alarm as! FajrWakeAlarm
-                    let calendar = NSCalendar.currentCalendar()
-                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(prayerTimes)!)
-                    print("test time: \(components.hour):\(components.minute)")
-                } else if alarm.alarmType == .CustomAlarm {
-                    let alarm2 = alarm as! CustomAlarm
-                    let calendar = NSCalendar.currentCalendar()
-                    let components = calendar.components([.Minute, .Hour], fromDate: alarm2.timeToAlarm(nil)!)
-                    print("test time: \(components.hour):\(components.minute)")
-                }
+                // Alarming /////////////////////////////////////////////////////////////
+                    fireAlarm(alarm)
                 ///////////////////////////////////////////////////////////////////////////
-                
             }
         }
     }
+    
+    
+    ///////////////////////////////Firing Alarm////////////////////////////////////////////
+    func fireAlarm(alarm: AlarmClockType?) {
+        var timeToAlarm: NSDate?
+        
+        if alarm != nil {
+            if alarm!.alarmType == .FajrWakeAlarm {
+                let fajrAlarm = alarm as! FajrWakeAlarm
+                timeToAlarm = fajrAlarm.timeToAlarm(prayerTimes)!
+            } else if alarm!.alarmType == .CustomAlarm {
+                let customAlarm = alarm as! CustomAlarm
+                timeToAlarm = customAlarm.timeToAlarm(nil)!
+            }
+        }
+        
+        if timeToAlarm != nil {
+            if timeToAlarm!.timeIntervalSinceNow > 0 {
+                timer = NSTimer.scheduledTimerWithTimeInterval(timeToAlarm!.timeIntervalSinceNow, target: self, selector: #selector(alarmAction), userInfo: alarm!.sound.alarmSound.URL, repeats: false)
+            }
+        } else {
+            timer = NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: #selector(self.alarmAction), userInfo: alarm!.sound.alarmSound.URL, repeats: false)
+        }
+    }
+    
+    func playSound(url: NSURL) {
+        do {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback) // play audio even in silent mode
+            } catch {
+                print("could not play in silent mode")
+            }
+            alarmSoundPlayer = try AVAudioPlayer(contentsOfURL: url)
+            alarmSoundPlayer.volume = 1.0
+            alarmSoundPlayer.play()
+            alarmSoundPlayer.numberOfLoops = -1 // "infinite" loop
+        } catch {
+            print("could not play sound")
+        }
+    }
+    
+    ////////////////////////////////Alarm Action///////////////////////////////////////////
+    func alarmAction(timer: NSTimer) {
+        
+        let url = timer.userInfo as? NSURL
+        
+        if url != nil {
+            playSound(url!)
+        }
+
+        ///// Alarm Alert View
+        let alertController = UIAlertController(title: "Alarm", message: nil, preferredStyle: .Alert)
+        // Snooze Button
+        alertController.addAction(UIAlertAction(title: "Snooze", style: UIAlertActionStyle.Default) {
+            action -> Void in
+            if self.alarmSoundPlayer != nil {
+                self.alarmSoundPlayer.stop()
+                self.alarmSoundPlayer = nil
+            }
+            self.fireAlarm(nil)
+            })
+        // Ok Button
+        alertController.addAction(UIAlertAction(title: "OK", style: .Default) {
+            action -> Void in
+            if self.alarmSoundPlayer != nil {
+                self.alarmSoundPlayer.stop()
+                self.alarmSoundPlayer = nil
+            }
+            })
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    ///////////////////////////////////////////////////////////////////////////
+
     
     @IBAction func unwindToAlarmsDelete(sender: UIStoryboardSegue) {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
