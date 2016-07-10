@@ -11,7 +11,7 @@ import UIKit
 class FajrWakeCell: UITableViewCell {
     @IBOutlet weak var alarmLabel: UILabel!
     @IBOutlet weak var alarmDetailLabel: UILabel!
-    @IBOutlet weak var alarmSwitch: UISwitch!
+    var alarmSwitch = UISwitch()
 
     override func awakeFromNib() {
         super.awakeFromNib()

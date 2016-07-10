@@ -146,19 +146,11 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xQB-bM-h6V">
-                                            <rect key="frame" x="530" y="19" width="51" height="31"/>
-                                        </switch>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="xQB-bM-h6V" secondAttribute="trailing" constant="13" id="cmW-rm-vZL"/>
-                                        <constraint firstItem="xQB-bM-h6V" firstAttribute="centerY" secondItem="1FJ-pm-kVv" secondAttribute="centerY" id="fRZ-Vr-V7m"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="alarmDetailLabel" destination="9e7-x3-DGF" id="AYR-dT-K55"/>
                                     <outlet property="alarmLabel" destination="oly-jz-6Cp" id="7l2-AD-KLy"/>
-                                    <outlet property="alarmSwitch" destination="xQB-bM-h6V" id="aQX-wp-qJb"/>
                                     <segue destination="NgY-ZL-nSc" kind="presentation" identifier="showDetail" id="JYW-td-i19"/>
                                 </connections>
                             </tableViewCell>

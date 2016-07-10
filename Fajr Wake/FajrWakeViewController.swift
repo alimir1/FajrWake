@@ -16,18 +16,26 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var locationNameDisplay: String = ""
     var alarms = [AlarmClockType]()
     var noAlarmsLabel = UILabel()
+    var isEditingMode = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupPrayerTimes()
-        navigationItem.leftBarButtonItem = editButtonItem()
         noAlarmsLabelConfig()
         
+        // hide "edit" button when no alarm
+        if alarms.count > 0 {
+            navigationItem.leftBarButtonItem = editButtonItem()
+        } else {
+            self.setEditing(false, animated: false)
+            navigationItem.leftBarButtonItem = nil
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         updatePrayerTimes()
+        self.setEditing(false, animated: false)
     }
     
     func noAlarmsLabelConfig() {
@@ -64,6 +72,14 @@ extension FajrWakeViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // hide "edit" button when no alarm
+        if alarms.count > 0 {
+            navigationItem.leftBarButtonItem = editButtonItem()
+        } else {
+            self.setEditing(false, animated: false)
+            navigationItem.leftBarButtonItem = nil
+        }
+        
         return alarms.count
     }
     
@@ -71,7 +87,7 @@ extension FajrWakeViewController {
         self.displaySettingsTableView()
         return 30.0
     }
-
+    
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let fajr = prayerTimes[SalatsAndQadhas.Fajr.getString]
         let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
@@ -88,16 +104,20 @@ extension FajrWakeViewController {
         }
     }
     
-     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let cellIdentifier = "FajrWakeCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
-        
         let alarm = alarms[indexPath.row]
+        
+        cell.alarmSwitch.on = true
         cell.alarmLabel.attributedText = alarm.attributedTitle
         cell.alarmDetailLabel.attributedText = alarm.attributedSubtitle
+        cell.editingAccessoryType = .DisclosureIndicator
+        cell.accessoryView = cell.alarmSwitch
         
         return cell
-     }
+    }
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == .Delete {
@@ -108,36 +128,25 @@ extension FajrWakeViewController {
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let cellIdentifier = "FajrWakeCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
-        
         if tableView.editing == true {
-//            cell.alarmSwitch.hidden = true
-//            cell.alarmSwitch.on = false
+            tableView.allowsSelectionDuringEditing = true
         } else {
-//            cell.alarmSwitch.hidden = false
+            self.tableView.allowsSelection = false
         }
         return true
     }
-
- }
+    
+}
 
 // MARK: - Navigation
 extension FajrWakeViewController {
     @IBAction func unwindToAlarms(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? AddAlarmMasterViewController, let alarm = sourceViewController.alarmClock {
             
-            let cellIdentifier = "FajrWakeCell"
-            
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 // add new alarm
                 alarms[selectedIndexPath.row] = alarm
                 tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
-                
-                
-                let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: selectedIndexPath) as! FajrWakeCell
-                cell.alarmSwitch.on = true
-
                 
                 // testing ////////////////////////////////////////////////////////////////
                 if alarm.alarmType == .FajrWakeAlarm {
@@ -153,16 +162,10 @@ extension FajrWakeViewController {
                 }
                 ///////////////////////////////////////////////////////////////////////////
                 
-                
-                
             } else {
-                // edit alarm
                 let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
                 alarms.append(alarm)
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-                
-                let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: newIndexPath) as! FajrWakeCell
-                cell.alarmSwitch.on = true
                 
                 // testing /////////////////////////////////////////////////////////////
                 if alarm.alarmType == .FajrWakeAlarm {
@@ -221,7 +224,7 @@ extension FajrWakeViewController {
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
         }
     }
-
+    
     // location settings for prayer time
     func locationSettingsForPrayerTimes (lat lat: Double, lon: Double, gmt: Double) {
         let settings = NSUserDefaults.standardUserDefaults()
@@ -251,13 +254,13 @@ extension FajrWakeViewController {
         self.navigationItem.titleView = ActivityIndicator.showActivityIndicator("Getting location...")
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
-
+            
             // fetch location or an error
             if let loc = location {
                 let lat = loc.coordinate.latitude
                 let lon = loc.coordinate.longitude
                 let gmt = LocalGMT.getLocalGMT()
-
+                
                 self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
                 
             } else if let err = error {
@@ -306,7 +309,7 @@ extension FajrWakeViewController {
             }
         })
     }
-
+    
     // sets locationNameDisplay variable appropriately
     func setLocationAddress(placemarks: [CLPlacemark]) {
         let pm = placemarks[0]
