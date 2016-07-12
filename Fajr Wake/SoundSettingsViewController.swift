@@ -103,8 +103,8 @@ class SoundSettingsViewController: UITableViewController {
         
         
         // Play Sound
-        if sound != .None {
-            playSound(sound.URL)
+        if sound.URL != nil {
+            playSound(sound.URL!)
         } else {
             if alarmSoundPlayer != nil {
                 alarmSoundPlayer.stop()

@@ -175,9 +175,12 @@ enum AlarmSounds: String {
     case Alarm, Radar, Apex, Chimes, Crickets, Presto, Timba, Pinball, Harp
     case None = "None"
     
-    var URL: NSURL {
+    var URL: NSURL? {
         switch self {
-        case .Alarm, .Radar, .Apex, .Chimes, .Crickets, .Presto, .Timba, .Pinball, .Harp: return NSURL(fileURLWithPath: "/Library/Ringtones/\(self).m4r")
+        case .None:
+            return nil
+        case .Alarm, .Radar, .Apex, .Chimes, .Crickets, .Presto, .Timba, .Pinball, .Harp:
+            return NSURL(fileURLWithPath: "/Library/Ringtones/\(self).m4r")
         default:
             let path = NSBundle.mainBundle().pathForResource("\(self)", ofType: "mp3", inDirectory: "Sounds")
             let url = NSURL(fileURLWithPath: path!)
@@ -218,6 +221,7 @@ protocol AlarmClockType {
     var sound: AlarmSound { get set }
     var snooze: Bool { get set }
     var alarmType: AlarmType { get set }
+    var alarmOnOff: Bool { get set }
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate?
     
     var attributedTitle: NSMutableAttributedString { get }
@@ -263,6 +267,7 @@ struct CustomAlarm: AlarmClockType {
     var snooze: Bool
     var time: NSDate
     var alarmType: AlarmType
+    var alarmOnOff: Bool
     
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
         let currentDate = NSDate()
@@ -314,6 +319,7 @@ struct FajrWakeAlarm: AlarmClockType {
     var whenToWake: WakeOptions
     var whatSalatToWake: SalatsAndQadhas
     var alarmType: AlarmType
+    var alarmOnOff: Bool
     
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
         let dateFormatter = NSDateFormatter()
