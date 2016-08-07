@@ -223,11 +223,10 @@ protocol AlarmClockType {
     var alarmType: AlarmType { get set }
     var alarmOn: Bool { get set }
     var alarm: NSTimer? { get set }
-    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?)
     var attributedTitle: NSMutableAttributedString { get }
-
+    
+    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?)
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate?
-    func stopAlarm()
 }
 
 extension AlarmClockType {
@@ -259,6 +258,19 @@ extension AlarmClockType {
             alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
         }
         return alarmSubtitleAttributedString
+    }
+    
+    func stopAlarm() {
+        if alarm != nil {
+            if alarm!.valid {
+                alarm!.invalidate()
+                print("FajrWakeAlarm invalidated")
+            } else {
+                print("alarm is invalid FajrWakeAlarm")
+            }
+        } else {
+            print("alarm is nil")
+        }
     }
 }
 
@@ -329,19 +341,6 @@ class CustomAlarm: AlarmClockType {
             }
             alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
             print("Alarm triggered")
-        }
-    }
-    
-    func stopAlarm() {
-        if alarm != nil {
-            if alarm!.valid {
-                alarm!.invalidate()
-                print("CustomAlarm invalidated")
-            } else {
-                print("alarm is invalid CustomAlarm")
-            }
-        } else {
-            print("alarm is nil")
         }
     }
 }
@@ -434,19 +433,6 @@ class FajrWakeAlarm: AlarmClockType {
             }
             alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
             print("Alarm triggered")
-        }
-    }
-    
-    func stopAlarm() {
-        if alarm != nil {
-            if alarm!.valid {
-                alarm!.invalidate()
-                print("FajrWakeAlarm invalidated")
-            } else {
-                print("alarm is invalid FajrWakeAlarm")
-            }
-        } else {
-            print("alarm is nil")
         }
     }
 }

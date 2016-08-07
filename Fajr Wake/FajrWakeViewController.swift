@@ -109,6 +109,8 @@ extension FajrWakeViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        print("CellForRowAtIndexPath Called!!!")
+        
         let cellIdentifier = "FajrWakeCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
         let alarm = alarms[indexPath.row]
@@ -144,14 +146,7 @@ extension FajrWakeViewController {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
             
             // Stop Alarm
-            if alarm.alarmType == .FajrWakeAlarm {
-                let fajrAlarm = alarm as! FajrWakeAlarm
-                fajrAlarm.stopAlarm()
-            } else if alarm.alarmType == .CustomAlarm {
-                let customAlarm = alarm as! CustomAlarm
-                customAlarm.stopAlarm()
-            }
-            ///////
+            alarm.stopAlarm()
         }
         let alarmSwitch = UISwitch(frame: CGRectZero)
         alarmSwitch.on = alarm.alarmOn
