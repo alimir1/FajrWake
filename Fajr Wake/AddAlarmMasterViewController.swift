@@ -56,9 +56,9 @@ class AddAlarmMasterViewController: UIViewController {
         if saveButton === sender {
             if alarmType != nil {
                 if alarmType! == .FajrWakeAlarm {
-                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, minsToAdjust: minsToAdjust!, whenToWake: whenToWake!, whatSalatToWake: whatSalatToWake!, alarmType: .FajrWakeAlarm, alarmOnOff: true)
+                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, minsToAdjust: minsToAdjust!, whenToWake: whenToWake!, whatSalatToWake: whatSalatToWake!, alarmType: .FajrWakeAlarm, alarmOn: true)
                 } else if alarmType! == .CustomAlarm {
-                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: self.snooze!, time: pickerTime!, alarmType: .CustomAlarm, alarmOnOff: true)
+                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: self.snooze!, time: pickerTime!, alarmType: .CustomAlarm, alarmOn: true)
                 }
             }
         }

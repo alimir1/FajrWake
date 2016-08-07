@@ -214,21 +214,23 @@ class UserSettingsPrayertimes {
     }
 }
 
-// MARK: - Protocols
+// MARK: - Protocol
 protocol AlarmClockType {
     var alarmLabel: String { get set }
     var daysToRepeat: [Days]? { get set }
     var sound: AlarmSound { get set }
     var snooze: Bool { get set }
     var alarmType: AlarmType { get set }
-    var alarmOnOff: Bool { get set }
-    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate?
-    
+    var alarmOn: Bool { get set }
+    var alarm: NSTimer? { get set }
+    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?)
     var attributedTitle: NSMutableAttributedString { get }
+
+    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate?
+    func stopAlarm()
 }
 
 extension AlarmClockType {
-    
     var repeatDaysDisplayString: String? {
         var repeatDaysString: String?
         if let days = daysToRepeat {
@@ -260,30 +262,41 @@ extension AlarmClockType {
     }
 }
 
-struct CustomAlarm: AlarmClockType {
+class CustomAlarm: AlarmClockType {
     var alarmLabel: String
     var daysToRepeat: [Days]?
     var sound: AlarmSound
     var snooze: Bool
     var time: NSDate
     var alarmType: AlarmType
-    var alarmOnOff: Bool
+    var alarmOn: Bool
+    var alarm: NSTimer? = nil
     
+    init(alarmLabel: String, daysToRepeat: [Days]?, sound: AlarmSound, snooze: Bool, time: NSDate, alarmType: AlarmType, alarmOn: Bool) {
+        self.alarmLabel = alarmLabel
+        self.daysToRepeat = daysToRepeat
+        self.sound = sound
+        self.snooze = snooze
+        self.time = time
+        self.alarmType = alarmType
+        self.alarmOn = alarmOn
+    }
+
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
         let currentDate = NSDate()
         let calendar = NSCalendar.currentCalendar()
         let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
         let pickerTimeComponents = calendar.components([.Hour, .Minute], fromDate: time)
         let timeToAlarmComponents = NSDateComponents()
+        
         timeToAlarmComponents.year = currentDateComponents.year
         timeToAlarmComponents.month = currentDateComponents.month
         timeToAlarmComponents.day = currentDateComponents.day
         timeToAlarmComponents.hour = pickerTimeComponents.hour
         timeToAlarmComponents.minute = pickerTimeComponents.minute
         timeToAlarmComponents.second = 0
-        let timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)
         
-        return timeToAlarm
+        return calendar.dateFromComponents(timeToAlarmComponents)
     }
     
     var timeToString: String {
@@ -308,9 +321,32 @@ struct CustomAlarm: AlarmClockType {
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: amPMRange)
         return alarmAttributedTitle
     }
+    
+    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
+        if date.timeIntervalSinceNow > 0 {
+            if alarm != nil {
+                alarm!.invalidate()
+            }
+            alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
+            print("Alarm triggered")
+        }
+    }
+    
+    func stopAlarm() {
+        if alarm != nil {
+            if alarm!.valid {
+                alarm!.invalidate()
+                print("CustomAlarm invalidated")
+            } else {
+                print("alarm is invalid CustomAlarm")
+            }
+        } else {
+            print("alarm is nil")
+        }
+    }
 }
 
-struct FajrWakeAlarm: AlarmClockType {
+class FajrWakeAlarm: AlarmClockType {
     var alarmLabel: String
     var daysToRepeat: [Days]?
     var sound: AlarmSound
@@ -319,8 +355,21 @@ struct FajrWakeAlarm: AlarmClockType {
     var whenToWake: WakeOptions
     var whatSalatToWake: SalatsAndQadhas
     var alarmType: AlarmType
-    var alarmOnOff: Bool
+    var alarmOn: Bool
+    var alarm: NSTimer? = nil
     
+    init(alarmLabel: String, daysToRepeat: [Days]?, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool) {
+        self.alarmLabel = alarmLabel
+        self.daysToRepeat = daysToRepeat
+        self.sound = sound
+        self.snooze = snooze
+        self.minsToAdjust = minsToAdjust
+        self.whenToWake = whenToWake
+        self.whatSalatToWake = whatSalatToWake
+        self.alarmType = alarmType
+        self.alarmOn = alarmOn
+    }
+        
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
@@ -374,8 +423,31 @@ struct FajrWakeAlarm: AlarmClockType {
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 10)!, range: rangeOfMinText)
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfMinutesToAdjust)
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
-
+        
         return alarmAttributedTitle
+    }
+    
+    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
+        if date.timeIntervalSinceNow > 0 {
+            if alarm != nil {
+                alarm!.invalidate()
+            }
+            alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
+            print("Alarm triggered")
+        }
+    }
+    
+    func stopAlarm() {
+        if alarm != nil {
+            if alarm!.valid {
+                alarm!.invalidate()
+                print("FajrWakeAlarm invalidated")
+            } else {
+                print("alarm is invalid FajrWakeAlarm")
+            }
+        } else {
+            print("alarm is nil")
+        }
     }
 }
 
