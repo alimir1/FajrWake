@@ -109,11 +109,9 @@ extension FajrWakeViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        print("CellForRowAtIndexPath Called!!!")
-        
         let cellIdentifier = "FajrWakeCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
-        let alarm = alarms[indexPath.row]
+        var alarm = alarms[indexPath.row]
         
         cell.alarmLabel.attributedText = alarm.attributedTitle
         cell.alarmDetailLabel.attributedText = alarm.attributedSubtitle
@@ -144,26 +142,27 @@ extension FajrWakeViewController {
 
         } else {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
-            
-            // Stop Alarm
             alarm.stopAlarm()
         }
         let alarmSwitch = UISwitch(frame: CGRectZero)
         alarmSwitch.on = alarm.alarmOn
         cell.accessoryView = alarmSwitch
         alarmSwitch.tag = indexPath.row
+        print("actual row: \(alarmSwitch.tag)")
         alarmSwitch.addTarget(self, action: #selector(self.switchChanged), forControlEvents: .ValueChanged)
         
         return cell
     }
     
     // Target-Action for AlarmClock switch (on/off)
-    func switchChanged(sender: AnyObject) {
-        let switchControl: UISwitch = sender as! UISwitch
-        let indexPath = NSIndexPath(forRow: switchControl.tag, inSection: 0)
-        
-        alarms[switchControl.tag].alarmOn = switchControl.on
-        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    func switchChanged(switchControl: UISwitch) {
+        let switchOriginInTableView = switchControl.convertPoint(CGPointZero, toView: tableView)
+        if let indexPath = tableView.indexPathForRowAtPoint(switchOriginInTableView) {
+            alarms[indexPath.row].alarmOn = switchControl.on
+            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        } else {
+            print("cell doesn't exist (it may have been deleted)")
+        }
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {

@@ -225,7 +225,6 @@ protocol AlarmClockType {
     var alarm: NSTimer? { get set }
     var attributedTitle: NSMutableAttributedString { get }
     
-    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?)
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate?
 }
 
@@ -260,13 +259,21 @@ extension AlarmClockType {
         return alarmSubtitleAttributedString
     }
     
+    mutating func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
+        if date.timeIntervalSinceNow > 0 {
+            if alarm != nil {
+                alarm!.invalidate()
+            }
+            alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
+            print("Alarm triggered")
+        }
+    }
+    
     func stopAlarm() {
         if alarm != nil {
             if alarm!.valid {
                 alarm!.invalidate()
-                print("FajrWakeAlarm invalidated")
-            } else {
-                print("alarm is invalid FajrWakeAlarm")
+                print("alarm invalidated")
             }
         } else {
             print("alarm is nil")
@@ -332,16 +339,6 @@ class CustomAlarm: AlarmClockType {
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: alarmTimeRange)
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: amPMRange)
         return alarmAttributedTitle
-    }
-    
-    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
-        if date.timeIntervalSinceNow > 0 {
-            if alarm != nil {
-                alarm!.invalidate()
-            }
-            alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
-            print("Alarm triggered")
-        }
     }
 }
 
@@ -424,16 +421,6 @@ class FajrWakeAlarm: AlarmClockType {
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: rangeOfRestOfText)
         
         return alarmAttributedTitle
-    }
-    
-    func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
-        if date.timeIntervalSinceNow > 0 {
-            if alarm != nil {
-                alarm!.invalidate()
-            }
-            alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
-            print("Alarm triggered")
-        }
     }
 }
 
