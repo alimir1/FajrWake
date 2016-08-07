@@ -260,12 +260,24 @@ extension AlarmClockType {
     }
     
     mutating func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
+        
+        // invalidate alarm (if exists)
+        if alarm != nil {
+            alarm!.invalidate()
+        }
+        
         if date.timeIntervalSinceNow > 0 {
-            if alarm != nil {
-                alarm!.invalidate()
-            }
             alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
-            print("Alarm triggered")
+            print("Alarm successfully set")
+        } else {
+            let nextDayAlarmDate = date.dateByAddingTimeInterval(60 * 60 * 24)
+            alarm = NSTimer.scheduledTimerWithTimeInterval(nextDayAlarmDate.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
+            
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "MM-dd-yyyy HH:mm a"
+            let dateString = formatter.stringFromDate(nextDayAlarmDate)
+            
+            print("Current time is past alarm time. Alarm is now set for tomorrow \(dateString)")
         }
     }
     

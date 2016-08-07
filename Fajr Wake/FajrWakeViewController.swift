@@ -148,7 +148,6 @@ extension FajrWakeViewController {
         alarmSwitch.on = alarm.alarmOn
         cell.accessoryView = alarmSwitch
         alarmSwitch.tag = indexPath.row
-        print("actual row: \(alarmSwitch.tag)")
         alarmSwitch.addTarget(self, action: #selector(self.switchChanged), forControlEvents: .ValueChanged)
         
         return cell
