@@ -225,7 +225,7 @@ protocol AlarmClockType {
     var alarm: NSTimer? { get set }
     var attributedTitle: NSMutableAttributedString { get }
     
-    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate?
+    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate
 }
 
 extension AlarmClockType {
@@ -265,20 +265,18 @@ extension AlarmClockType {
         if alarm != nil {
             alarm!.invalidate()
         }
-        
-        if date.timeIntervalSinceNow > 0 {
-            alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
-            print("Alarm successfully set")
-        } else {
-            let nextDayAlarmDate = date.dateByAddingTimeInterval(60 * 60 * 24)
-            alarm = NSTimer.scheduledTimerWithTimeInterval(nextDayAlarmDate.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
-            
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "MM-dd-yyyy HH:mm a"
-            let dateString = formatter.stringFromDate(nextDayAlarmDate)
-            
-            print("Current time is past alarm time. Alarm is now set for tomorrow \(dateString)")
+        var dateToAlarm = date
+        let dateFormatter = NSDateFormatter()
+        // if alarm time is greater than current time, then set alarm for the next day
+        if date.timeIntervalSinceNow < 0 {
+            dateToAlarm = dateToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
+            print("alarm time set to next day")
         }
+        alarm = NSTimer.scheduledTimerWithTimeInterval(dateToAlarm.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
+        
+        dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
+        let dateString = dateFormatter.stringFromDate(dateToAlarm)
+        print("Alarm set for \(dateString)")
     }
     
     func stopAlarm() {
@@ -313,7 +311,7 @@ class CustomAlarm: AlarmClockType {
         self.alarmOn = alarmOn
     }
 
-    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
+    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate {
         let currentDate = NSDate()
         let calendar = NSCalendar.currentCalendar()
         let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
@@ -327,7 +325,7 @@ class CustomAlarm: AlarmClockType {
         timeToAlarmComponents.minute = pickerTimeComponents.minute
         timeToAlarmComponents.second = 0
         
-        return calendar.dateFromComponents(timeToAlarmComponents)
+        return calendar.dateFromComponents(timeToAlarmComponents)!
     }
     
     var timeToString: String {
@@ -378,7 +376,7 @@ class FajrWakeAlarm: AlarmClockType {
         self.alarmOn = alarmOn
     }
         
-    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate? {
+    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
         let salatOrQadhaTime = dateFormatter.dateFromString(prayerTimes![whatSalatToWake.getString]!)
@@ -406,7 +404,7 @@ class FajrWakeAlarm: AlarmClockType {
         timeToAlarmComponents.second = 0
         let timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)
         
-        return timeToAlarm
+        return timeToAlarm!
     }
     
     var title: String {

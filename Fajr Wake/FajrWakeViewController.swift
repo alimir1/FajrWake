@@ -37,7 +37,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        updatePrayerTimes()
+        updatePrayerTimes(NSDate())
         self.setEditing(false, animated: false)
     }
     
@@ -124,18 +124,26 @@ extension FajrWakeViewController {
             // Alarming ////////////////////////////////////////////////////////////////
             if alarm.alarmType == .FajrWakeAlarm {
                 let fajrAlarm = alarm as! FajrWakeAlarm
+                var dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate()))
+                
+                if dateToAlarm.timeIntervalSinceNow < 0 {
+                    // based on next day's prayer times
+                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(60 * 60 * 24)))
+                }
                 if let url = fajrAlarm.sound.alarmSound.URL {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: fajrAlarm.timeToAlarm(prayerTimes)!, userInfo: [indexPath.row : url])
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath.row : url])
                 } else {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: fajrAlarm.timeToAlarm(prayerTimes)!, userInfo: indexPath.row)
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath.row)
                 }
 
             } else if alarm.alarmType == .CustomAlarm {
                 let customAlarm = alarm as! CustomAlarm
+                let dateToAlarm = customAlarm.timeToAlarm(nil)
+                
                 if let url = customAlarm.sound.alarmSound.URL {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: customAlarm.timeToAlarm(nil)!, userInfo: [indexPath.row : url])
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath.row : url])
                 } else {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: customAlarm.timeToAlarm(nil)!, userInfo: indexPath.row)
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath.row)
                 }
             }
             ///////////////////////////////////////////////////////////////////////////
@@ -301,7 +309,7 @@ extension FajrWakeViewController {
             } else {
                 self.locationNameDisplay = "Could not get name of your city, state or country"
             }
-            updatePrayerTimes()
+            updatePrayerTimes(NSDate())
             
         } else {
             startLocationDelegation()
@@ -319,16 +327,20 @@ extension FajrWakeViewController {
     }
     
     // update prayer time dictionary
-    func updatePrayerTimes() {
+    func updatePrayerTimes(date: NSDate) {
+        self.prayerTimes = getPrayerTimes(date)
+        self.tableView.reloadData()
+    }
+    
+    // Helper method to get prayer times
+    func getPrayerTimes(date: NSDate) -> [String: String] {
         let settings = NSUserDefaults.standardUserDefaults()
         let lon = settings.doubleForKey("longitude")
         let lat = settings.doubleForKey("latitude")
         let gmt = settings.doubleForKey("gmt")
-        
         let userPrayerTime = UserSettingsPrayertimes()
-        self.prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), latitude: lat, longitude: lon, tZone: gmt)
         
-        self.tableView.reloadData()
+        return userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: date, latitude: lat, longitude: lon, tZone: gmt)
     }
 }
 
@@ -369,7 +381,7 @@ extension FajrWakeViewController {
         // call function to get city, state, and country of the given coordinates
         self.reverseGeocoding(lat, longitude: lon)
         
-        self.updatePrayerTimes()
+        self.updatePrayerTimes(NSDate())
         
         // stop showing activity indicator in navigation title
         self.navigationItem.titleView = nil

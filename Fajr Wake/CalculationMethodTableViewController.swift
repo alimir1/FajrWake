@@ -81,7 +81,7 @@ class CalculationMethodTableViewController: UITableViewController {
             }
             let settings = NSUserDefaults.standardUserDefaults()
             settings.setInteger(saveSelectionIndex, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
-            FajrWakeViewController().updatePrayerTimes()
+            FajrWakeViewController().updatePrayerTimes(NSDate())
         }
         
         //update the checkmark for the current row

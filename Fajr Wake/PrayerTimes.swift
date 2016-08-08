@@ -233,10 +233,10 @@ public class PrayerTimes {
     }
     
     // return prayer times for a given date
-    public func getPrayerTimes(date: NSCalendar, latitude: Double, longitude: Double, tZone: Double) -> [String: String] {
-        let year = (date.component(NSCalendarUnit.Year, fromDate: NSDate()))
-        let month = (date.component(NSCalendarUnit.Month, fromDate: NSDate()))
-        let day = (date.component(NSCalendarUnit.Day, fromDate: NSDate()))
+    public func getPrayerTimes(calendar: NSCalendar, date: NSDate, latitude: Double, longitude: Double, tZone: Double) -> [String: String] {
+        let year = (calendar.component(NSCalendarUnit.Year, fromDate: date))
+        let month = (calendar.component(NSCalendarUnit.Month, fromDate: date))
+        let day = (calendar.component(NSCalendarUnit.Day, fromDate: date))
         
         return getDatePrayerTimes(year, month: month, day: day, latitude: latitude, longitude: longitude, tZone: tZone)
     }

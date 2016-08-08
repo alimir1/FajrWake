@@ -67,7 +67,7 @@ extension SettingsViewController {
                 // call function to get city, state, and country of the given coordinates
                 FajrWakeViewController().reverseGeocoding(lat, longitude: lon)
                 
-                FajrWakeViewController().updatePrayerTimes()
+                FajrWakeViewController().updatePrayerTimes(NSDate())
                 
                 // stop showing activity indicator in navigation title
                 self.navigationItem.titleView = nil
