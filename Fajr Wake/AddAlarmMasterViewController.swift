@@ -64,7 +64,6 @@ class AddAlarmMasterViewController: UIViewController {
         }
         
         if let segueIdentifier = segue.identifier {
-            
             if let alarm = alarmClock {
                 // Edit Alarm
                 alarmType = alarm.alarmType

@@ -128,22 +128,22 @@ extension FajrWakeViewController {
                 
                 if dateToAlarm.timeIntervalSinceNow < 0 {
                     // based on next day's prayer times
-                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(60 * 60 * 24)))
+                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(2*(60 * 60 * 24))))
                 }
                 if let url = fajrAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath.row : url])
                 } else {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath.row)
                 }
-
+                
             } else if alarm.alarmType == .CustomAlarm {
                 let customAlarm = alarm as! CustomAlarm
                 let dateToAlarm = customAlarm.timeToAlarm(nil)
                 
                 if let url = customAlarm.sound.alarmSound.URL {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath.row : url])
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
                 } else {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath.row)
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
                 }
             }
             ///////////////////////////////////////////////////////////////////////////
@@ -200,28 +200,35 @@ extension FajrWakeViewController {
         if let sourceViewController = sender.sourceViewController as? AddAlarmMasterViewController, let alarm = sourceViewController.alarmClock {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 // edit alarm
+                // turn off the previous alarm
+                alarms[selectedIndexPath.row].alarmOn = false
+                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
+                
+                // replace alarm clock with edited alarm
                 alarms[selectedIndexPath.row] = alarm
-                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
             } else {
                 // add new alarm
                 let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
                 alarms.append(alarm)
-                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
             }
         }
     }
 
     ///////////////////////////////Firing Alarm////////////////////////////////////////////////////
     func alarmAction(timer: NSTimer) {
-
-        var url: NSURL?
-        var row: Int?
         
-        if let userInfo = timer.userInfo as? [Int : NSURL] {
-            row = userInfo.first!.0
+        // - FIXME: ERROR HANDLING FOR INDEXPATH!!!!
+        
+        var url: NSURL?
+        var indexPath: NSIndexPath?
+        
+        if let userInfo = timer.userInfo as? [NSIndexPath : NSURL] {
+            indexPath = userInfo.first!.0
             url = userInfo.first!.1
-        } else if let userInfo = timer.userInfo as? Int {
-            row = userInfo
+        } else if let userInfo = timer.userInfo as? NSIndexPath {
+            indexPath = userInfo
         }
 
         if url != nil {
@@ -230,30 +237,37 @@ extension FajrWakeViewController {
         
         ///// Alarm Alert View
         alarmAlertController = UIAlertController(title: "Alarm", message: nil, preferredStyle: .Alert)
-        // Snooze Button
-        alarmAlertController!.addAction(UIAlertAction(title: "Snooze", style: UIAlertActionStyle.Default) {
-            action -> Void in
-            if self.alarmSoundPlayer != nil {
-                self.alarmSoundPlayer.stop()
-                self.alarmSoundPlayer = nil
-            }
-            
-            if row != nil {
-                if url != nil {
-                    self.alarms[row!].startAlarm(self, selector: #selector(self.alarmAction), date: NSDate().dateByAddingTimeInterval(5), userInfo: [row! : url!])
-                } else {
-                    self.alarms[row!].startAlarm(self, selector: #selector(self.alarmAction), date: NSDate().dateByAddingTimeInterval(5), userInfo: row!)
+        if alarms[indexPath!.row].snooze == true {
+            // Snooze Button
+            alarmAlertController!.addAction(UIAlertAction(title: "Snooze", style: UIAlertActionStyle.Default) {
+                action -> Void in
+                if self.alarmSoundPlayer != nil {
+                    self.alarmSoundPlayer.stop()
+                    self.alarmSoundPlayer = nil
                 }
-            } else {
-                print("invalid timer row!")
-            }
-            })
+                // snooze for 10 mins
+                if indexPath != nil {
+                    if url != nil {
+                        self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: NSDate().dateByAddingTimeInterval(60 * 10), userInfo: [indexPath!.row : url!])
+                    } else {
+                        self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: NSDate().dateByAddingTimeInterval(60 * 10), userInfo: indexPath!)
+                    }
+                } else {
+                    print("invalid timer row!")
+                }
+                })
+        }
         // Ok Button
         alarmAlertController!.addAction(UIAlertAction(title: "OK", style: .Default) {
             action -> Void in
             if self.alarmSoundPlayer != nil {
                 self.alarmSoundPlayer.stop()
                 self.alarmSoundPlayer = nil
+            }
+            if indexPath != nil {
+                // turn off alarm clock
+                self.alarms[indexPath!.row].alarmOn = false
+                self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             }
             })
         self.presentViewController(alarmAlertController!, animated: true, completion: nil)
@@ -279,8 +293,13 @@ extension FajrWakeViewController {
     
     @IBAction func unwindToAlarmsDelete(sender: UIStoryboardSegue) {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            // remove NSTimer
+            alarms[selectedIndexPath.row].alarmOn = false
+            tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
+            
+            // delete cell
             alarms.removeAtIndex(selectedIndexPath.row)
-            tableView.deleteRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Fade)
+            tableView.deleteRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
         }
     }
     
