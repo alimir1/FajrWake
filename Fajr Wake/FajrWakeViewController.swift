@@ -250,7 +250,7 @@ extension FajrWakeViewController {
                         self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: NSDate().dateByAddingTimeInterval(60 * 10), userInfo: indexPath!)
                     }
                 } else {
-                    print("invalid timer row!")
+                    print("invalid indexPath!")
                 }
                 })
         }
@@ -260,11 +260,6 @@ extension FajrWakeViewController {
             if self.alarmSoundPlayer != nil {
                 self.alarmSoundPlayer.stop()
                 self.alarmSoundPlayer = nil
-            }
-            if indexPath != nil {
-                // turn off alarm clock
-                self.alarms[indexPath!.row].alarmOn = false
-                self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             }
             })
         self.presentViewController(alarmAlertController!, animated: true, completion: nil)
