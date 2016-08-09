@@ -10,7 +10,7 @@ import UIKit
 
 class AddAlarmChoicesContainer: UITableViewController {
     @IBOutlet weak var labelDetailLabel: UILabel!
-    @IBOutlet weak var repeatDetailLabel: UILabel!
+//    @IBOutlet weak var repeatDetailLabel: UILabel!
     @IBOutlet weak var soundDetailLabel: UILabel!
     @IBOutlet weak var alarmTypeDetailLabel: UILabel!
     @IBOutlet weak var snoozeSwitch: UISwitch!
@@ -36,17 +36,17 @@ class AddAlarmChoicesContainer: UITableViewController {
         }
     }
     
-    var repeatDays: [Days]? {
-        didSet {
-            if let days = repeatDays {
-                repeatDetailLabel.text = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
-                AddAlarmMasterVCReference?.daysToRepeat = days
-            } else if repeatDays == nil {
-                repeatDetailLabel.text = "Never"
-                AddAlarmMasterVCReference?.daysToRepeat = nil
-            }
-        }
-    }
+//    var repeatDays: [Days]? {
+//        didSet {
+//            if let days = repeatDays {
+//                repeatDetailLabel.text = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
+//                AddAlarmMasterVCReference?.daysToRepeat = days
+//            } else if repeatDays == nil {
+//                repeatDetailLabel.text = "Never"
+//                AddAlarmMasterVCReference?.daysToRepeat = nil
+//            }
+//        }
+//    }
     
     var alarmLabelText: String? {
         didSet {
@@ -77,7 +77,7 @@ class AddAlarmChoicesContainer: UITableViewController {
         // first load defaults (in case of "Add Alarm") OR load saved alarm (in case of "edit alarm")
         //   variables declared in "prepareForSegue" in AddAlarmMasterVC
         alarmType = AddAlarmMasterVCReference?.alarmType
-        repeatDays = AddAlarmMasterVCReference?.daysToRepeat
+//        repeatDays = AddAlarmMasterVCReference?.daysToRepeat
         alarmLabelText = AddAlarmMasterVCReference?.alarmLabel
         alarmSound = AddAlarmMasterVCReference?.sound
         snooze = AddAlarmMasterVCReference?.snooze
@@ -93,15 +93,15 @@ class AddAlarmChoicesContainer: UITableViewController {
                     alarmTypeVC.addAlarmChoicesListReference = self
                     alarmTypeVC.selectedCell = alarmType?.rawValue
                 }
-            case "repeatDaysSegue":
-                if let repeatDaysVC = segue.destinationViewController as? RepeatSettingsViewController {
-                    repeatDaysVC.addAlarmChoicesListReference = self
-                    if let days = repeatDays {
-                        for day in days {
-                            repeatDaysVC.selectedIndexPath = NSIndexPath(forRow: day.rawValue, inSection: 0)
-                        }
-                    }
-                }
+//            case "repeatDaysSegue":
+//                if let repeatDaysVC = segue.destinationViewController as? RepeatSettingsViewController {
+//                    repeatDaysVC.addAlarmChoicesListReference = self
+//                    if let days = repeatDays {
+//                        for day in days {
+//                            repeatDaysVC.selectedIndexPath = NSIndexPath(forRow: day.rawValue, inSection: 0)
+//                        }
+//                    }
+//                }
             case "alarmLabelSegue":
                 if let alarmLabelVC = segue.destinationViewController as? LabelSettingsViewController {
                     alarmLabelVC.addAlarmChoicesListReference = self

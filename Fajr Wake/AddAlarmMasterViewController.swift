@@ -28,7 +28,7 @@ class AddAlarmMasterViewController: UIViewController {
         }
     }
     var alarmLabel: String?
-    var daysToRepeat: [Days]?
+//    var daysToRepeat: [Days]?
     var sound: AlarmSound?
     var snooze: Bool?
     var pickerTime: NSDate?
@@ -56,9 +56,9 @@ class AddAlarmMasterViewController: UIViewController {
         if saveButton === sender {
             if alarmType != nil {
                 if alarmType! == .FajrWakeAlarm {
-                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: snooze!, minsToAdjust: minsToAdjust!, whenToWake: whenToWake!, whatSalatToWake: whatSalatToWake!, alarmType: .FajrWakeAlarm, alarmOn: true)
+                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, sound: self.sound!, snooze: snooze!, minsToAdjust: minsToAdjust!, whenToWake: whenToWake!, whatSalatToWake: whatSalatToWake!, alarmType: .FajrWakeAlarm, alarmOn: true)
                 } else if alarmType! == .CustomAlarm {
-                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, daysToRepeat: self.daysToRepeat, sound: self.sound!, snooze: self.snooze!, time: pickerTime!, alarmType: .CustomAlarm, alarmOn: true)
+                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, sound: self.sound!, snooze: self.snooze!, time: pickerTime!, alarmType: .CustomAlarm, alarmOn: true)
                 }
             }
         }
@@ -112,7 +112,7 @@ class AddAlarmMasterViewController: UIViewController {
                     if alarm.alarmType == .CustomAlarm {
                         if let customAlarm = alarm as? CustomAlarm {
                             alarmType = customAlarm.alarmType
-                            daysToRepeat = customAlarm.daysToRepeat
+//                            daysToRepeat = customAlarm.daysToRepeat
                             alarmLabel = customAlarm.alarmLabel
                             sound = customAlarm.sound
                             snooze = customAlarm.snooze
@@ -120,7 +120,7 @@ class AddAlarmMasterViewController: UIViewController {
                     } else if alarm.alarmType == .FajrWakeAlarm {
                         if let fajrWakeAlarm = alarm as? FajrWakeAlarm {
                             alarmType = fajrWakeAlarm.alarmType
-                            daysToRepeat = fajrWakeAlarm.daysToRepeat
+//                            daysToRepeat = fajrWakeAlarm.daysToRepeat
                             alarmLabel = fajrWakeAlarm.alarmLabel
                             sound = fajrWakeAlarm.sound
                             snooze = fajrWakeAlarm.snooze
@@ -129,7 +129,7 @@ class AddAlarmMasterViewController: UIViewController {
                 } else {
                     // Add Alarm
                     alarmType = .FajrWakeAlarm
-                    daysToRepeat = nil
+//                    daysToRepeat = nil
                     alarmLabel = "Alarm"
                     let defaultSound = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSound") as? String
                     let defaultSoundTitle = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSoundTitle") as? String

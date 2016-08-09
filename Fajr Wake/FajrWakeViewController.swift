@@ -128,7 +128,7 @@ extension FajrWakeViewController {
                 
                 if dateToAlarm.timeIntervalSinceNow < 0 {
                     // based on next day's prayer times
-                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(2*(60 * 60 * 24))))
+                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(60 * 60 * 24)))
                 }
                 if let url = fajrAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath.row : url])
@@ -218,9 +218,6 @@ extension FajrWakeViewController {
 
     ///////////////////////////////Firing Alarm////////////////////////////////////////////////////
     func alarmAction(timer: NSTimer) {
-        
-        // - FIXME: ERROR HANDLING FOR INDEXPATH!!!!
-        
         var url: NSURL?
         var indexPath: NSIndexPath?
         
@@ -236,7 +233,7 @@ extension FajrWakeViewController {
         }
         
         ///// Alarm Alert View
-        alarmAlertController = UIAlertController(title: "Alarm", message: nil, preferredStyle: .Alert)
+        alarmAlertController = UIAlertController(title: "\(alarms[indexPath!.row].alarmLabel)", message: nil, preferredStyle: .Alert)
         if alarms[indexPath!.row].snooze == true {
             // Snooze Button
             alarmAlertController!.addAction(UIAlertAction(title: "Snooze", style: UIAlertActionStyle.Default) {
@@ -307,9 +304,10 @@ extension FajrWakeViewController {
         if segue.identifier == "showDetail" {
             let addAlarmMasterVC = (segue.destinationViewController as! UINavigationController).topViewController as! AddAlarmMasterViewController
             if let selectedAlarmCell = sender as? FajrWakeCell {
-                // FIXME: - change navigation title of top to "Edit Item"
                 let indexPath = tableView.indexPathForCell(selectedAlarmCell)!
                 let selectedAlarm = alarms[indexPath.row]
+                
+                addAlarmMasterVC.navigationItem.title = "Edit Alarm"
                 addAlarmMasterVC.alarmClock = selectedAlarm
             }
         } else if segue.identifier == "addItem" {

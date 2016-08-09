@@ -142,7 +142,6 @@ enum Days: Int  {
 }
 
 enum CalculationMethods: Int {
-    
     case Jafari = 0
     case Karachi
     case Isna
@@ -217,7 +216,7 @@ class UserSettingsPrayertimes {
 // MARK: - Protocol
 protocol AlarmClockType {
     var alarmLabel: String { get set }
-    var daysToRepeat: [Days]? { get set }
+//    var daysToRepeat: [Days]? { get set }
     var sound: AlarmSound { get set }
     var snooze: Bool { get set }
     var alarmType: AlarmType { get set }
@@ -229,33 +228,39 @@ protocol AlarmClockType {
 }
 
 extension AlarmClockType {
-    var repeatDaysDisplayString: String? {
-        var repeatDaysString: String?
-        if let days = daysToRepeat {
-            repeatDaysString = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
-        }
-        return repeatDaysString
-    }
+//    var repeatDaysDisplayString: String? {
+//        var repeatDaysString: String?
+//        if let days = daysToRepeat {
+//            repeatDaysString = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
+//        }
+//        return repeatDaysString
+//    }
     
     var attributedSubtitle: NSMutableAttributedString {
-        var label = self.alarmLabel
+        let label = self.alarmLabel
         let alarmSubtitle: String
         let alarmSubtitleAttributedString: NSMutableAttributedString
-        if var days = repeatDaysDisplayString {
-            label += ","
-            days = " \(days)"
-            alarmSubtitle = label + days
-            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
-            let rangeOfDays = (alarmSubtitle as NSString).rangeOfString(days)
-            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
-            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
-            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue", size: 15)!, range: rangeOfDays)
-        } else {
-            alarmSubtitle = label
-            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
-            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
-            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
-        }
+//        if var days = repeatDaysDisplayString {
+//            label += ","
+//            days = " \(days)"
+//            alarmSubtitle = label + days
+//            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
+//            let rangeOfDays = (alarmSubtitle as NSString).rangeOfString(days)
+//            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
+//            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
+//            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue", size: 15)!, range: rangeOfDays)
+//        } else {
+//            alarmSubtitle = label
+//            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
+//            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
+//            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
+//        }
+        alarmSubtitle = label
+        
+        let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
+        alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
+        alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
+
         return alarmSubtitleAttributedString
     }
     
@@ -293,7 +298,7 @@ extension AlarmClockType {
 
 class CustomAlarm: AlarmClockType {
     var alarmLabel: String
-    var daysToRepeat: [Days]?
+//    var daysToRepeat: [Days]?
     var sound: AlarmSound
     var snooze: Bool
     var time: NSDate
@@ -301,9 +306,9 @@ class CustomAlarm: AlarmClockType {
     var alarmOn: Bool
     var alarm: NSTimer? = nil
     
-    init(alarmLabel: String, daysToRepeat: [Days]?, sound: AlarmSound, snooze: Bool, time: NSDate, alarmType: AlarmType, alarmOn: Bool) {
+    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, time: NSDate, alarmType: AlarmType, alarmOn: Bool) {
         self.alarmLabel = alarmLabel
-        self.daysToRepeat = daysToRepeat
+//        self.daysToRepeat = daysToRepeat
         self.sound = sound
         self.snooze = snooze
         self.time = time
@@ -354,7 +359,7 @@ class CustomAlarm: AlarmClockType {
 
 class FajrWakeAlarm: AlarmClockType {
     var alarmLabel: String
-    var daysToRepeat: [Days]?
+//    var daysToRepeat: [Days]?
     var sound: AlarmSound
     var snooze: Bool
     var minsToAdjust: Int
@@ -364,9 +369,9 @@ class FajrWakeAlarm: AlarmClockType {
     var alarmOn: Bool
     var alarm: NSTimer? = nil
     
-    init(alarmLabel: String, daysToRepeat: [Days]?, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool) {
+    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool) {
         self.alarmLabel = alarmLabel
-        self.daysToRepeat = daysToRepeat
+//        self.daysToRepeat = daysToRepeat
         self.sound = sound
         self.snooze = snooze
         self.minsToAdjust = minsToAdjust
