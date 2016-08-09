@@ -14,7 +14,7 @@ import AVFoundation
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var manager: OneShotLocationManager?
     var prayerTimes: [String: String] = [:]
-    var locationNameDisplay: String = ""
+    var locationNameDisplay: String?
     var alarms = [AlarmClockType]()
     var noAlarmsLabel = UILabel()
     var timer: NSTimer?
@@ -88,15 +88,15 @@ extension FajrWakeViewController {
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         self.displaySettingsTableView()
-        return 30.0
+        return 50.0
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let fajr = prayerTimes[SalatsAndQadhas.Fajr.getString]
         let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
         var toDisplay = ""
-        if let fajrTime = fajr, let sunriseTime = sunrise {
-            toDisplay = "Fajr: \(fajrTime)\t\tSunrise: \(sunriseTime)"
+        if let fajrTime = fajr, let sunriseTime = sunrise, let locName = locationNameDisplay {
+            toDisplay = "\(locName)\nFajr: \(fajrTime)\t\tSunrise: \(sunriseTime)"
         }
         return toDisplay
     }
