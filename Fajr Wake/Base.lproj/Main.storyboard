@@ -56,7 +56,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veg-iK-Ska" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="xif-gd-z0p" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2760" y="1868"/>
+            <point key="canvasLocation" x="2744" y="1866"/>
         </scene>
         <!--Sound-->
         <scene sceneID="FDj-S8-ITP">
@@ -85,7 +85,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FtZ-l4-fJd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2776" y="2235"/>
+            <point key="canvasLocation" x="2744" y="2248"/>
         </scene>
         <!--Fajr Wake-->
         <scene sceneID="WdT-f1-caf">

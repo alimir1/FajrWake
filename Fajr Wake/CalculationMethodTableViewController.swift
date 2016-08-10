@@ -31,6 +31,8 @@ class CalculationMethodTableViewController: UITableViewController {
         CalculationMethods.Tehran.getString()
     ]
     
+    var fajrWakeVCReference: FajrWakeViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -81,7 +83,7 @@ class CalculationMethodTableViewController: UITableViewController {
             }
             let settings = NSUserDefaults.standardUserDefaults()
             settings.setInteger(saveSelectionIndex, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
-            FajrWakeViewController().updatePrayerTimes(NSDate())
+            fajrWakeVCReference!.updatePrayerTimes(NSDate())
         }
         
         //update the checkmark for the current row

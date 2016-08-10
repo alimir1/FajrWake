@@ -37,7 +37,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        updatePrayerTimes(NSDate())
         self.setEditing(false, animated: false)
     }
     
@@ -307,6 +306,9 @@ extension FajrWakeViewController {
             }
         } else if segue.identifier == "addItem" {
             // new alarm
+        } else if segue.identifier == "settingsSegue" {
+            let settingsVC = segue.destinationViewController as! SettingsViewController
+            settingsVC.fajrWakeVCReference = self
         }
     }
 }
@@ -319,7 +321,7 @@ extension FajrWakeViewController {
             if let displayAddress = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String {
                 self.locationNameDisplay = displayAddress
             } else {
-                self.locationNameDisplay = "Could not get name of your city, state or country"
+                self.locationNameDisplay = "Error with getting your city name"
             }
             updatePrayerTimes(NSDate())
             
@@ -360,7 +362,9 @@ extension FajrWakeViewController {
 // Get coordinates and call functinos to get prayer times
 extension FajrWakeViewController {
     func startLocationDelegation() {
-        self.navigationItem.titleView = ActivityIndicator.showActivityIndicator("Getting location...")
+        // Activity Indicator
+        EZLoadingActivity.show("Getting your location...", disableUI: true)
+        
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
             
@@ -369,18 +373,39 @@ extension FajrWakeViewController {
                 let lat = loc.coordinate.latitude
                 let lon = loc.coordinate.longitude
                 let gmt = LocalGMT.getLocalGMT()
-                
                 self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
-                
+                // stop showing activity indicator (success)
+                EZLoadingActivity.hide(success: true, animated: true)
             } else if let err = error {
                 print(err.localizedDescription)
-                
-                // setting defaults to Qom's time if error in getting user location
-                let lat = 34.6476568
-                let lon = 50.8789548
-                let gmt = +4.5
-                
+                // setting defaults to San Jose, CA, USA's time if error in getting user location
+                let lat = 37.279518
+                let lon = -121.867905
+                let gmt = -7.0
                 self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
+                
+                if err.code == 0 {
+                    let alertController = UIAlertController(
+                        title: "Location Access Disabled",
+                        message: "In order to setup your alarm, the app needs access to your location so that your local prayer times are determined. The app will use San Jose, CA, USA's prayer timing if you disable location access.",
+                        preferredStyle: .Alert)
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                    alertController.addAction(cancelAction)
+                    let openAction = UIAlertAction(title: "Open Settings", style: .Default) { (action) in
+                        if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
+                            UIApplication.sharedApplication().openURL(url)
+                        }
+                    }
+                    alertController.addAction(openAction)
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    let alertController = UIAlertController(title: "Could not get your location!", message: "Prayer times are now based on San Jose, CA, USA.", preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    alertController.addAction(OKAction)
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                }
+                // stop showing activity indicator (not successful)
+                EZLoadingActivity.hide(success: false, animated: true)
             }
             self.manager = nil
         }
@@ -389,14 +414,10 @@ extension FajrWakeViewController {
     func setupLocationForPrayerTimes(lat: Double, lon: Double, gmt: Double) {
         // location settings for prayer times
         self.locationSettingsForPrayerTimes(lat: lat, lon: lon, gmt: gmt)
-        
-        // call function to get city, state, and country of the given coordinates
+        // call "reverseGeocoding" to get city, state, and country of the given coordinates
+        //   then update prayer times
         self.reverseGeocoding(lat, longitude: lon)
-        
         self.updatePrayerTimes(NSDate())
-        
-        // stop showing activity indicator in navigation title
-        self.navigationItem.titleView = nil
     }
 }
 
@@ -405,12 +426,13 @@ extension FajrWakeViewController {
 extension FajrWakeViewController {
     // reverse geocoding to get address of user location for display
     func reverseGeocoding(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        // FIXME: Indicates user if network fail
-        
         let location = CLLocation(latitude: latitude, longitude: longitude)
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             if error != nil {
                 print(error)
+                let address = "Network Error"
+                NSUserDefaults.standardUserDefaults().setObject(address, forKey: "userAddressForDisplay")
+                self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String
                 return
             }
             else if placemarks?.count > 0 {
@@ -434,9 +456,9 @@ extension FajrWakeViewController {
                 }
             }
         } else {
-            saveAddress = "could not get name of the user's city or country of their location"
+            saveAddress = "Can't Find Your City Name"
         }
         NSUserDefaults.standardUserDefaults().setObject(saveAddress, forKey: "userAddressForDisplay")
-        self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as! String
+        self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String
     }
 }
