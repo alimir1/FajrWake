@@ -250,7 +250,10 @@ extension FajrWakeViewController {
             }
         }
     }
+    
 
+
+    
     ///////////////////////////////Firing Alarm////////////////////////////////////////////////////
     func alarmAction(timer: NSTimer) {
         var url: NSURL?
@@ -299,7 +302,10 @@ extension FajrWakeViewController {
             self.alarms[indexPath!.row].alarmOn = false
             self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             })
-        self.presentViewController(alarmAlertController!, animated: true, completion: nil)
+        
+        
+        alarmAlertController!.show()
+//        self.presentViewController(alarmAlertController!, animated: true, completion: nil)
     }
     
     func playSound(url: NSURL) {
@@ -500,5 +506,33 @@ extension FajrWakeViewController {
         }
         NSUserDefaults.standardUserDefaults().setObject(saveAddress, forKey: "userAddressForDisplay")
         self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String
+    }
+}
+
+
+extension UIAlertController {
+    
+    func show() {
+        present(true, completion: nil)
+    }
+    
+    func present(animated: Bool, completion: (() -> Void)?) {
+        if let rootVC = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            presentFromController(rootVC, animated: animated, completion: completion)
+        }
+    }
+    
+    private func presentFromController(controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        if  let navVC = controller as? UINavigationController,
+            let visibleVC = navVC.visibleViewController {
+            presentFromController(visibleVC, animated: animated, completion: completion)
+        } else {
+            if  let tabVC = controller as? UITabBarController,
+                let selectedVC = tabVC.selectedViewController {
+                presentFromController(selectedVC, animated: animated, completion: completion)
+            } else {
+                controller.presentViewController(self, animated: animated, completion: completion)
+            }
+        }
     }
 }
