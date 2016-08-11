@@ -85,29 +85,58 @@ extension FajrWakeViewController {
         return alarms.count
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        self.displaySettingsTableView()
-        return 50.0
-    }
-    
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let fajr = prayerTimes[SalatsAndQadhas.Fajr.getString]
-        let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
+        
+        self.displaySettingsTableView()
+        
+        let settings = NSUserDefaults.standardUserDefaults()
+        let calcMethodRawValue = settings.integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+        let calculationMethod = CalculationMethods(rawValue: calcMethodRawValue)!.getString()
+        
         var toDisplay = ""
-        if let fajrTime = fajr, let sunriseTime = sunrise, let locName = locationNameDisplay {
-            toDisplay = "\(locName)\nFajr: \(fajrTime)\t\tSunrise: \(sunriseTime)"
+        if let locName = locationNameDisplay {
+            toDisplay = "\(calculationMethod)\n\(locName)"
         }
+
         return toDisplay
     }
     
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        let fajr = prayerTimes[SalatsAndQadhas.Fajr.getString]
+        let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
+        
+        var toDisplay = ""
+        if let fajrTime = fajr, let sunriseTime = sunrise {
+            toDisplay = "Fajr: \(fajrTime), Sunrise: \(sunriseTime)"
+        }
+        
+        return toDisplay
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if let footerView = view as? UITableViewHeaderFooterView {
+            footerView.textLabel?.textAlignment = .Center
+        }
+    }
+    
+    
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let settings = NSUserDefaults.standardUserDefaults()
+        let calcMethodRawValue = settings.integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+        let calculationMethod = CalculationMethods(rawValue: calcMethodRawValue)!.getString()
+        
+        var toDisplay = ""
+        if let locName = locationNameDisplay {
+            toDisplay = "\(calculationMethod)\n\(locName)"
+        }
+        
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textAlignment = .Center
+            headerView.textLabel?.text = toDisplay
         }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let cellIdentifier = "FajrWakeCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
         var alarm = alarms[indexPath.row]
@@ -119,6 +148,9 @@ extension FajrWakeViewController {
         // Alarm Switch
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.whiteColor()
+            
+            // First stop previous alarm
+            alarm.stopAlarm()
             
             // Alarming ////////////////////////////////////////////////////////////////
             if alarm.alarmType == .FajrWakeAlarm {
@@ -343,7 +375,9 @@ extension FajrWakeViewController {
     // update prayer time dictionary
     func updatePrayerTimes(date: NSDate) {
         self.prayerTimes = getPrayerTimes(date)
-        self.tableView.reloadData()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+        }
     }
     
     // Helper method to get prayer times

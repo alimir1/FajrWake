@@ -62,7 +62,6 @@ class CalculationMethodTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        
         return "Please refer to an Islamic scholar if you aren't sure what calculation method to select."
     }
     
