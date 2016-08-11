@@ -104,10 +104,14 @@ extension FajrWakeViewController {
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         let fajr = prayerTimes[SalatsAndQadhas.Fajr.getString]
         let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
+        let tomorrowPrayerTimes = getPrayerTimes(NSDate().dateByAddingTimeInterval(60*60*24))
+        
+        let fajrTomorrow = tomorrowPrayerTimes[SalatsAndQadhas.Fajr.getString]!
+        let sunriseTomorrow = tomorrowPrayerTimes[SalatsAndQadhas.Sunrise.getString]!
         
         var toDisplay = ""
         if let fajrTime = fajr, let sunriseTime = sunrise {
-            toDisplay = "Fajr: \(fajrTime), Sunrise: \(sunriseTime)"
+            toDisplay = "Today: Fajr: \(fajrTime), Sunrise: \(sunriseTime)\nTomorrow: Fajr: \(fajrTomorrow), Sunrise: \(sunriseTomorrow)"
         }
         
         return toDisplay
