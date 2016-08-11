@@ -166,9 +166,9 @@ extension FajrWakeViewController {
                     dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(60 * 60 * 24)))
                 }
                 if let url = fajrAlarm.sound.alarmSound.URL {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath.row : url])
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
                 } else {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath.row)
+                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
                 }
                 
             } else if alarm.alarmType == .CustomAlarm {
@@ -296,6 +296,8 @@ extension FajrWakeViewController {
                 self.alarmSoundPlayer.stop()
                 self.alarmSoundPlayer = nil
             }
+            self.alarms[indexPath!.row].alarmOn = false
+            self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             })
         self.presentViewController(alarmAlertController!, animated: true, completion: nil)
     }
