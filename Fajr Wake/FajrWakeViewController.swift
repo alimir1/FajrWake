@@ -303,9 +303,7 @@ extension FajrWakeViewController {
             self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             })
         
-        
         alarmAlertController!.show()
-//        self.presentViewController(alarmAlertController!, animated: true, completion: nil)
     }
     
     func playSound(url: NSURL) {
