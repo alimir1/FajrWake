@@ -116,16 +116,13 @@ extension FajrWakeViewController {
         let tomorrowPrayerTimes = getPrayerTimes(NSDate().dateByAddingTimeInterval(60*60*24))
         let fajrTomorrow = tomorrowPrayerTimes[SalatsAndQadhas.Fajr.getString]!
         let sunriseTomorrow = tomorrowPrayerTimes[SalatsAndQadhas.Sunrise.getString]!
-        
         var toDisplay = ""
-        var toDisplayWithMessage = ""
         
         if let fajrTime = fajr, let sunriseTime = sunrise {
             toDisplay = "Today: Fajr: \(fajrTime), Sunrise: \(sunriseTime)\nTomorrow: Fajr: \(fajrTomorrow), Sunrise: \(sunriseTomorrow)"
-            toDisplayWithMessage = toDisplay + "\n\n__________ IMPORTANT __________\nAlarms will turn off if you exit FajrWake. Keep FajrWake running to fire alarms. You may lock the screen, however."
         }
         
-        return toDisplayWithMessage
+        return toDisplay
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -135,18 +132,9 @@ extension FajrWakeViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let settings = NSUserDefaults.standardUserDefaults()
-        let calcMethodRawValue = settings.integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
-        let calculationMethod = CalculationMethods(rawValue: calcMethodRawValue)!.getString()
-        
-        var toDisplay = ""
-        if let locName = locationNameDisplay {
-            toDisplay = "\(calculationMethod)\n\(locName)"
-        }
-//
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textAlignment = .Center
-            headerView.textLabel?.text = toDisplay
+            headerView.textLabel?.text = headerView.textLabel?.text!.capitalizedString
         }
     }
     

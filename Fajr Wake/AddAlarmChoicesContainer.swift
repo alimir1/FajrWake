@@ -36,18 +36,6 @@ class AddAlarmChoicesContainer: UITableViewController {
         }
     }
     
-//    var repeatDays: [Days]? {
-//        didSet {
-//            if let days = repeatDays {
-//                repeatDetailLabel.text = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
-//                AddAlarmMasterVCReference?.daysToRepeat = days
-//            } else if repeatDays == nil {
-//                repeatDetailLabel.text = "Never"
-//                AddAlarmMasterVCReference?.daysToRepeat = nil
-//            }
-//        }
-//    }
-    
     var alarmLabelText: String? {
         didSet {
             labelDetailLabel.text = alarmLabelText
@@ -77,7 +65,6 @@ class AddAlarmChoicesContainer: UITableViewController {
         // first load defaults (in case of "Add Alarm") OR load saved alarm (in case of "edit alarm")
         //   variables declared in "prepareForSegue" in AddAlarmMasterVC
         alarmType = AddAlarmMasterVCReference?.alarmType
-//        repeatDays = AddAlarmMasterVCReference?.daysToRepeat
         alarmLabelText = AddAlarmMasterVCReference?.alarmLabel
         alarmSound = AddAlarmMasterVCReference?.sound
         snooze = AddAlarmMasterVCReference?.snooze
@@ -93,15 +80,6 @@ class AddAlarmChoicesContainer: UITableViewController {
                     alarmTypeVC.addAlarmChoicesListReference = self
                     alarmTypeVC.selectedCell = alarmType?.rawValue
                 }
-//            case "repeatDaysSegue":
-//                if let repeatDaysVC = segue.destinationViewController as? RepeatSettingsViewController {
-//                    repeatDaysVC.addAlarmChoicesListReference = self
-//                    if let days = repeatDays {
-//                        for day in days {
-//                            repeatDaysVC.selectedIndexPath = NSIndexPath(forRow: day.rawValue, inSection: 0)
-//                        }
-//                    }
-//                }
             case "alarmLabelSegue":
                 if let alarmLabelVC = segue.destinationViewController as? LabelSettingsViewController {
                     alarmLabelVC.addAlarmChoicesListReference = self
@@ -120,6 +98,16 @@ class AddAlarmChoicesContainer: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return "__________ IMPORTANT __________\nAlarms will turn off if you exit FajrWake. Keep FajrWake running to fire alarms. You may lock the screen, however."
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if let footerView = view as? UITableViewHeaderFooterView {
+            footerView.textLabel?.textAlignment = .Center
+        }
     }
 }
 

@@ -54,6 +54,7 @@
 		01A3A81F1D12F43A00DE4CE9 /* OneShotLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneShotLocationManager.swift; sourceTree = "<group>"; };
 		01A3A8251D13C20400DE4CE9 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculationMethodTableViewController.swift; sourceTree = "<group>"; };
+		01B5A3B11D5E2A3C008CD13F /* Fajr Wake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Fajr Wake.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +106,7 @@
 		0152D63F1CEF0FCB004FFC04 /* Fajr Wake */ = {
 			isa = PBXGroup;
 			children = (
+				01B5A3B11D5E2A3C008CD13F /* Fajr Wake.entitlements */,
 				0152D6401CEF0FCC004FFC04 /* AppDelegate.swift */,
 				0176D6BC1D0E53FE00A5BB01 /* Controllers */,
 				0152D6441CEF0FCC004FFC04 /* Main.storyboard */,
@@ -192,7 +194,12 @@
 				TargetAttributes = {
 					0152D63C1CEF0FCB004FFC04 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 396S2E45WK;
+						DevelopmentTeam = M6ZVBN5V88;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -364,10 +371,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Fajr Wake/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.FajrWake.Fajr-Wake";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.FajrWake.Fajr-Wake.Fajr-Wake";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -377,10 +385,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Fajr Wake/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.FajrWake.Fajr-Wake";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.FajrWake.Fajr-Wake.Fajr-Wake";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
