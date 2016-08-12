@@ -27,8 +27,13 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         setupPrayerTimes()
         noAlarmsLabelConfig()
         
+        // load saved alarms
         if let savedAlarms = loadAlarms() {
             alarms += savedAlarms
+            // saved alarms should all have alarms turned off
+            for (index, _) in alarms.enumerate() {
+                alarms[index].alarmOn = false
+            }
         }
         
         // hide "edit" button when no alarm
@@ -109,16 +114,18 @@ extension FajrWakeViewController {
         let fajr = prayerTimes[SalatsAndQadhas.Fajr.getString]
         let sunrise = prayerTimes[SalatsAndQadhas.Sunrise.getString]
         let tomorrowPrayerTimes = getPrayerTimes(NSDate().dateByAddingTimeInterval(60*60*24))
-        
         let fajrTomorrow = tomorrowPrayerTimes[SalatsAndQadhas.Fajr.getString]!
         let sunriseTomorrow = tomorrowPrayerTimes[SalatsAndQadhas.Sunrise.getString]!
         
         var toDisplay = ""
+        var toDisplayWithMessage = ""
+        
         if let fajrTime = fajr, let sunriseTime = sunrise {
             toDisplay = "Today: Fajr: \(fajrTime), Sunrise: \(sunriseTime)\nTomorrow: Fajr: \(fajrTomorrow), Sunrise: \(sunriseTomorrow)"
+            toDisplayWithMessage = toDisplay + "\n\n__________ IMPORTANT __________\nAlarms will turn off if you exit FajrWake. Keep FajrWake running to fire alarms. You may lock the screen, however."
         }
         
-        return toDisplay
+        return toDisplayWithMessage
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -126,7 +133,6 @@ extension FajrWakeViewController {
             footerView.textLabel?.textAlignment = .Center
         }
     }
-    
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let settings = NSUserDefaults.standardUserDefaults()
@@ -137,7 +143,7 @@ extension FajrWakeViewController {
         if let locName = locationNameDisplay {
             toDisplay = "\(calculationMethod)\n\(locName)"
         }
-        
+//
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textAlignment = .Center
             headerView.textLabel?.text = toDisplay
@@ -372,7 +378,7 @@ extension FajrWakeViewController {
             if let displayAddress = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String {
                 self.locationNameDisplay = displayAddress
             } else {
-                self.locationNameDisplay = "Error with getting your city name"
+                self.locationNameDisplay = "Could not get your city name"
             }
             updatePrayerTimes(NSDate())
             
