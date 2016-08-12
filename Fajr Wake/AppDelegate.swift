@@ -10,7 +10,6 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -52,6 +51,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // turn off all alarms and save them
+        var fajrWakeVC : FajrWakeViewController!
+        
+        if let viewControllers = self.window?.rootViewController?.childViewControllers {
+            for viewController in viewControllers {
+                if viewController.isKindOfClass(FajrWakeViewController) {
+                    fajrWakeVC = viewController as! FajrWakeViewController
+                }
+            }
+        }
+
+        fajrWakeVC.alarms[0].alarmOn = false
+        
+        for (index, _) in fajrWakeVC.alarms.enumerate() {
+            fajrWakeVC.alarms[index].alarmOn = false
+            fajrWakeVC.saveAlarms()
+        }
     }
 }
 

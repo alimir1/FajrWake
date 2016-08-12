@@ -145,6 +145,9 @@ extension FajrWakeViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        print("ISHRAQ: WAS CALLED!!!!")
+        
         let cellIdentifier = "FajrWakeCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FajrWakeCell
         var alarm = alarms[indexPath.row]
