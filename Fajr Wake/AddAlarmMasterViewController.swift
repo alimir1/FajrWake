@@ -78,9 +78,9 @@ class AddAlarmMasterViewController: UIViewController {
                     whatSalatToWake = fajrWakeAlarm.whatSalatToWake
                 } else if alarm.alarmType == .CustomAlarm {
                     // Reset (default) for FajrWakeAlarm
-                    minsToAdjust = 10
-                    whenToWake = .Before
-                    whatSalatToWake = .Sunrise
+                    minsToAdjust = 0
+                    whenToWake = .OnTime
+                    whatSalatToWake = .Fajr
                     
                     // Load values for CustomAlarm
                     let customAlarm: CustomAlarm = alarm as! CustomAlarm
@@ -89,9 +89,9 @@ class AddAlarmMasterViewController: UIViewController {
             } else {
                 // Add Alarm
                 pickerTime = NSDate()
-                minsToAdjust = 10
-                whenToWake = .Before
-                whatSalatToWake = .Sunrise
+                minsToAdjust = 0
+                whenToWake = .OnTime
+                whatSalatToWake = .Fajr
             }
 
             switch segueIdentifier {

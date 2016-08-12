@@ -50,8 +50,8 @@ class FajrAlarmPickerVCContainer: UIViewController {
         salatToAlarm = SalatsAndQadhas(rawValue: prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent))!
         minsToAdjustAlarm = Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
         
-        // "min" label
-        let hourLabel = UILabel(frame: CGRectMake(85, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
+        // "min" label ::: NEEDS FIX TO ADJUST DIFFERENT SCREENS
+        let hourLabel = UILabel(frame: CGRectMake(84, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
         hourLabel.text = "min"
         hourLabel.font = UIFont.boldSystemFontOfSize(14)
         prayerTimesPicker.addSubview(hourLabel)
