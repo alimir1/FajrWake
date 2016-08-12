@@ -28,7 +28,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         noAlarmsLabelConfig()
         
         if let savedAlarms = loadAlarms() {
-            alarms = savedAlarms
+            alarms += savedAlarms
         }
         
         // hide "edit" button when no alarm
@@ -534,24 +534,16 @@ extension FajrWakeViewController {
             }
         }
         
-        if fajrAlarms.count > 0 {
-            fajrAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(fajrAlarms, toFile: FajrWakeAlarm.ArchiveURL.path!)
-            if !fajrAlarmIsSuccessfulSave {
-                print("unable to save FajrWake alarms")
-            } else {
-                let savedFajrAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(FajrWakeAlarm.ArchiveURL.path!) as? [FajrWakeAlarm]
-                print("There are \(savedFajrAlarms?.count) fajr alarms")
-            }
+        // Save FajrWakeAlarm's
+        fajrAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(fajrAlarms, toFile: FajrWakeAlarm.ArchiveURL.path!)
+        if !fajrAlarmIsSuccessfulSave {
+            print("unable to save FajrWake alarms")
         }
         
-        if customAlarms.count > 0 {
-            customAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(customAlarms, toFile: CustomAlarm.ArchiveURL.path!)
-            if !customAlarmIsSuccessfulSave {
-                print("unable to save CustomAlarms alarms")
-            } else {
-                let savedCustomAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(CustomAlarm.ArchiveURL.path!) as? [CustomAlarm]
-                print("There are \(savedCustomAlarms?.count) custom alarms")
-            }
+        // Save CustomAlarm's
+        customAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(customAlarms, toFile: CustomAlarm.ArchiveURL.path!)
+        if !customAlarmIsSuccessfulSave {
+            print("unable to save CustomAlarms alarms")
         }
     }
     
@@ -560,23 +552,17 @@ extension FajrWakeViewController {
         let savedCustomAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(CustomAlarm.ArchiveURL.path!) as? [CustomAlarm]
         var savedAlarms: [AlarmClockType] = []
         
-        print("savedAlarms1: \(savedAlarms.count)")
-        
         if let customAlarms = savedCustomAlarms {
             for alarm in customAlarms {
                 savedAlarms.append(alarm)
             }
         }
         
-        print("savedAlarms2: \(savedAlarms.count)")
-        
         if let fajrAlarms = savedFajrAlarms {
             for alarm in fajrAlarms {
                 savedAlarms.append(alarm)
             }
         }
-        
-        print("savedAlarms3: \(savedAlarms.count)")
         
         if savedAlarms.count > 0 {
             return savedAlarms
