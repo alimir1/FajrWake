@@ -27,6 +27,10 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         setupPrayerTimes()
         noAlarmsLabelConfig()
         
+        if let savedAlarms = loadAlarms() {
+            alarms = savedAlarms
+        }
+        
         // hide "edit" button when no alarm
         if alarms.count > 0 {
             navigationItem.leftBarButtonItem = editButtonItem()
@@ -216,6 +220,8 @@ extension FajrWakeViewController {
             // Delete the row from the data source
             alarms.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            
+            saveAlarms()
         }
     }
     
@@ -249,6 +255,7 @@ extension FajrWakeViewController {
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
             }
         }
+        saveAlarms()
     }
     
 
@@ -333,6 +340,8 @@ extension FajrWakeViewController {
             // delete cell
             alarms.removeAtIndex(selectedIndexPath.row)
             tableView.deleteRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
+            
+            saveAlarms()
         }
     }
     
@@ -508,8 +517,77 @@ extension FajrWakeViewController {
 }
 
 
-extension UIAlertController {
+// MARK: - Persisting Data (NSCoding and loading alarms)
+extension FajrWakeViewController {
+    func saveAlarms() {
+        var fajrAlarmIsSuccessfulSave = false
+        var customAlarmIsSuccessfulSave = false
+        
+        var fajrAlarms: [FajrWakeAlarm] = []
+        var customAlarms: [CustomAlarm] = []
+        
+        for alarm in self.alarms {
+            if alarm.alarmType == AlarmType.FajrWakeAlarm {
+                fajrAlarms.append(alarm as! FajrWakeAlarm)
+            } else if alarm.alarmType == AlarmType.CustomAlarm {
+                customAlarms.append(alarm as! CustomAlarm)
+            }
+        }
+        
+        if fajrAlarms.count > 0 {
+            fajrAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(fajrAlarms, toFile: FajrWakeAlarm.ArchiveURL.path!)
+            if !fajrAlarmIsSuccessfulSave {
+                print("unable to save FajrWake alarms")
+            } else {
+                let savedFajrAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(FajrWakeAlarm.ArchiveURL.path!) as? [FajrWakeAlarm]
+                print("There are \(savedFajrAlarms?.count) fajr alarms")
+            }
+        }
+        
+        if customAlarms.count > 0 {
+            customAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(customAlarms, toFile: CustomAlarm.ArchiveURL.path!)
+            if !customAlarmIsSuccessfulSave {
+                print("unable to save CustomAlarms alarms")
+            } else {
+                let savedCustomAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(CustomAlarm.ArchiveURL.path!) as? [CustomAlarm]
+                print("There are \(savedCustomAlarms?.count) custom alarms")
+            }
+        }
+    }
     
+    func loadAlarms() -> [AlarmClockType]? {
+        let savedFajrAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(FajrWakeAlarm.ArchiveURL.path!) as? [FajrWakeAlarm]
+        let savedCustomAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(CustomAlarm.ArchiveURL.path!) as? [CustomAlarm]
+        var savedAlarms: [AlarmClockType] = []
+        
+        print("savedAlarms1: \(savedAlarms.count)")
+        
+        if let customAlarms = savedCustomAlarms {
+            for alarm in customAlarms {
+                savedAlarms.append(alarm)
+            }
+        }
+        
+        print("savedAlarms2: \(savedAlarms.count)")
+        
+        if let fajrAlarms = savedFajrAlarms {
+            for alarm in fajrAlarms {
+                savedAlarms.append(alarm)
+            }
+        }
+        
+        print("savedAlarms3: \(savedAlarms.count)")
+        
+        if savedAlarms.count > 0 {
+            return savedAlarms
+        } else {
+            return nil
+        }
+    }
+}
+
+
+extension UIAlertController {
     func show() {
         present(true, completion: nil)
     }

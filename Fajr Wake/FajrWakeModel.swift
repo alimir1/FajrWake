@@ -216,7 +216,6 @@ class UserSettingsPrayertimes {
 // MARK: - Protocol
 protocol AlarmClockType {
     var alarmLabel: String { get set }
-//    var daysToRepeat: [Days]? { get set }
     var sound: AlarmSound { get set }
     var snooze: Bool { get set }
     var alarmType: AlarmType { get set }
@@ -224,39 +223,18 @@ protocol AlarmClockType {
     var alarm: NSTimer? { get set }
     var attributedTitle: NSMutableAttributedString { get }
     
+    static var DocumentsDirectory: NSURL { get }
+    static var ArchiveURL: NSURL { get }
+    
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate
 }
 
 extension AlarmClockType {
-//    var repeatDaysDisplayString: String? {
-//        var repeatDaysString: String?
-//        if let days = daysToRepeat {
-//            repeatDaysString = DaysToRepeatLabel.getTextToRepeatDaysLabel(days)
-//        }
-//        return repeatDaysString
-//    }
-    
     var attributedSubtitle: NSMutableAttributedString {
         let label = self.alarmLabel
         let alarmSubtitle: String
         let alarmSubtitleAttributedString: NSMutableAttributedString
-//        if var days = repeatDaysDisplayString {
-//            label += ","
-//            days = " \(days)"
-//            alarmSubtitle = label + days
-//            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
-//            let rangeOfDays = (alarmSubtitle as NSString).rangeOfString(days)
-//            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
-//            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
-//            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue", size: 15)!, range: rangeOfDays)
-//        } else {
-//            alarmSubtitle = label
-//            let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
-//            alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
-//            alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
-//        }
         alarmSubtitle = label
-        
         let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
         alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
         alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
@@ -265,7 +243,6 @@ extension AlarmClockType {
     }
     
     mutating func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
-        
         // invalidate alarm (if exists)
         if alarm != nil {
             alarm!.invalidate()
@@ -296,9 +273,8 @@ extension AlarmClockType {
     }
 }
 
-class CustomAlarm: AlarmClockType {
+class CustomAlarm: NSObject, AlarmClockType, NSCoding {
     var alarmLabel: String
-//    var daysToRepeat: [Days]?
     var sound: AlarmSound
     var snooze: Bool
     var time: NSDate
@@ -306,14 +282,18 @@ class CustomAlarm: AlarmClockType {
     var alarmOn: Bool
     var alarm: NSTimer? = nil
     
+    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("customAlarmAlarms")
+    
     init(alarmLabel: String, sound: AlarmSound, snooze: Bool, time: NSDate, alarmType: AlarmType, alarmOn: Bool) {
         self.alarmLabel = alarmLabel
-//        self.daysToRepeat = daysToRepeat
         self.sound = sound
         self.snooze = snooze
         self.time = time
         self.alarmType = alarmType
         self.alarmOn = alarmOn
+        
+        super.init()
     }
 
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate {
@@ -355,11 +335,34 @@ class CustomAlarm: AlarmClockType {
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: amPMRange)
         return alarmAttributedTitle
     }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(alarmLabel, forKey: CustomAlarmPropertyKey.alarmLabelKey)
+        aCoder.encodeObject(sound.alarmSound.rawValue, forKey: CustomAlarmPropertyKey.alarmSoundKey)
+        aCoder.encodeObject(sound.alarmSectionTitle.rawValue, forKey: CustomAlarmPropertyKey.alarmSoundSectionKey)
+        aCoder.encodeObject(snooze, forKey: CustomAlarmPropertyKey.snoozeKey)
+        aCoder.encodeObject(time, forKey: CustomAlarmPropertyKey.timeKey)
+        aCoder.encodeObject(alarmType.rawValue, forKey: CustomAlarmPropertyKey.alarmTypeKey)
+        aCoder.encodeObject(alarmOn, forKey: CustomAlarmPropertyKey.alarmOnKey)
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        let alarmLabel = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmLabelKey) as! String
+        let alarmSound = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmSoundKey) as! String
+        let alarmSoundSection = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmSoundSectionKey) as! String
+        let sound = AlarmSound(alarmSound: AlarmSounds(rawValue: alarmSound)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: alarmSoundSection)!)
+        let snooze = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.snoozeKey) as! Bool
+        let time = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.timeKey) as! NSDate
+        let alarmType = AlarmType(rawValue: aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmTypeKey) as! Int)!
+        let alarmOn = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmOnKey) as! Bool
+        
+        self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, time: time, alarmType: alarmType, alarmOn: alarmOn)
+    }
+
 }
 
-class FajrWakeAlarm: AlarmClockType {
+class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
     var alarmLabel: String
-//    var daysToRepeat: [Days]?
     var sound: AlarmSound
     var snooze: Bool
     var minsToAdjust: Int
@@ -369,9 +372,12 @@ class FajrWakeAlarm: AlarmClockType {
     var alarmOn: Bool
     var alarm: NSTimer? = nil
     
+    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("fajrWakeAlarms")
+
+    
     init(alarmLabel: String, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool) {
         self.alarmLabel = alarmLabel
-//        self.daysToRepeat = daysToRepeat
         self.sound = sound
         self.snooze = snooze
         self.minsToAdjust = minsToAdjust
@@ -379,6 +385,8 @@ class FajrWakeAlarm: AlarmClockType {
         self.whatSalatToWake = whatSalatToWake
         self.alarmType = alarmType
         self.alarmOn = alarmOn
+        
+        super.init()
     }
         
     func timeToAlarm(prayerTimes: [String: String]?) -> NSDate {
@@ -437,7 +445,58 @@ class FajrWakeAlarm: AlarmClockType {
         
         return alarmAttributedTitle
     }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(alarmLabel, forKey: FajrAlarmPropetKey.alarmLabelKey)
+        aCoder.encodeObject(sound.alarmSound.rawValue, forKey: FajrAlarmPropetKey.alarmSoundKey)
+        aCoder.encodeObject(sound.alarmSectionTitle.rawValue, forKey: FajrAlarmPropetKey.alarmSoundSectionKey)
+        aCoder.encodeObject(snooze, forKey: FajrAlarmPropetKey.snoozeKey)
+        aCoder.encodeObject(alarmType.rawValue, forKey: FajrAlarmPropetKey.alarmTypeKey)
+        aCoder.encodeObject(minsToAdjust, forKey: FajrAlarmPropetKey.minsToAdjustKey)
+        aCoder.encodeObject(whenToWake.rawValue, forKey: FajrAlarmPropetKey.whenToWakeKey)
+        aCoder.encodeObject(whatSalatToWake.rawValue, forKey: FajrAlarmPropetKey.whatSalatToWakeKey)
+        aCoder.encodeObject(alarmOn, forKey: FajrAlarmPropetKey.alarmOnKey)
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        let alarmLabel = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmLabelKey) as! String
+        let alarmSound = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmSoundKey) as! String
+        let alarmSoundSection = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmSoundSectionKey) as! String
+        let sound = AlarmSound(alarmSound: AlarmSounds(rawValue: alarmSound)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: alarmSoundSection)!)
+        let snooze = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.snoozeKey) as! Bool
+        let alarmType = AlarmType(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmTypeKey) as! Int)!
+        let alarmOn = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmOnKey) as! Bool
+        let minsToAdjust = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.minsToAdjustKey) as! Int
+        let whenToWake: WakeOptions = WakeOptions(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.whenToWakeKey) as! Int)!
+        let whatSalatToWake: SalatsAndQadhas = SalatsAndQadhas(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.whatSalatToWakeKey) as! Int)!
+        
+        self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, minsToAdjust: minsToAdjust, whenToWake: whenToWake, whatSalatToWake: whatSalatToWake, alarmType: alarmType, alarmOn: alarmOn)
+    }
 }
+
+struct CustomAlarmPropertyKey {
+    static let alarmLabelKey = "alarmLabel"
+    static let alarmSoundKey = "sound"
+    static let alarmSoundSectionKey = "alarmSoundSection"
+    static let snoozeKey = "snooze"
+    static let timeKey = "time"
+    static let alarmTypeKey = "alarmType"
+    static let alarmOnKey = "alarmOn"
+}
+
+struct FajrAlarmPropetKey {
+    static let alarmLabelKey = "alarmLabel"
+    static let alarmSoundKey = "sound"
+    static let alarmSoundSectionKey = "alarmSoundSection"
+    static let snoozeKey = "snooze"
+    static let minsToAdjustKey = "minsToAdjust"
+    static let whenToWakeKey = "whenToWake"
+    static let whatSalatToWakeKey = "whatSalatToWake"
+    static let alarmTypeKey = "alarmType"
+    static let alarmOnKey = "alarmOn"
+}
+
+
 
 
 
