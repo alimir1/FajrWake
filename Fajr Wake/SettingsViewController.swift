@@ -45,6 +45,22 @@ class SettingsViewController: UITableViewController, CLLocationManagerDelegate {
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 1 {
+            return "__________ IMPORTANT __________\nAlarms will turn off if you exit this app! Keep FajrWake running all night to ensure that all features work properly. You may lock the screen but make sure that you don't switch to another app or press the home button."
+        } else {
+            return nil
+        }
+    }
+
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if section == 1 {
+            if let footerView = view as? UITableViewHeaderFooterView {
+                footerView.textLabel?.textAlignment = .Center
+            }
+        }
+    }
 }
 
 

@@ -33,6 +33,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
             // saved alarms should all have alarms turned off
             for (index, _) in alarms.enumerate() {
                 alarms[index].alarmOn = false
+                sortAlarms()
             }
         }
         
@@ -215,6 +216,7 @@ extension FajrWakeViewController {
             alarms.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             
+//            sortAlarms()
             saveAlarms()
         }
     }
@@ -249,6 +251,8 @@ extension FajrWakeViewController {
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
             }
         }
+        sortAlarms()
+        self.tableView.reloadData()
         saveAlarms()
     }
     
@@ -389,6 +393,7 @@ extension FajrWakeViewController {
     func updatePrayerTimes(date: NSDate) {
         self.prayerTimes = getPrayerTimes(date)
         dispatch_async(dispatch_get_main_queue()) {
+            self.sortAlarms()
             self.tableView.reloadData()
         }
     }
@@ -402,6 +407,11 @@ extension FajrWakeViewController {
         let userPrayerTime = UserSettingsPrayertimes()
         
         return userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: date, latitude: lat, longitude: lon, tZone: gmt)
+    }
+    
+    // Sort alarms based on alarm times
+    func sortAlarms() {
+        alarms.sortInPlace({ $0.timeToAlarm(prayerTimes).timeIntervalSinceNow < $1.timeToAlarm(prayerTimes).timeIntervalSinceNow })
     }
 }
 

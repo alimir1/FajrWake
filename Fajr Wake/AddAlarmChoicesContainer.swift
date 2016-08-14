@@ -99,16 +99,6 @@ class AddAlarmChoicesContainer: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return "__________ IMPORTANT __________\nAlarms will turn off if you exit FajrWake. Keep FajrWake running to fire alarms. You may lock the screen, however."
-    }
-    
-    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        if let footerView = view as? UITableViewHeaderFooterView {
-            footerView.textLabel?.textAlignment = .Center
-        }
-    }
 }
 
 
