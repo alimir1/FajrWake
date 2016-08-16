@@ -246,51 +246,45 @@ extension AlarmClockType {
     
     mutating func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
         alarm.invalidate()
-        var dateToAlarm = date
-        
-        // if alarm time is greater than current time, then set alarm for the next day
-        if date.timeIntervalSinceNow < 0 {
-            dateToAlarm = dateToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
-            print("alarm time set to next day")
-        }
-        alarm = NSTimer.scheduledTimerWithTimeInterval(dateToAlarm.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
-        
-        savedAlarmDate = dateToAlarm
+
+        alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
-        let dateString = dateFormatter.stringFromDate(dateToAlarm)
-        print("Alarm set for \(dateString)")
+        let dateString = dateFormatter.stringFromDate(date)
+        print("NSTimer scheduled for: \(dateString)")
     }
     
     mutating func stopAlarm() {
         if alarm.valid {
             alarm.invalidate()
-            print("alarm invalidated")
+            print("NSTimer Invalidated")
         }
-        
-        savedAlarmDate = nil
+        print("NSTimer stopped")
     }
     
     func scheduleLocalNotification(date: NSDate, message: String, soundUrl: String?) {
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         
-        UIApplication.sharedApplication().cancelLocalNotification(localNotification)
+        cancelLocalNotification()
+        
         localNotification.fireDate = date
         localNotification.alertBody = message
-        localNotification.alertAction = "View Options"
-        localNotification.category = "alarmCategory"
         localNotification.soundName = soundUrl
-        
-        localNotification.repeatInterval = NSCalendarUnit.Day
         
         // Schedule a notification
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
+        let dateString = dateFormatter.stringFromDate(date)
+        print("Local Notification scheduled for: \(dateString)")
     }
     
     func cancelLocalNotification() {
         UIApplication.sharedApplication().cancelLocalNotification(localNotification)
+        print("Local Notification canceled")
     }
 }
 
@@ -380,7 +374,7 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         let time = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.timeKey) as! NSDate
         let alarmType = AlarmType(rawValue: aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmTypeKey) as! Int)!
         let alarmOn = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmOnKey) as! Bool
-        let savedAlarmDate = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.savedAlarmDateKey) as! NSDate
+        let savedAlarmDate = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.savedAlarmDateKey) as? NSDate
         
         self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, time: time, alarmType: alarmType, alarmOn: alarmOn, savedAlarmDate: savedAlarmDate)
     }

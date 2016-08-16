@@ -24,7 +24,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupPrayerTimes()
         noAlarmsLabelConfig()
         
@@ -158,7 +158,7 @@ extension FajrWakeViewController {
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.whiteColor()
             
-            // First stop previous alarm
+            // First stop previous alarm (if any)
             alarm.stopAlarm()
             alarm.cancelLocalNotification()
             
@@ -169,8 +169,17 @@ extension FajrWakeViewController {
                 
                 if dateToAlarm.timeIntervalSinceNow < 0 {
                     // based on next day's prayer times
-                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(60 * 60 * 24)))
+                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(60 * 60 * 24))).dateByAddingTimeInterval(60 * 60 * 24)
                 }
+                
+                if let savedAlarmDate = fajrAlarm.savedAlarmDate {
+                    if savedAlarmDate.timeIntervalSinceNow == 0 || savedAlarmDate.timeIntervalSinceNow > 0 {
+                        dateToAlarm = savedAlarmDate
+                    }
+                }
+                
+                fajrAlarm.savedAlarmDate = dateToAlarm
+                
                 if let url = fajrAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
                     //Schedule local notification
@@ -183,7 +192,19 @@ extension FajrWakeViewController {
                 
             } else if alarm.alarmType == .CustomAlarm {
                 let customAlarm = alarm as! CustomAlarm
-                let dateToAlarm = customAlarm.timeToAlarm(nil)
+                var dateToAlarm = customAlarm.timeToAlarm(nil)
+                
+                if dateToAlarm.timeIntervalSinceNow < 0 {
+                    dateToAlarm = dateToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
+                }
+                
+                if let savedAlarmDate = customAlarm.savedAlarmDate {
+                    if savedAlarmDate.timeIntervalSinceNow == 0 || savedAlarmDate.timeIntervalSinceNow > 0 {
+                        dateToAlarm = savedAlarmDate
+                    }
+                }
+                
+                customAlarm.savedAlarmDate = dateToAlarm
                 
                 if let url = customAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
@@ -199,16 +220,18 @@ extension FajrWakeViewController {
 
         } else {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
-            alarm.stopAlarm()
             
-            // Cancel local notification
+            // Stop alarm and cancel local notification
+            alarm.stopAlarm()
             alarm.cancelLocalNotification()
         }
+        
         let alarmSwitch = UISwitch(frame: CGRectZero)
         alarmSwitch.on = alarm.alarmOn
         cell.accessoryView = alarmSwitch
-        alarmSwitch.tag = indexPath.row
         alarmSwitch.addTarget(self, action: #selector(self.switchChanged), forControlEvents: .ValueChanged)
+        
+        saveAlarms()
         
         return cell
     }
@@ -301,15 +324,27 @@ extension FajrWakeViewController {
                     self.alarmSoundPlayer = nil
                 }
                 // snooze for 10 mins
-                if indexPath != nil {
-                    if url != nil {
-                        self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: NSDate().dateByAddingTimeInterval(60 * 10), userInfo: [indexPath!.row : url!])
-                    } else {
-                        self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: NSDate().dateByAddingTimeInterval(60 * 10), userInfo: indexPath!)
-                    }
+                // FIXME: CHANGE TO 10 MINS!!!!!!
+                let snoozeTime = NSDate().dateByAddingTimeInterval(60 * 1)
+                if url != nil {
+                    self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: [indexPath! : url!])
+                    // FIXME: SOUND NEEDS TO BE IN SNOOZE!!!!!!!!!!! I PUT NIL FOR NOW
+                    // Local notification
+                    self.alarms[indexPath!.row].scheduleLocalNotification(snoozeTime, message: self.alarms[indexPath!.row].alarmLabel, soundUrl: nil)
                 } else {
-                    print("invalid indexPath!")
+                    self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: indexPath!)
+                    // Local notification
+                    self.alarms[indexPath!.row].scheduleLocalNotification(snoozeTime, message: self.alarms[indexPath!.row].alarmLabel, soundUrl: nil)
                 }
+                
+                self.alarms[indexPath!.row].savedAlarmDate = snoozeTime
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "MM-dd-yyyy HH:mm:ss a"
+                let dateString = dateFormatter.stringFromDate(snoozeTime)
+                print("SNOOOZEEE!!!! Alarm set for \(dateString)")
+                
+                self.saveAlarms()
                 })
         }
         // Ok Button
@@ -319,7 +354,9 @@ extension FajrWakeViewController {
                 self.alarmSoundPlayer.stop()
                 self.alarmSoundPlayer = nil
             }
+            self.alarms[indexPath!.row].savedAlarmDate = nil
             self.alarms[indexPath!.row].alarmOn = false
+            self.saveAlarms()
             self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             })
         
