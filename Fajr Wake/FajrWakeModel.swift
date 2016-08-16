@@ -220,8 +220,10 @@ protocol AlarmClockType {
     var snooze: Bool { get set }
     var alarmType: AlarmType { get set }
     var alarmOn: Bool { get set }
-    var alarm: NSTimer? { get set }
+    var alarm: NSTimer { get set }
+    var savedAlarmDate: NSDate? { get set }
     var attributedTitle: NSMutableAttributedString { get }
+    var localNotification: UILocalNotification { get }
     
     static var DocumentsDirectory: NSURL { get }
     static var ArchiveURL: NSURL { get }
@@ -243,12 +245,9 @@ extension AlarmClockType {
     }
     
     mutating func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
-        // invalidate alarm (if exists)
-        if alarm != nil {
-            alarm!.invalidate()
-        }
+        alarm.invalidate()
         var dateToAlarm = date
-        let dateFormatter = NSDateFormatter()
+        
         // if alarm time is greater than current time, then set alarm for the next day
         if date.timeIntervalSinceNow < 0 {
             dateToAlarm = dateToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
@@ -256,20 +255,42 @@ extension AlarmClockType {
         }
         alarm = NSTimer.scheduledTimerWithTimeInterval(dateToAlarm.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
         
+        savedAlarmDate = dateToAlarm
+        
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
         let dateString = dateFormatter.stringFromDate(dateToAlarm)
         print("Alarm set for \(dateString)")
     }
     
-    func stopAlarm() {
-        if alarm != nil {
-            if alarm!.valid {
-                alarm!.invalidate()
-                print("alarm invalidated")
-            }
-        } else {
-            print("alarm is nil")
+    mutating func stopAlarm() {
+        if alarm.valid {
+            alarm.invalidate()
+            print("alarm invalidated")
         }
+        
+        savedAlarmDate = nil
+    }
+    
+    func scheduleLocalNotification(date: NSDate, message: String, soundUrl: String?) {
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        
+        UIApplication.sharedApplication().cancelLocalNotification(localNotification)
+        localNotification.fireDate = date
+        localNotification.alertBody = message
+        localNotification.alertAction = "View Options"
+        localNotification.category = "alarmCategory"
+        localNotification.soundName = soundUrl
+        
+        localNotification.repeatInterval = NSCalendarUnit.Day
+        
+        // Schedule a notification
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+    }
+    
+    func cancelLocalNotification() {
+        UIApplication.sharedApplication().cancelLocalNotification(localNotification)
     }
 }
 
@@ -280,18 +301,21 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
     var time: NSDate
     var alarmType: AlarmType
     var alarmOn: Bool
-    var alarm: NSTimer? = nil
+    var alarm: NSTimer = NSTimer()
+    var savedAlarmDate: NSDate?
+    var localNotification = UILocalNotification()
     
     static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("customAlarmAlarms")
     
-    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, time: NSDate, alarmType: AlarmType, alarmOn: Bool) {
+    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, time: NSDate, alarmType: AlarmType, alarmOn: Bool, savedAlarmDate: NSDate? = nil) {
         self.alarmLabel = alarmLabel
         self.sound = sound
         self.snooze = snooze
         self.time = time
         self.alarmType = alarmType
         self.alarmOn = alarmOn
+        self.savedAlarmDate = savedAlarmDate
         
         super.init()
     }
@@ -344,6 +368,7 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         aCoder.encodeObject(time, forKey: CustomAlarmPropertyKey.timeKey)
         aCoder.encodeObject(alarmType.rawValue, forKey: CustomAlarmPropertyKey.alarmTypeKey)
         aCoder.encodeObject(alarmOn, forKey: CustomAlarmPropertyKey.alarmOnKey)
+        aCoder.encodeObject(savedAlarmDate, forKey: CustomAlarmPropertyKey.savedAlarmDateKey)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -355,8 +380,9 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         let time = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.timeKey) as! NSDate
         let alarmType = AlarmType(rawValue: aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmTypeKey) as! Int)!
         let alarmOn = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmOnKey) as! Bool
+        let savedAlarmDate = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.savedAlarmDateKey) as! NSDate
         
-        self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, time: time, alarmType: alarmType, alarmOn: alarmOn)
+        self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, time: time, alarmType: alarmType, alarmOn: alarmOn, savedAlarmDate: savedAlarmDate)
     }
 
 }
@@ -370,13 +396,14 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
     var whatSalatToWake: SalatsAndQadhas
     var alarmType: AlarmType
     var alarmOn: Bool
-    var alarm: NSTimer? = nil
+    var alarm: NSTimer = NSTimer()
+    var savedAlarmDate: NSDate?
+    var localNotification = UILocalNotification()
     
     static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("fajrWakeAlarms")
-
     
-    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool) {
+    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool, dateTesting: NSDate? = nil) {
         self.alarmLabel = alarmLabel
         self.sound = sound
         self.snooze = snooze
@@ -385,6 +412,7 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         self.whatSalatToWake = whatSalatToWake
         self.alarmType = alarmType
         self.alarmOn = alarmOn
+        self.savedAlarmDate = dateTesting
         
         super.init()
     }
@@ -456,6 +484,7 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         aCoder.encodeObject(whenToWake.rawValue, forKey: FajrAlarmPropetKey.whenToWakeKey)
         aCoder.encodeObject(whatSalatToWake.rawValue, forKey: FajrAlarmPropetKey.whatSalatToWakeKey)
         aCoder.encodeObject(alarmOn, forKey: FajrAlarmPropetKey.alarmOnKey)
+        aCoder.encodeObject(savedAlarmDate, forKey: FajrAlarmPropetKey.savedAlarmDateKey)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -469,8 +498,9 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         let minsToAdjust = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.minsToAdjustKey) as! Int
         let whenToWake: WakeOptions = WakeOptions(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.whenToWakeKey) as! Int)!
         let whatSalatToWake: SalatsAndQadhas = SalatsAndQadhas(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.whatSalatToWakeKey) as! Int)!
+        let savedAlarmDate = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.savedAlarmDateKey) as? NSDate
         
-        self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, minsToAdjust: minsToAdjust, whenToWake: whenToWake, whatSalatToWake: whatSalatToWake, alarmType: alarmType, alarmOn: alarmOn)
+        self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, minsToAdjust: minsToAdjust, whenToWake: whenToWake, whatSalatToWake: whatSalatToWake, alarmType: alarmType, alarmOn: alarmOn, dateTesting: savedAlarmDate)
     }
 }
 
@@ -482,6 +512,7 @@ struct CustomAlarmPropertyKey {
     static let timeKey = "time"
     static let alarmTypeKey = "alarmType"
     static let alarmOnKey = "alarmOn"
+    static let savedAlarmDateKey = "savedAlarmDate"
 }
 
 struct FajrAlarmPropetKey {
@@ -494,6 +525,7 @@ struct FajrAlarmPropetKey {
     static let whatSalatToWakeKey = "whatSalatToWake"
     static let alarmTypeKey = "alarmType"
     static let alarmOnKey = "alarmOn"
+    static let savedAlarmDateKey = "savedAlarmDate"
 }
 
 

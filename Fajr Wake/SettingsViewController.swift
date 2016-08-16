@@ -48,7 +48,7 @@ class SettingsViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 1 {
-            return "__________ IMPORTANT __________\nAlarms will turn off if you exit this app! Keep FajrWake running all night to ensure that all features work properly. You may lock the screen but make sure that you don't switch to another app or press the home button."
+            return "__________ IMPORTANT __________\nTo ensure that all features work properly, please keep this app running until alarm times. You may lock the device."
         } else {
             return nil
         }

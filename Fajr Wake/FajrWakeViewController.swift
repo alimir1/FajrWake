@@ -6,6 +6,7 @@
 //  Copyright © 2016 Fajr Wake. All rights reserved.
 //
 
+
 import UIKit
 import CoreLocation
 import AddressBookUI
@@ -20,7 +21,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var timer: NSTimer?
     var alarmSoundPlayer: AVAudioPlayer!
     var alarmAlertController: UIAlertController?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,14 +30,19 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         
         // load saved alarms
         if let savedAlarms = loadAlarms() {
-            alarms += savedAlarms
-            // saved alarms should all have alarms turned off
-            for (index, _) in alarms.enumerate() {
-                alarms[index].alarmOn = false
-                sortAlarms()
+            var alarmsToLoad = savedAlarms
+            for (index, _) in savedAlarms.enumerate() {
+                if savedAlarms[index].alarmOn == true {
+                    if let alarmDate = savedAlarms[index].savedAlarmDate {
+                        if alarmDate.timeIntervalSinceNow < 0 {
+                            alarmsToLoad[index].alarmOn = false
+                        }
+                    }
+                }
             }
+            alarms += alarmsToLoad
         }
-        
+
         // hide "edit" button when no alarm
         if alarms.count > 0 {
             navigationItem.leftBarButtonItem = editButtonItem()
@@ -154,6 +160,7 @@ extension FajrWakeViewController {
             
             // First stop previous alarm
             alarm.stopAlarm()
+            alarm.cancelLocalNotification()
             
             // Alarming ////////////////////////////////////////////////////////////////
             if alarm.alarmType == .FajrWakeAlarm {
@@ -166,8 +173,12 @@ extension FajrWakeViewController {
                 }
                 if let url = fajrAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
+                    //Schedule local notification
+                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: url.path)
                 } else {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
+                    //Schedule local notification
+                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: nil)
                 }
                 
             } else if alarm.alarmType == .CustomAlarm {
@@ -176,8 +187,12 @@ extension FajrWakeViewController {
                 
                 if let url = customAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
+                    // Schedule local notification
+                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: url.path)
                 } else {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
+                    //Schedule local notification
+                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: nil)
                 }
             }
             ///////////////////////////////////////////////////////////////////////////
@@ -185,6 +200,9 @@ extension FajrWakeViewController {
         } else {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
             alarm.stopAlarm()
+            
+            // Cancel local notification
+            alarm.cancelLocalNotification()
         }
         let alarmSwitch = UISwitch(frame: CGRectZero)
         alarmSwitch.on = alarm.alarmOn
@@ -201,8 +219,9 @@ extension FajrWakeViewController {
         if let indexPath = tableView.indexPathForRowAtPoint(switchOriginInTableView) {
             alarms[indexPath.row].alarmOn = switchControl.on
             tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            saveAlarms()
         } else {
-            print("cell doesn't exist (it may have been deleted)")
+            print("ERROR: Cell doesn't exist!")
         }
     }
     
@@ -216,7 +235,6 @@ extension FajrWakeViewController {
             alarms.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             
-//            sortAlarms()
             saveAlarms()
         }
     }
@@ -255,9 +273,6 @@ extension FajrWakeViewController {
         self.tableView.reloadData()
         saveAlarms()
     }
-    
-
-
     
     ///////////////////////////////Firing Alarm////////////////////////////////////////////////////
     func alarmAction(timer: NSTimer) {
