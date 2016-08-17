@@ -182,13 +182,11 @@ extension FajrWakeViewController {
                 
                 if let url = fajrAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
-                    //Schedule local notification
-                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: url.path)
                 } else {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
-                    //Schedule local notification
-                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: nil)
                 }
+                //Schedule local notification
+                alarm.scheduleLocalNotification(dateToAlarm)
                 
             } else if alarm.alarmType == .CustomAlarm {
                 let customAlarm = alarm as! CustomAlarm
@@ -208,13 +206,11 @@ extension FajrWakeViewController {
                 
                 if let url = customAlarm.sound.alarmSound.URL {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
-                    // Schedule local notification
-                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: url.path)
                 } else {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
-                    //Schedule local notification
-                    alarm.scheduleLocalNotification(dateToAlarm, message: alarm.alarmLabel, soundUrl: nil)
                 }
+                //Schedule local notification
+                alarm.scheduleLocalNotification(dateToAlarm)
             }
             ///////////////////////////////////////////////////////////////////////////
 
@@ -328,22 +324,14 @@ extension FajrWakeViewController {
                 let snoozeTime = NSDate().dateByAddingTimeInterval(60 * 1)
                 if url != nil {
                     self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: [indexPath! : url!])
-                    // FIXME: SOUND NEEDS TO BE IN SNOOZE!!!!!!!!!!! I PUT NIL FOR NOW
-                    // Local notification
-                    self.alarms[indexPath!.row].scheduleLocalNotification(snoozeTime, message: self.alarms[indexPath!.row].alarmLabel, soundUrl: nil)
                 } else {
                     self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: indexPath!)
-                    // Local notification
-                    self.alarms[indexPath!.row].scheduleLocalNotification(snoozeTime, message: self.alarms[indexPath!.row].alarmLabel, soundUrl: nil)
                 }
                 
+                // Local notification
+                self.alarms[indexPath!.row].scheduleLocalNotification(snoozeTime)
+                
                 self.alarms[indexPath!.row].savedAlarmDate = snoozeTime
-                
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "MM-dd-yyyy HH:mm:ss a"
-                let dateString = dateFormatter.stringFromDate(snoozeTime)
-                print("SNOOOZEEE!!!! Alarm set for \(dateString)")
-                
                 self.saveAlarms()
                 })
         }
@@ -354,7 +342,6 @@ extension FajrWakeViewController {
                 self.alarmSoundPlayer.stop()
                 self.alarmSoundPlayer = nil
             }
-            self.alarms[indexPath!.row].savedAlarmDate = nil
             self.alarms[indexPath!.row].alarmOn = false
             self.saveAlarms()
             self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
@@ -619,15 +606,15 @@ extension FajrWakeViewController {
                 savedAlarms.append(alarm)
             }
         }
-        
+
         if savedAlarms.count > 0 {
+            savedAlarms.sortInPlace({$0.timeToAlarm(prayerTimes).timeIntervalSinceNow < $1.timeToAlarm(prayerTimes).timeIntervalSinceNow })
             return savedAlarms
         } else {
             return nil
         }
     }
 }
-
 
 extension UIAlertController {
     func show() {

@@ -263,15 +263,15 @@ extension AlarmClockType {
         print("NSTimer stopped")
     }
     
-    func scheduleLocalNotification(date: NSDate, message: String, soundUrl: String?) {
+    func scheduleLocalNotification(date: NSDate) {
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         
         cancelLocalNotification()
         
         localNotification.fireDate = date
-        localNotification.alertBody = message
-        localNotification.soundName = soundUrl
+        localNotification.alertBody = "\(self.attributedTitle.string)\n\(self.alarmLabel)"
+        localNotification.soundName = self.sound.alarmSound.URL?.absoluteString
         
         // Schedule a notification
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
