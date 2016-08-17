@@ -268,10 +268,11 @@ extension AlarmClockType {
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         
         cancelLocalNotification()
-        
         localNotification.fireDate = date
         localNotification.alertBody = "\(self.attributedTitle.string)\n\(self.alarmLabel)"
-        localNotification.soundName = self.sound.alarmSound.URL?.absoluteString
+        if self.sound.alarmSound.URL != nil {
+            localNotification.soundName = "AdhanAbdulBasitCut.wav"
+        }
         
         // Schedule a notification
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
