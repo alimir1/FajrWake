@@ -28,6 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             settings.setObject(AlarmSoundsSectionTitles.Adhan.rawValue, forKey: "DefaultSoundTitle")
         }
         
+        // Configuring local notification settings
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        
         return true
     }
 
