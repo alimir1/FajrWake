@@ -260,7 +260,6 @@ extension AlarmClockType {
             alarm.invalidate()
             print("NSTimer Invalidated")
         }
-        print("NSTimer stopped")
     }
     
     func scheduleLocalNotification(date: NSDate) {

@@ -18,13 +18,12 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var locationNameDisplay: String?
     var alarms = [AlarmClockType]()
     var noAlarmsLabel = UILabel()
-    var timer: NSTimer?
     var alarmSoundPlayer: AVAudioPlayer!
     var alarmAlertController: UIAlertController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupPrayerTimes()
         noAlarmsLabelConfig()
         
