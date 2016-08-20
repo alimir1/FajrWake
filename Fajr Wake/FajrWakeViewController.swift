@@ -26,6 +26,9 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Schedule local notifications before application terminates
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setupLocalNotifications), name: UIApplicationWillTerminateNotification, object: nil)
+
         setupPrayerTimes()
         noAlarmsLabelConfig()
         
@@ -43,7 +46,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
             }
             alarms += alarmsToLoad
         }
-
+        
         // hide "edit" button when no alarm
         if alarms.count > 0 {
             navigationItem.leftBarButtonItem = editButtonItem()
@@ -55,6 +58,17 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.setEditing(false, animated: false)
+    }
+    
+    func setupLocalNotifications() {
+        if self.alarms.count > 0 {
+            for (index, _) in self.alarms.enumerate() {
+                if self.alarms[index].alarmOn {
+                    let alarmDate = self.alarms[index].savedAlarmDate!
+                    self.alarms[index].scheduleLocalNotification(alarmDate)
+                }
+            }
+        }
     }
     
     func noAlarmsLabelConfig() {
@@ -161,7 +175,6 @@ extension FajrWakeViewController {
             
             // First stop previous alarm (if any)
             alarm.stopAlarm()
-            alarm.cancelLocalNotification()
             
             // Alarming ////////////////////////////////////////////////////////////////
             if alarm.alarmType == .FajrWakeAlarm {
@@ -186,8 +199,6 @@ extension FajrWakeViewController {
                 } else {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
                 }
-                //Schedule local notification
-                alarm.scheduleLocalNotification(dateToAlarm)
                 
             } else if alarm.alarmType == .CustomAlarm {
                 let customAlarm = alarm as! CustomAlarm
@@ -210,17 +221,14 @@ extension FajrWakeViewController {
                 } else {
                     alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
                 }
-                //Schedule local notification
-                alarm.scheduleLocalNotification(dateToAlarm)
             }
             ///////////////////////////////////////////////////////////////////////////
 
         } else {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
             
-            // Stop alarm and cancel local notification
+            // Stop alarm
             alarm.stopAlarm()
-            alarm.cancelLocalNotification()
         }
         
         let alarmSwitch = UISwitch(frame: CGRectZero)
@@ -321,16 +329,12 @@ extension FajrWakeViewController {
                     self.alarmSoundPlayer = nil
                 }
                 // snooze for 10 mins
-                // FIXME: CHANGE TO 10 MINS!!!!!!
-                let snoozeTime = NSDate().dateByAddingTimeInterval(60 * 1)
+                let snoozeTime = NSDate().dateByAddingTimeInterval(60 * 10)
                 if url != nil {
                     self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: [indexPath! : url!])
                 } else {
                     self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: indexPath!)
                 }
-                
-                // Local notification
-                self.alarms[indexPath!.row].scheduleLocalNotification(snoozeTime)
                 
                 self.alarms[indexPath!.row].savedAlarmDate = snoozeTime
                 self.saveAlarms()

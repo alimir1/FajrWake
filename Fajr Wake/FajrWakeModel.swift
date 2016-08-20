@@ -274,7 +274,8 @@ extension AlarmClockType {
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         
-        cancelLocalNotification()
+        UIApplication.sharedApplication().cancelLocalNotification(localNotification)
+        
         localNotification.fireDate = date
         localNotification.alertBody = "\(self.attributedTitle.string)\n\(self.alarmLabel)"
         if self.sound.alarmSound.URL != nil {
@@ -288,11 +289,6 @@ extension AlarmClockType {
         dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
         let dateString = dateFormatter.stringFromDate(date)
         print("Local Notification scheduled for: \(dateString)")
-    }
-    
-    func cancelLocalNotification() {
-        UIApplication.sharedApplication().cancelLocalNotification(localNotification)
-        print("Local Notification canceled")
     }
 }
 
