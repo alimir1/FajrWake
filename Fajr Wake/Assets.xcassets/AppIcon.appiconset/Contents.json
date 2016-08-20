@@ -3,7 +3,7 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "Icon-Small.png",
+      "filename" : "Icon-Small-1.png",
       "scale" : "1x"
     },
     {
@@ -19,9 +19,8 @@
       "scale" : "3x"
     },
     {
-      "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "Icon-Small-40@2x.png",
+      "size" : "40x40",
       "scale" : "2x"
     },
     {
@@ -31,31 +30,33 @@
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
       "size" : "57x57",
+      "idiom" : "iphone",
+      "filename" : "Icon.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "iphone",
       "size" : "57x57",
+      "idiom" : "iphone",
+      "filename" : "Icon@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "Icon-60@2x.png",
+      "filename" : "Icon-60@2x-1.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "Icon-60@3x.png",
+      "filename" : "Icon-60@3x-1.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "Icon-Small-1.png",
+      "filename" : "Icon-Small.png",
       "scale" : "1x"
     },
     {
@@ -73,7 +74,7 @@
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "Icon-Small-40@2x-1.png",
+      "filename" : "Icon-Small-40@2x.png",
       "scale" : "2x"
     },
     {
@@ -113,20 +114,21 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "ipad",
       "size" : "83.5x83.5",
+      "idiom" : "ipad",
+      "filename" : "Icon-167.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "car",
-      "filename" : "Icon-60@2x-1.png",
+      "filename" : "Icon-60@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "car",
-      "filename" : "Icon-60@3x-1.png",
+      "filename" : "Icon-60@3x.png",
       "scale" : "3x"
     },
     {
@@ -158,7 +160,6 @@
     {
       "size" : "40x40",
       "idiom" : "watch",
-      "filename" : "Icon-Small-40@2x-2.png",
       "scale" : "2x",
       "role" : "appLauncher",
       "subtype" : "38mm"
@@ -183,8 +184,9 @@
       "scale" : "1x"
     },
     {
-      "idiom" : "mac",
       "size" : "512x512",
+      "idiom" : "mac",
+      "filename" : "iTunesArtwork@2x.png",
       "scale" : "2x"
     }
   ],

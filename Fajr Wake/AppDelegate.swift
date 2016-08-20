@@ -11,25 +11,30 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    var activity: NSObjectProtocol?
+
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
-        let settings = NSUserDefaults.standardUserDefaults()
-        
         // Default Settings for PrayerTimes
+        let settings = NSUserDefaults.standardUserDefaults()
         if NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore") == false {
             // set default settings for prayertimes
             settings.setInteger(7, forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
             settings.setInteger(0, forKey: PrayerTimeSettingsReference.AsrJuristic.rawValue)
             settings.setInteger(0, forKey: PrayerTimeSettingsReference.AdjustHighLats.rawValue)
             settings.setInteger(1, forKey: PrayerTimeSettingsReference.TimeFormat.rawValue)
-            settings.setObject(AlarmSounds.AdhanAbdulBasit.rawValue, forKey: "DefaultSound")
+            settings.setObject(AlarmSounds.KazemZadeh.rawValue, forKey: "DefaultSound")
             settings.setObject(AlarmSoundsSectionTitles.Adhan.rawValue, forKey: "DefaultSoundTitle")
         }
         
         // Configuring local notification settings
         UIApplication.sharedApplication().cancelAllLocalNotifications()
+        
+        // PREVENT APP NAP!!!!!
+        activity = NSProcessInfo().beginActivityWithOptions(NSActivityOptions.UserInitiated, reason: "NSTimers should not be prevented by app nap")
+        
         
         return true
     }

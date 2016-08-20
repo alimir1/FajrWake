@@ -14,13 +14,13 @@ class SoundSettingsViewController: UITableViewController {
     var addAlarmChoicesListReference: AddAlarmChoicesContainer?
     var alarmSoundPlayer: AVAudioPlayer!
     
-    let alarmSoundsSectionTitles: [AlarmSoundsSectionTitles] = [.Adhan, .DuasMunajat, .Quran, .SystemRingtones, .None]
+    let alarmSoundsSectionTitles: [AlarmSoundsSectionTitles] = [.Adhan, .DuasMunajat, .Quran, .Nature, .None]
     
     let alarmSounds: [[AlarmSounds]] =
-        [[.AdhanMozenZadeh, .AdhanSyria, .AdhanAbatherAlHalawaji, .AdhanAbdulBasit, .AdhanRoohullahKazimzadeh, .AdhanMisharyRashidAlafasy],
+        [[.MozenZadeh, .AbatharAlHalawaji, .AbdulBasit, .KazemZadeh, .Rozayghi, .TasviehChi],
          [.DuaKumayl, .DuaJaushanKabeer, .DuaMujeer, .MunajatImamAli, .MunajatMuhibeen],
-         [.SurahAleImran, .SurahAlHamd, .SurahAlAnbia, .SurahYaSin],
-         [.Alarm, .Radar, .Apex, .Chimes, .Crickets, .Presto, .Timba, .Pinball, .Harp],
+         [.Anbia, .AleImran, .Hamd, .Fajr, .Isra, .Qaf],
+         [.BirdsChirping, .BirdsChirping2, .Crickets, .Ocean, .Peace],
          [.None]]
     
     var selectedSound: AlarmSound? {

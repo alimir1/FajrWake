@@ -21,6 +21,8 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var alarmSoundPlayer: AVAudioPlayer!
     var alarmAlertController: UIAlertController?
     
+    var alarm = NSTimer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

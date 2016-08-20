@@ -168,31 +168,38 @@ enum PrayerTimeSettingsReference: String {
 }
 
 enum AlarmSounds: String {
-    case AdhanMozenZadeh = "Moazen Zadeh", AdhanSyria = "Adhan Syria", AdhanAbatherAlHalawaji = "Abather Al-Halawaji", AdhanAbdulBasit = "Abdul Basit", AdhanRoohullahKazimzadeh = "Roohullah Kazimzadeh", AdhanMisharyRashidAlafasy = "Minshary Rashid Alafasy"
+    case MozenZadeh = "Moazen Zadeh", AbatharAlHalawaji = "Abathar Al-Halawaji", AbdulBasit = "Abdul Basit", KazemZadeh = "Roohullah Kazimzadeh", Rozayghi, TasviehChi = "Tasvieh Chi"
     case DuaKumayl = "Dua Kumayl", DuaJaushanKabeer = "Dua Jaushan Kabeer", DuaMujeer = "Dua Mujeer", MunajatImamAli = "Munajat Imam Ali", MunajatMuhibeen = "Munajat Muhibbeen"
-    case SurahAleImran = "Surah Ale Imran", SurahAlHamd = "Surah Al-Hamd", SurahAlAnbia = "Surah Anbiya", SurahYaSin = "Surah Yasin"
-    case Alarm, Radar, Apex, Chimes, Crickets, Presto, Timba, Pinball, Harp
+    case Anbia, AleImran, Hamd, Fajr, Isra, Qaf
+    case BirdsChirping2 = "Birds Chirping 2", BirdsChirping = "Birds Chirping", Crickets, Ocean, Peace
     case None = "None"
     
     var URL: NSURL? {
         switch self {
         case .None:
             return nil
-        case .Alarm, .Radar, .Apex, .Chimes, .Crickets, .Presto, .Timba, .Pinball, .Harp:
-            return NSURL(fileURLWithPath: "/Library/Ringtones/\(self).m4r")
         default:
-            let path = NSBundle.mainBundle().pathForResource("\(self)", ofType: "mp3", inDirectory: "Sounds")
+            let path = NSBundle.mainBundle().pathForResource("\(self)", ofType: "wav", inDirectory: "Sounds")
             let url = NSURL(fileURLWithPath: path!)
             return url
+        }
+    }
+    
+    var pathForLocalNotification: String? {
+        switch self {
+        case .None:
+            return nil
+        default:
+            return "Sounds/\(self)"
         }
     }
 }
 
 enum AlarmSoundsSectionTitles: String {
     case Adhan
-    case DuasMunajat = "Duas/Munajat"
-    case Quran = "Quran"
-    case SystemRingtones = "System Ringtones"
+    case DuasMunajat = "Duas and Munajat"
+    case Quran
+    case Nature
     case None = ""
 }
 
@@ -248,6 +255,7 @@ extension AlarmClockType {
         alarm.invalidate()
 
         alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
+        NSRunLoop.currentRunLoop().addTimer(alarm, forMode: NSDefaultRunLoopMode)
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
@@ -270,7 +278,7 @@ extension AlarmClockType {
         localNotification.fireDate = date
         localNotification.alertBody = "\(self.attributedTitle.string)\n\(self.alarmLabel)"
         if self.sound.alarmSound.URL != nil {
-            localNotification.soundName = "AdhanAbdulBasitCut.wav"
+            localNotification.soundName = sound.alarmSound.pathForLocalNotification
         }
         
         // Schedule a notification
