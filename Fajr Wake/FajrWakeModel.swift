@@ -190,7 +190,7 @@ enum AlarmSounds: String {
         case .None:
             return nil
         default:
-            return "Sounds/\(self)"
+            return "Sounds/\(self).wav"
         }
     }
 }
