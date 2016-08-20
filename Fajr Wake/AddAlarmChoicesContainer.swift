@@ -10,7 +10,6 @@ import UIKit
 
 class AddAlarmChoicesContainer: UITableViewController {
     @IBOutlet weak var labelDetailLabel: UILabel!
-//    @IBOutlet weak var repeatDetailLabel: UILabel!
     @IBOutlet weak var soundDetailLabel: UILabel!
     @IBOutlet weak var alarmTypeDetailLabel: UILabel!
     @IBOutlet weak var snoozeSwitch: UISwitch!
@@ -99,6 +98,34 @@ class AddAlarmChoicesContainer: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let settings = NSUserDefaults.standardUserDefaults()
+        let lon = settings.doubleForKey("longitude")
+        let lat = settings.doubleForKey("latitude")
+        let gmt = settings.doubleForKey("gmt")
+        let userPrayerTime = UserSettingsPrayertimes()
+        
+        let prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate(), latitude: lat, longitude: lon, tZone: gmt)
+        
+        let fajr = prayerTimes["Fajr"]
+        let sunrise = prayerTimes["Sunrise"]
+        
+        if section == 0 {
+            return "Fajr: \(fajr!) \t\t Sunrise: \(sunrise!)"
+        } else {
+            return nil
+        }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if section == 0 {
+            if let footerView = view as? UITableViewHeaderFooterView {
+                footerView.textLabel?.textAlignment = .Center
+            }
+        }
+    }
+
 }
 
 

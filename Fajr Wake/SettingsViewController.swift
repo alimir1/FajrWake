@@ -48,7 +48,7 @@ class SettingsViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 1 {
-            return "__________ IMPORTANT __________\nTo ensure that all features work properly, please keep this app running until alarm times. You may lock the device."
+            return "__________ IMPORTANT __________\nFor best results, keep this app running until alarm times (you may lock the device) and adjust your volume accordingly. If you don't want to keep this app running then make sure to switch your ringer ON and adjust your ringer volume."
         } else {
             return nil
         }
