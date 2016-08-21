@@ -12,6 +12,7 @@ import CoreLocation
 import AddressBookUI
 import AVFoundation
 import AudioToolbox
+import MediaPlayer
 
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var manager: OneShotLocationManager?
@@ -262,14 +263,13 @@ extension FajrWakeViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // remove NSTimer
-            alarms[indexPath.row].alarmOn = false
-            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            
-            // Delete the row from the data source
+            // remove NSTimer and delete the row from the data source
+            alarms[indexPath.row].stopAlarm()
             alarms.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.tableView.reloadData()
+            }
             saveAlarms()
         }
     }
@@ -395,9 +395,10 @@ extension FajrWakeViewController {
                 print("could not play in silent mode")
             }
             alarmSoundPlayer = try AVAudioPlayer(contentsOfURL: url)
-            alarmSoundPlayer.volume = 1.0
             alarmSoundPlayer.play()
             alarmSoundPlayer.numberOfLoops = -1 // "infinite" loop
+            // adjust volume to highest
+            (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(1.0, animated: false)
         } catch {
             print("could not play sound")
         }
