@@ -270,11 +270,15 @@ extension AlarmClockType {
         }
     }
     
-    func scheduleLocalNotification(date: NSDate) {
+    func scheduleLocalNotification(date: NSDate, noSound: Bool? = false) {
         localNotification.fireDate = date
         localNotification.alertBody = "\(self.attributedTitle.string)\n\(self.alarmLabel)"
         if self.sound.alarmSound.URL != nil {
-            localNotification.soundName = sound.alarmSound.pathForLocalNotification
+            if noSound == false {
+                localNotification.soundName = sound.alarmSound.pathForLocalNotification
+            } else {
+                localNotification.soundName = nil
+            }
         }
         
         // Schedule a notification

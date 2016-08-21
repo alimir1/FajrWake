@@ -22,8 +22,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var noAlarmsLabel = UILabel()
     var alarmSoundPlayer: AVAudioPlayer!
     var alarmAlertController: UIAlertController?
-    
-    var alarm = NSTimer()
+    var timerToStall = NSTimer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,27 +32,13 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         UIApplication.sharedApplication().cancelAllLocalNotifications()
         
-        // Schedule local notifications before application terminates
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setupLocalNotifications), name: UIApplicationWillTerminateNotification, object: nil)
-
+        configureNotificationObservers()
+        
         setupPrayerTimes()
         noAlarmsLabelConfig()
         
         // load saved alarms
-        if let savedAlarms = loadAlarms() {
-            UIApplication.sharedApplication().cancelAllLocalNotifications()
-            var alarmsToLoad = savedAlarms
-            for (index, _) in savedAlarms.enumerate() {
-                if savedAlarms[index].alarmOn == true {
-                    if let alarmDate = savedAlarms[index].savedAlarmDate {
-                        if alarmDate.timeIntervalSinceNow < 0 {
-                            alarmsToLoad[index].alarmOn = false
-                        }
-                    }
-                }
-            }
-            alarms += alarmsToLoad
-        }
+        loadAlarms()
         
         // hide "edit" button when no alarm
         if alarms.count > 0 {
@@ -68,12 +53,68 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         self.setEditing(false, animated: false)
     }
     
-    func setupLocalNotifications() {
+    func configureNotificationObservers() {
+        // will terminate
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.checkApplicationState), name: UIApplicationWillTerminateNotification, object: nil)
+        // will resign active
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.checkApplicationState), name: UIApplicationWillResignActiveNotification, object: nil)
+        // did become active
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setupNotificationsReference), name: UIApplicationDidBecomeActiveNotification, object: nil)
+
+    }
+    
+    func loadAlarms() {
+        // load saved alarms
+        if let savedAlarms = getSavedAlarms() {
+            var alarmsToLoad = savedAlarms
+            for (index, _) in savedAlarms.enumerate() {
+                if savedAlarms[index].alarmOn == true {
+                    if let alarmDate = savedAlarms[index].savedAlarmDate {
+                        if alarmDate.timeIntervalSinceNow < 0 {
+                            alarmsToLoad[index].alarmOn = false
+                        }
+                    }
+                }
+            }
+            alarms += alarmsToLoad
+        }
+    }
+    
+    // Dirty solution: When phone is locked, local notification should not play sound...
+    func checkApplicationState() {
+        if UIApplication.sharedApplication().applicationState == .Active {
+            if timerToStall.valid {
+                timerToStall.invalidate()
+            }
+            timerToStall = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(self.setupNotificationsWithoutSound), userInfo: nil, repeats: false)
+        }
+    }
+    
+    func setupNotificationsWithoutSound() {
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        setupLocalNotifications(true)
+    }
+    
+    func setupNotificationsReference() {
+        if timerToStall.valid {
+            timerToStall.invalidate()
+        }
+        setupLocalNotifications()
+    }
+
+    func setupLocalNotifications(noSound: Bool? = false) {
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
         if self.alarms.count > 0 {
             for (index, _) in self.alarms.enumerate() {
                 if self.alarms[index].alarmOn {
                     let alarmDate = self.alarms[index].savedAlarmDate!
-                    self.alarms[index].scheduleLocalNotification(alarmDate)
+                    if alarmDate.timeIntervalSinceNow >= 0  {
+                        if noSound == true {
+                            self.alarms[index].scheduleLocalNotification(alarmDate, noSound: true)
+                        } else {
+                            self.alarms[index].scheduleLocalNotification(alarmDate)
+                        }
+                    }
                 }
             }
         }
@@ -626,9 +667,12 @@ extension FajrWakeViewController {
         if !customAlarmIsSuccessfulSave {
             print("unable to save CustomAlarms alarms")
         }
+        
+        // local notification
+        setupLocalNotifications()
     }
     
-    func loadAlarms() -> [AlarmClockType]? {
+    func getSavedAlarms() -> [AlarmClockType]? {
         let savedFajrAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(FajrWakeAlarm.ArchiveURL.path!) as? [FajrWakeAlarm]
         let savedCustomAlarms = NSKeyedUnarchiver.unarchiveObjectWithFile(CustomAlarm.ArchiveURL.path!) as? [CustomAlarm]
         var savedAlarms: [AlarmClockType] = []
