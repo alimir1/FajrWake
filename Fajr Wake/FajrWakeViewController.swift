@@ -39,6 +39,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         
         // load saved alarms
         if let savedAlarms = loadAlarms() {
+            UIApplication.sharedApplication().cancelAllLocalNotifications()
             var alarmsToLoad = savedAlarms
             for (index, _) in savedAlarms.enumerate() {
                 if savedAlarms[index].alarmOn == true {
