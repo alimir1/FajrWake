@@ -26,6 +26,11 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Configure local notifications
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        
         // Schedule local notifications before application terminates
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setupLocalNotifications), name: UIApplicationWillTerminateNotification, object: nil)
 

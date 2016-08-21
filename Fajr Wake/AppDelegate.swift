@@ -29,9 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             settings.setObject(AlarmSoundsSectionTitles.Adhan.rawValue, forKey: "DefaultSoundTitle")
         }
         
-        // Configuring local notification settings
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
-        
         // PREVENT APP NAP!!!!!
         activity = NSProcessInfo().beginActivityWithOptions(NSActivityOptions.UserInitiated, reason: "NSTimers should not be prevented by app nap")
         

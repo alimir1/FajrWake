@@ -171,7 +171,7 @@ enum AlarmSounds: String {
     case MozenZadeh = "Moazen Zadeh", AbatharAlHalawaji = "Abathar Al-Halawaji", AbdulBasit = "Abdul Basit", KazemZadeh = "Roohullah Kazimzadeh", Rozayghi, TasviehChi = "Tasvieh Chi"
     case DuaKumayl = "Dua Kumayl", DuaJaushanKabeer = "Dua Jaushan Kabeer", DuaMujeer = "Dua Mujeer", MunajatImamAli = "Munajat Imam Ali", MunajatMuhibeen = "Munajat Muhibbeen"
     case Anbia, AleImran, Hamd, Fajr, Isra, Qaf
-    case BirdsChirping2 = "Birds Chirping 2", BirdsChirping = "Birds Chirping", Crickets, Ocean, Peace
+    case BirdsChirping2 = "Birds Chirping 2", BirdsChirping = "Birds Chirping", Crickets, Ocean
     case None = "None"
     
     var URL: NSURL? {
@@ -179,7 +179,7 @@ enum AlarmSounds: String {
         case .None:
             return nil
         default:
-            let path = NSBundle.mainBundle().pathForResource("\(self)", ofType: "wav", inDirectory: "Sounds")
+            let path = NSBundle.mainBundle().pathForResource("\(self)", ofType: "caf", inDirectory: "Sounds")
             let url = NSURL(fileURLWithPath: path!)
             return url
         }
@@ -190,7 +190,7 @@ enum AlarmSounds: String {
         case .None:
             return nil
         default:
-            return "Sounds/\(self).wav"
+            return "Sounds/\(self).caf"
         }
     }
 }
@@ -271,11 +271,6 @@ extension AlarmClockType {
     }
     
     func scheduleLocalNotification(date: NSDate) {
-        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-        
-        UIApplication.sharedApplication().cancelLocalNotification(localNotification)
-        
         localNotification.fireDate = date
         localNotification.alertBody = "\(self.attributedTitle.string)\n\(self.alarmLabel)"
         if self.sound.alarmSound.URL != nil {

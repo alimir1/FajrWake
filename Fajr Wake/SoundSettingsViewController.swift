@@ -20,7 +20,7 @@ class SoundSettingsViewController: UITableViewController {
         [[.MozenZadeh, .AbatharAlHalawaji, .AbdulBasit, .KazemZadeh, .Rozayghi, .TasviehChi],
          [.DuaKumayl, .DuaJaushanKabeer, .DuaMujeer, .MunajatImamAli, .MunajatMuhibeen],
          [.Anbia, .AleImran, .Hamd, .Fajr, .Isra, .Qaf],
-         [.BirdsChirping, .BirdsChirping2, .Crickets, .Ocean, .Peace],
+         [.BirdsChirping, .BirdsChirping2, .Crickets, .Ocean],
          [.None]]
     
     var selectedSound: AlarmSound? {
