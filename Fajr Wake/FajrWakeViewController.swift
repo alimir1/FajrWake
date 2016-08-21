@@ -11,6 +11,7 @@ import UIKit
 import CoreLocation
 import AddressBookUI
 import AVFoundation
+import AudioToolbox
 
 class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     var manager: OneShotLocationManager?
@@ -312,6 +313,7 @@ extension FajrWakeViewController {
     func alarmAction(timer: NSTimer) {
         var url: NSURL?
         var indexPath: NSIndexPath?
+        var vibrationTimer = NSTimer()
         
         if let userInfo = timer.userInfo as? [NSIndexPath : NSURL] {
             indexPath = userInfo.first!.0
@@ -322,6 +324,10 @@ extension FajrWakeViewController {
 
         if url != nil {
             playSound(url!)
+            
+            // first vibrate then vibrate every 2 seconds
+            self.vibrate()
+            vibrationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(self.vibrate), userInfo: nil, repeats: true)
         }
         
         ///// Alarm Alert View
@@ -330,12 +336,20 @@ extension FajrWakeViewController {
             // Snooze Button
             alarmAlertController!.addAction(UIAlertAction(title: "Snooze", style: UIAlertActionStyle.Default) {
                 action -> Void in
+                
+                // stop alarm sound
                 if self.alarmSoundPlayer != nil {
                     self.alarmSoundPlayer.stop()
                     self.alarmSoundPlayer = nil
                 }
-                // snooze for 10 mins
-                let snoozeTime = NSDate().dateByAddingTimeInterval(60 * 10)
+                
+                // stop vibration
+                if vibrationTimer.valid {
+                    vibrationTimer.invalidate()
+                }
+                
+                // snooze for 8 mins
+                let snoozeTime = NSDate().dateByAddingTimeInterval(8 * 60)
                 if url != nil {
                     self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: [indexPath! : url!])
                 } else {
@@ -349,16 +363,28 @@ extension FajrWakeViewController {
         // Ok Button
         alarmAlertController!.addAction(UIAlertAction(title: "OK", style: .Default) {
             action -> Void in
+            
+            // stop alarm sound
             if self.alarmSoundPlayer != nil {
                 self.alarmSoundPlayer.stop()
                 self.alarmSoundPlayer = nil
             }
+            
+            // stop vibration
+            if vibrationTimer.valid {
+                vibrationTimer.invalidate()
+            }
+
             self.alarms[indexPath!.row].alarmOn = false
             self.saveAlarms()
             self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             })
         
         alarmAlertController!.show()
+    }
+    
+    func vibrate() {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
     
     func playSound(url: NSURL) {
