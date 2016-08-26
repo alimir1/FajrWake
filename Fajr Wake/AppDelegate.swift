@@ -32,6 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // PREVENT APP NAP!!!!!
         activity = NSProcessInfo().beginActivityWithOptions(NSActivityOptions.UserInitiated, reason: "NSTimers should not be prevented by app nap")
         
+        // navigation bar appearence
+        let navigationBarAppearace = UINavigationBar.appearance()
+        navigationBarAppearace.barTintColor = UIColor.blackColor()
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        // Status bar white
+        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
         
         return true
     }

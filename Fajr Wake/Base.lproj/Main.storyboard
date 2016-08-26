@@ -11,7 +11,7 @@
             <objects>
                 <tableViewController id="SMS-hI-HCE" customClass="LabelSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="m5f-Tr-MY4">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -62,7 +62,7 @@
             <objects>
                 <tableViewController id="Htn-Is-i9a" customClass="SoundSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="0Ww-cG-tjm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -291,19 +291,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HpS-p9-mZG" userLabel="FajrAlarmContainer">
-                                <rect key="frame" x="0.0" y="64" width="600" height="216"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="150"/>
                                 <connections>
                                     <segue destination="X9F-WZ-crL" kind="embed" identifier="fajrWakePickerContainer" id="JJl-Ta-nah"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a7V-C7-esb" userLabel="CustomAlarmContainer">
-                                <rect key="frame" x="0.0" y="64" width="600" height="216"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="150"/>
                                 <connections>
                                     <segue destination="Y4d-kI-82q" kind="embed" identifier="customAlarmPickerContainer" id="ME9-hc-uEF"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfm-AP-ibk" userLabel="ChoicesListContainer">
-                                <rect key="frame" x="0.0" y="280" width="600" height="320"/>
+                                <rect key="frame" x="0.0" y="214" width="600" height="386"/>
                                 <connections>
                                     <segue destination="IyY-Jl-AXb" kind="embed" identifier="addAlarmChoicesContainer" id="kCi-SL-pua"/>
                                 </connections>
@@ -311,18 +311,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="leading" secondItem="y9T-g9-cki" secondAttribute="leading" id="9rp-Qq-qbA"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="top" secondItem="i5W-hE-Y6X" secondAttribute="bottom" id="BXU-wR-T1h"/>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="leading" secondItem="bfm-AP-ibk" secondAttribute="leading" id="E0i-5f-kWa"/>
-                            <constraint firstAttribute="trailing" secondItem="HpS-p9-mZG" secondAttribute="trailing" id="JC8-aK-UXP"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="leading" secondItem="a7V-C7-esb" secondAttribute="leading" id="KU5-VT-rhq"/>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="trailing" secondItem="HpS-p9-mZG" secondAttribute="trailing" id="Tf3-ZN-LXn"/>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="bottom" secondItem="HpS-p9-mZG" secondAttribute="bottom" id="UFW-oG-ZU0"/>
-                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="y9T-g9-cki" secondAttribute="top" constant="280" id="VOl-yq-6qX"/>
-                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="a7V-C7-esb" secondAttribute="bottom" id="dFw-W5-dAA"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="trailing" secondItem="bfm-AP-ibk" secondAttribute="trailing" id="fXv-EO-fKQ"/>
-                            <constraint firstItem="bfm-AP-ibk" firstAttribute="bottom" secondItem="Dp2-Js-cYv" secondAttribute="top" id="kve-K8-Hhh"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="top" secondItem="a7V-C7-esb" secondAttribute="top" id="yAs-kp-hud"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="trailing" secondItem="HpS-p9-mZG" secondAttribute="trailing" id="3WU-Lm-aAr"/>
+                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="y9T-g9-cki" secondAttribute="top" constant="214" id="7p3-hh-vqr"/>
+                            <constraint firstAttribute="trailing" secondItem="a7V-C7-esb" secondAttribute="trailing" id="Duu-aw-iEz"/>
+                            <constraint firstItem="bfm-AP-ibk" firstAttribute="bottom" secondItem="Dp2-Js-cYv" secondAttribute="top" id="IOj-yQ-Y7I"/>
+                            <constraint firstItem="HpS-p9-mZG" firstAttribute="leading" secondItem="a7V-C7-esb" secondAttribute="leading" id="PbH-b0-8sb"/>
+                            <constraint firstItem="HpS-p9-mZG" firstAttribute="leading" secondItem="y9T-g9-cki" secondAttribute="leading" id="WxH-6p-ujA"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="top" secondItem="i5W-hE-Y6X" secondAttribute="bottom" id="Y1o-zz-V0i"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="top" secondItem="HpS-p9-mZG" secondAttribute="top" id="fue-51-rX9"/>
+                            <constraint firstItem="HpS-p9-mZG" firstAttribute="bottom" secondItem="a7V-C7-esb" secondAttribute="bottom" id="jWb-ov-pfL"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="leading" secondItem="bfm-AP-ibk" secondAttribute="leading" id="jlR-IN-q4W"/>
+                            <constraint firstItem="HpS-p9-mZG" firstAttribute="trailing" secondItem="bfm-AP-ibk" secondAttribute="trailing" id="lRV-4b-6lM"/>
+                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="HpS-p9-mZG" secondAttribute="bottom" id="xL1-5q-zw4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Alarm" id="9pg-lJ-HT0">
@@ -376,18 +376,19 @@
                         <viewControllerLayoutGuide type="bottom" id="7Ka-qW-IMl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1tm-ly-AKA">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="216"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kpO-io-Tvb">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="216"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                             </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="kpO-io-Tvb" firstAttribute="leading" secondItem="1tm-ly-AKA" secondAttribute="leading" id="08z-uV-jzy"/>
-                            <constraint firstItem="kpO-io-Tvb" firstAttribute="top" secondItem="1tm-ly-AKA" secondAttribute="top" id="edz-3D-gp9"/>
-                            <constraint firstAttribute="trailing" secondItem="kpO-io-Tvb" secondAttribute="trailing" id="kXE-26-ReF"/>
+                            <constraint firstItem="kpO-io-Tvb" firstAttribute="leading" secondItem="1tm-ly-AKA" secondAttribute="leading" id="017-Jj-q1y"/>
+                            <constraint firstItem="kpO-io-Tvb" firstAttribute="bottom" secondItem="7Ka-qW-IMl" secondAttribute="top" id="9FE-uV-apH"/>
+                            <constraint firstItem="kpO-io-Tvb" firstAttribute="top" secondItem="sig-q6-FfT" secondAttribute="bottom" id="DdQ-nu-lfc"/>
+                            <constraint firstAttribute="trailing" secondItem="kpO-io-Tvb" secondAttribute="trailing" id="IGa-jZ-kaK"/>
                         </constraints>
                     </view>
                     <connections>
@@ -407,11 +408,11 @@
                         <viewControllerLayoutGuide type="bottom" id="yO8-b0-lde"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AMw-2M-QKp">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="216"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="icA-nd-NVO">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="216"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                                 <date key="date" timeIntervalSinceReferenceDate="488813198.12026">
                                     <!--2016-06-28 13:26:38 +0000-->
                                 </date>
@@ -422,9 +423,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="icA-nd-NVO" secondAttribute="trailing" id="YUj-la-Ghf"/>
-                            <constraint firstItem="icA-nd-NVO" firstAttribute="leading" secondItem="AMw-2M-QKp" secondAttribute="leading" id="rfa-ra-ULz"/>
-                            <constraint firstItem="icA-nd-NVO" firstAttribute="top" secondItem="AMw-2M-QKp" secondAttribute="top" id="rzS-nT-snK"/>
+                            <constraint firstAttribute="trailing" secondItem="icA-nd-NVO" secondAttribute="trailing" id="9Pj-cl-RRH"/>
+                            <constraint firstItem="icA-nd-NVO" firstAttribute="bottom" secondItem="yO8-b0-lde" secondAttribute="top" id="IJj-kx-Qb4"/>
+                            <constraint firstItem="icA-nd-NVO" firstAttribute="top" secondItem="p1U-Mj-joo" secondAttribute="bottom" id="X0G-Z6-ee8"/>
+                            <constraint firstItem="icA-nd-NVO" firstAttribute="leading" secondItem="AMw-2M-QKp" secondAttribute="leading" id="vK2-Ti-GbQ"/>
                         </constraints>
                     </view>
                     <connections>
@@ -440,7 +442,7 @@
             <objects>
                 <tableViewController id="IyY-Jl-AXb" customClass="AddAlarmChoicesContainer" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="DQg-v6-dXq">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -604,7 +606,7 @@
             <objects>
                 <tableViewController title="AlarmType" id="WWv-Z9-8VZ" customClass="AlarmTypeViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="4oq-ZO-lEU">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -670,5 +672,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="JYW-td-i19"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" red="1" green="0.12841629060000001" blue="0.15970916060000001" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>
