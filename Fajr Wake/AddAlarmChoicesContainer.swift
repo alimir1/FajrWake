@@ -61,6 +61,8 @@ class AddAlarmChoicesContainer: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        snoozeSwitch.onTintColor = UIColor(red: 0.9294, green: 0.298, blue: 0.2588, alpha: 1.0) /* #ed4c42 */
+        
         // first load defaults (in case of "Add Alarm") OR load saved alarm (in case of "edit alarm")
         //   variables declared in "prepareForSegue" in AddAlarmMasterVC
         alarmType = AddAlarmMasterVCReference?.alarmType
@@ -99,23 +101,17 @@ class AddAlarmChoicesContainer: UITableViewController {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let settings = NSUserDefaults.standardUserDefaults()
-        let lon = settings.doubleForKey("longitude")
-        let lat = settings.doubleForKey("latitude")
-        let gmt = settings.doubleForKey("gmt")
-        let userPrayerTime = UserSettingsPrayertimes()
-        
-        let prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate(), latitude: lat, longitude: lon, tZone: gmt)
-        
-        let fajr = prayerTimes["Fajr"]
-        let sunrise = prayerTimes["Sunrise"]
-        
-        if section == 0 {
-            return "Fajr: \(fajr!) \t\t Sunrise: \(sunrise!)"
-        } else {
-            return nil
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        switch indexPath.row {
+        case 0: cell.imageView!.image = UIImage(named: "Clock 2.png")!
+        case 1: cell.imageView!.image = UIImage(named: "Clipboard.png")!
+        case 2: cell.imageView!.image = UIImage(named: "Music Note 1.png")!
+        case 3: cell.imageView!.image = UIImage(named: "Bell.png")!
+        default: cell.imageView!.image = nil
         }
+        
+        return cell
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
