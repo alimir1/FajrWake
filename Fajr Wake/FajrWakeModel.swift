@@ -352,8 +352,8 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         let amPMRange = (timeToString as NSString).rangeOfString(" \(amOrPm)")
         timeToString.characters.count
         let alarmTimeRange: NSRange = NSMakeRange(0, amPMRange.location)
-        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Thin", size: 40)!, range: alarmTimeRange)
-        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 15)!, range: amPMRange)
+        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: alarmTimeRange)
+        alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 10)!, range: amPMRange)
         return alarmAttributedTitle
     }
     

@@ -175,7 +175,7 @@ extension FajrWakeViewController {
         
         var toDisplay = ""
         if let locName = locationNameDisplay {
-            toDisplay = "\(calculationMethod)\n\(locName)"
+            toDisplay = "\(locName)\n\(calculationMethod)"
         }
 
         return toDisplay
@@ -215,10 +215,9 @@ extension FajrWakeViewController {
         var alarm = alarms[indexPath.row]
         
         cell.alarmLabel.attributedText = alarm.attributedTitle
-        cell.alarmDetailLabel.attributedText = alarm.attributedSubtitle
         cell.editingAccessoryType = .DisclosureIndicator
         
-        // Alarm Switch
+        // Alarm On/Off
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.whiteColor()
             
@@ -281,6 +280,7 @@ extension FajrWakeViewController {
         }
         
         let alarmSwitch = UISwitch(frame: CGRectZero)
+        alarmSwitch.onTintColor = UIColor(red: 0.9294, green: 0.298, blue: 0.2588, alpha: 1.0) /* #ed4c42 */
         alarmSwitch.on = alarm.alarmOn
         cell.accessoryView = alarmSwitch
         alarmSwitch.addTarget(self, action: #selector(self.switchChanged), forControlEvents: .ValueChanged)
@@ -605,9 +605,9 @@ extension FajrWakeViewController {
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             if error != nil {
                 print(error)
-                let address = "Network Error"
-                NSUserDefaults.standardUserDefaults().setObject(address, forKey: "userAddressForDisplay")
+                NSUserDefaults.standardUserDefaults().setObject("Network Error", forKey: "userAddressForDisplay")
                 self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String
+                self.tableView.reloadData()
                 return
             }
             else if placemarks?.count > 0 {
@@ -635,6 +635,7 @@ extension FajrWakeViewController {
         }
         NSUserDefaults.standardUserDefaults().setObject(saveAddress, forKey: "userAddressForDisplay")
         self.locationNameDisplay = NSUserDefaults.standardUserDefaults().objectForKey("userAddressForDisplay") as? String
+        self.tableView.reloadData()
     }
 }
 

@@ -95,7 +95,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FajrWakeCell" textLabel="oly-jz-6Cp" detailTextLabel="9e7-x3-DGF" rowHeight="93" style="IBUITableViewCellStyleSubtitle" id="v0K-rT-VOa" customClass="FajrWakeCell" customModule="Fajr_Wake" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FajrWakeCell" textLabel="oly-jz-6Cp" rowHeight="93" style="IBUITableViewCellStyleDefault" id="v0K-rT-VOa" customClass="FajrWakeCell" customModule="Fajr_Wake" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="114" width="600" height="93"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0K-rT-VOa" id="1FJ-pm-kVv">
@@ -103,23 +103,15 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="5 mins before fajr" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oly-jz-6Cp">
-                                            <rect key="frame" x="15" y="25" width="156" height="24"/>
+                                            <rect key="frame" x="15" y="0.0" width="570" height="92"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alarm, Mon Tue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9e7-x3-DGF">
-                                            <rect key="frame" x="15" y="49" width="108" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="alarmDetailLabel" destination="9e7-x3-DGF" id="AYR-dT-K55"/>
                                     <outlet property="alarmLabel" destination="oly-jz-6Cp" id="7l2-AD-KLy"/>
                                     <segue destination="NgY-ZL-nSc" kind="presentation" identifier="showDetail" id="JYW-td-i19"/>
                                 </connections>
@@ -672,5 +664,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="JYW-td-i19"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+    <color key="tintColor" red="0.92941176470588238" green="0.29803921568627451" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
 </document>

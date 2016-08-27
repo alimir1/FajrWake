@@ -29,13 +29,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             settings.setObject(AlarmSoundsSectionTitles.Adhan.rawValue, forKey: "DefaultSoundTitle")
         }
         
-        // PREVENT APP NAP!!!!!
+        // PREVENT APP NAP!!
         activity = NSProcessInfo().beginActivityWithOptions(NSActivityOptions.UserInitiated, reason: "NSTimers should not be prevented by app nap")
         
         // navigation bar appearence
         let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.barTintColor = UIColor.blackColor()
+        navigationBarAppearace.barTintColor = UIColor(red: 0.9294, green: 0.298, blue: 0.2588, alpha: 1.0) /* #ed4c42 */
+        navigationBarAppearace.tintColor = UIColor.whiteColor()
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
         // Status bar white
         UIApplication.sharedApplication().statusBarHidden = false
         UIApplication.sharedApplication().statusBarStyle = .LightContent
