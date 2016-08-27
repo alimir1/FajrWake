@@ -123,11 +123,7 @@
                             <outlet property="delegate" destination="Gh6-O9-xWD" id="eg5-fX-e8A"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem image="List 1" id="1Ie-vF-Bko"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="FMS-me-R03"/>
-                        <barButtonItem image="Settings 2" id="1wV-ue-Uvi"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Fajr Wake" id="wWv-im-Nar">
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="tYA-tT-9yS">
@@ -658,7 +654,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="List 1" width="22" height="18"/>
         <image name="Settings 2" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
