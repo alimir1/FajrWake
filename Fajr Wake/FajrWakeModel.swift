@@ -230,7 +230,6 @@ protocol AlarmClockType {
     var alarm: NSTimer { get set }
     var savedAlarmDate: NSDate? { get set }
     var attributedTitle: NSMutableAttributedString { get }
-    var localNotification: UILocalNotification { get }
     
     static var DocumentsDirectory: NSURL { get }
     static var ArchiveURL: NSURL { get }
@@ -302,7 +301,6 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
     var alarmOn: Bool
     var alarm: NSTimer = NSTimer()
     var savedAlarmDate: NSDate?
-    var localNotification = UILocalNotification()
     
     static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("customAlarmAlarms")
@@ -346,7 +344,6 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         }
         
         self.savedAlarmDate = timeToAlarm
-
         
         return timeToAlarm
     }
@@ -412,7 +409,6 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
     var alarmOn: Bool
     var alarm: NSTimer = NSTimer()
     var savedAlarmDate: NSDate?
-    var localNotification = UILocalNotification()
     
     static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("fajrWakeAlarms")
