@@ -234,7 +234,7 @@ protocol AlarmClockType {
     static var DocumentsDirectory: NSURL { get }
     static var ArchiveURL: NSURL { get }
     
-    func timeToAlarm() -> NSDate
+    func timeToAlarm(forViewController: Bool, withPrayerTimes: [String : String]?) -> NSDate
 }
 
 extension AlarmClockType {
@@ -269,10 +269,30 @@ extension AlarmClockType {
         }
     }
     
-    func scheduleLocalNotification(date: NSDate, noSound: Bool? = false) {
-        var notification = UILocalNotification()
+    func scheduleLocalNotification(noSound noSound: Bool? = false) {
+        let settings = NSUserDefaults.standardUserDefaults()
+        let lon = settings.doubleForKey("longitude")
+        let lat = settings.doubleForKey("latitude")
+        let gmt = settings.doubleForKey("gmt")
+        let userPrayerTime = UserSettingsPrayertimes()
+        
+        var prayerTimes: [String : String]
+        var dateToAlarm: NSDate
+        var notification: UILocalNotification
+         var repeatNotification = UILocalNotification()
+        
         for i in 0 ..< 4 {
-            notification = getLocalNotification(date.dateByAddingTimeInterval(30*Double(i)), noSound: noSound)
+            if self.alarmType == .FajrWakeAlarm {
+                prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate().dateByAddingTimeInterval((60 * 60 * 24) * Double(i)), latitude: lat, longitude: lon, tZone: gmt)
+                dateToAlarm = self.timeToAlarm(false, withPrayerTimes: prayerTimes).dateByAddingTimeInterval((60 * 60 * 24) * Double(i))
+            } else {
+                dateToAlarm = self.timeToAlarm(false, withPrayerTimes: nil).dateByAddingTimeInterval((60 * 60 * 24) * Double(i))
+            }
+            for n in 1 ..< 4 {
+                repeatNotification = getLocalNotification(dateToAlarm.dateByAddingTimeInterval(30*Double(n)), noSound: noSound)
+                UIApplication.sharedApplication().scheduledLocalNotifications?.append(repeatNotification)
+            }
+            notification = getLocalNotification(dateToAlarm, noSound: noSound)
             UIApplication.sharedApplication().scheduledLocalNotifications?.append(notification)
         }
     }
@@ -317,7 +337,7 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         super.init()
     }
 
-    func timeToAlarm() -> NSDate {
+    func timeToAlarm(forViewController: Bool, withPrayerTimes: [String : String]?) -> NSDate {
         let currentDate = NSDate()
         let calendar = NSCalendar.currentCalendar()
         let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
@@ -332,19 +352,21 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         timeToAlarmComponents.second = 0
         
         var timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)!
-        
-        if timeToAlarm.timeIntervalSinceNow < 0 {
-            timeToAlarm = timeToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
-        }
-        
-        if let savedAlarm = self.savedAlarmDate {
-            if savedAlarm.timeIntervalSinceNow == 0 || savedAlarm.timeIntervalSinceNow > 0 {
-                timeToAlarm = savedAlarm
+
+        ///////////////////////// For FajrWakeViewController ///////////////////////////////////
+        if forViewController == true {
+            if timeToAlarm.timeIntervalSinceNow < 0 {
+                timeToAlarm = timeToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
             }
+            if let savedAlarm = self.savedAlarmDate {
+                if savedAlarm.timeIntervalSinceNow == 0 || savedAlarm.timeIntervalSinceNow > 0 {
+                    timeToAlarm = savedAlarm
+                }
+            }
+            self.savedAlarmDate = timeToAlarm
         }
-        
-        self.savedAlarmDate = timeToAlarm
-        
+        /////////////////////////////////////////////////////////////////////////////////////////
+
         return timeToAlarm
     }
     
@@ -426,31 +448,40 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         
         super.init()
     }
-        
-    func timeToAlarm() -> NSDate {
-         // prayer times
-         let settings = NSUserDefaults.standardUserDefaults()
-         let lon = settings.doubleForKey("longitude")
-         let lat = settings.doubleForKey("latitude")
-         let gmt = settings.doubleForKey("gmt")
-         let userPrayerTime = UserSettingsPrayertimes()
-         var prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate(), latitude: lat, longitude: lon, tZone: gmt)
 
+    func timeToAlarm(forViewController: Bool, withPrayerTimes: [String : String]?) -> NSDate {
+        let settings = NSUserDefaults.standardUserDefaults()
+        let lon = settings.doubleForKey("longitude")
+        let lat = settings.doubleForKey("latitude")
+        let gmt = settings.doubleForKey("gmt")
+        let userPrayerTime = UserSettingsPrayertimes()
+        var prayerTimes: [String : String]
+        
+        if let pTimes = withPrayerTimes {
+            prayerTimes = pTimes
+        } else {
+            prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate(), latitude: lat, longitude: lon, tZone: gmt)
+        }
+        
         var timeToAlarm = initialAlarmTime(prayerTimes)
-        
-        if timeToAlarm.timeIntervalSinceNow < 0 {
-            // based on next day's prayer times
-            prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate().dateByAddingTimeInterval(60 * 60 * 24), latitude: lat, longitude: lon, tZone: gmt)
-            timeToAlarm = initialAlarmTime(prayerTimes).dateByAddingTimeInterval(60 * 60 * 24)
-        }
-        
-        if let savedAlarm = self.savedAlarmDate {
-            if savedAlarm.timeIntervalSinceNow == 0 || savedAlarm.timeIntervalSinceNow > 0 {
-                timeToAlarm = savedAlarm
+
+        ///////////////////////// For FajrWakeViewController ///////////////////////////////////
+        if forViewController == true {
+            if timeToAlarm.timeIntervalSinceNow < 0 {
+                // based on next day's prayer times
+                prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate().dateByAddingTimeInterval(60 * 60 * 24), latitude: lat, longitude: lon, tZone: gmt)
+                timeToAlarm = initialAlarmTime(prayerTimes).dateByAddingTimeInterval(60 * 60 * 24)
             }
+            
+            if let savedAlarm = self.savedAlarmDate {
+                if savedAlarm.timeIntervalSinceNow == 0 || savedAlarm.timeIntervalSinceNow > 0 {
+                    timeToAlarm = savedAlarm
+                }
+            }
+            
+            self.savedAlarmDate = timeToAlarm
         }
-        
-        self.savedAlarmDate = timeToAlarm
+        /////////////////////////////////////////////////////////////////////////////////////////
         
         return timeToAlarm
     }

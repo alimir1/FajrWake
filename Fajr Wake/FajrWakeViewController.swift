@@ -110,9 +110,9 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
                     let alarmDate = self.alarms[index].savedAlarmDate!
                     if alarmDate.timeIntervalSinceNow >= 0  {
                         if noSound == true {
-                            self.alarms[index].scheduleLocalNotification(alarmDate, noSound: true)
+                            self.alarms[index].scheduleLocalNotification(noSound: true)
                         } else {
-                            self.alarms[index].scheduleLocalNotification(alarmDate)
+                            self.alarms[index].scheduleLocalNotification()
                         }
                     }
                 }
@@ -223,14 +223,13 @@ extension FajrWakeViewController {
         // Alarm On/Off
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.whiteColor()
-            // Alarming ////////////////////////////////////////////////////////////////
+            // Alarming ////////////////////////////////////////////////////////////////            
             if let url = alarm.sound.alarmSound.URL {
-                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(), userInfo: [indexPath : url])
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(true, withPrayerTimes: nil), userInfo: [indexPath : url])
             } else {
-                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(), userInfo: indexPath)
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(true, withPrayerTimes: nil), userInfo: indexPath)
             }
             ///////////////////////////////////////////////////////////////////////////
-
         } else {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
         }
@@ -484,7 +483,7 @@ extension FajrWakeViewController {
     
     // Sort alarms based on alarm times
     func sortAlarms() {
-        alarms.sortInPlace({ $0.timeToAlarm().timeIntervalSinceNow < $1.timeToAlarm().timeIntervalSinceNow })
+        alarms.sortInPlace({ $0.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow < $1.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow })
     }
 }
 
@@ -646,7 +645,7 @@ extension FajrWakeViewController {
         }
 
         if savedAlarms.count > 0 {
-            savedAlarms.sortInPlace({$0.timeToAlarm().timeIntervalSinceNow < $1.timeToAlarm().timeIntervalSinceNow })
+            savedAlarms.sortInPlace({$0.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow < $1.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow})
             return savedAlarms
         } else {
             return nil
