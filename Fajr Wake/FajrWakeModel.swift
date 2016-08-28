@@ -271,8 +271,17 @@ extension AlarmClockType {
     }
     
     func scheduleLocalNotification(date: NSDate, noSound: Bool? = false) {
+        var notification = UILocalNotification()
+        for i in 0 ..< 4 {
+            notification = getLocalNotification(date.dateByAddingTimeInterval(30*Double(i)), noSound: noSound)
+            UIApplication.sharedApplication().scheduledLocalNotifications?.append(notification)
+        }
+    }
+    
+    func getLocalNotification(date: NSDate, noSound: Bool? = false) -> UILocalNotification {
+        let localNotification = UILocalNotification()
         localNotification.fireDate = date
-        localNotification.alertBody = "\(self.attributedTitle.string)\n\(self.alarmLabel)"
+        localNotification.alertBody = "\(self.attributedTitle.string)\n\"\(self.alarmLabel)\" - (Open the app to stop)"
         if self.sound.alarmSound.URL != nil {
             if noSound == false {
                 localNotification.soundName = sound.alarmSound.pathForLocalNotification
@@ -280,14 +289,7 @@ extension AlarmClockType {
                 localNotification.soundName = nil
             }
         }
-        
-        // Schedule a notification
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
-        let dateString = dateFormatter.stringFromDate(date)
-        print("Local Notification scheduled for: \(dateString)")
+        return localNotification
     }
 }
 

@@ -402,7 +402,7 @@ extension FajrWakeViewController {
                 })
         }
         // Ok Button
-        alarmAlertController!.addAction(UIAlertAction(title: "OK", style: .Default) {
+        alarmAlertController!.addAction(UIAlertAction(title: "Stop", style: .Default) {
             action -> Void in
             
             // stop alarm sound
