@@ -217,66 +217,22 @@ extension FajrWakeViewController {
         cell.alarmLabel.attributedText = alarm.attributedTitle
         cell.editingAccessoryType = .DisclosureIndicator
         
+        // Stop alarm (if any)
+        alarm.stopAlarm()
+        
         // Alarm On/Off
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.whiteColor()
-            
-            // First stop previous alarm (if any)
-            alarm.stopAlarm()
-            
             // Alarming ////////////////////////////////////////////////////////////////
-            if alarm.alarmType == .FajrWakeAlarm {
-                let fajrAlarm = alarm as! FajrWakeAlarm
-                var dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate()))
-                
-                if dateToAlarm.timeIntervalSinceNow < 0 {
-                    // based on next day's prayer times
-                    dateToAlarm = fajrAlarm.timeToAlarm(getPrayerTimes(NSDate().dateByAddingTimeInterval(60 * 60 * 24))).dateByAddingTimeInterval(60 * 60 * 24)
-                }
-                
-                if let savedAlarmDate = fajrAlarm.savedAlarmDate {
-                    if savedAlarmDate.timeIntervalSinceNow == 0 || savedAlarmDate.timeIntervalSinceNow > 0 {
-                        dateToAlarm = savedAlarmDate
-                    }
-                }
-                
-                fajrAlarm.savedAlarmDate = dateToAlarm
-                
-                if let url = fajrAlarm.sound.alarmSound.URL {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
-                } else {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
-                }
-                
-            } else if alarm.alarmType == .CustomAlarm {
-                let customAlarm = alarm as! CustomAlarm
-                var dateToAlarm = customAlarm.timeToAlarm(nil)
-                
-                if dateToAlarm.timeIntervalSinceNow < 0 {
-                    dateToAlarm = dateToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
-                }
-                
-                if let savedAlarmDate = customAlarm.savedAlarmDate {
-                    if savedAlarmDate.timeIntervalSinceNow == 0 || savedAlarmDate.timeIntervalSinceNow > 0 {
-                        dateToAlarm = savedAlarmDate
-                    }
-                }
-                
-                customAlarm.savedAlarmDate = dateToAlarm
-                
-                if let url = customAlarm.sound.alarmSound.URL {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: [indexPath : url])
-                } else {
-                    alarm.startAlarm(self, selector: #selector(self.alarmAction), date: dateToAlarm, userInfo: indexPath)
-                }
+            if let url = alarm.sound.alarmSound.URL {
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(), userInfo: [indexPath : url])
+            } else {
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(), userInfo: indexPath)
             }
             ///////////////////////////////////////////////////////////////////////////
 
         } else {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
-            
-            // Stop alarm
-            alarm.stopAlarm()
         }
         
         let alarmSwitch = UISwitch(frame: CGRectZero)
@@ -284,7 +240,7 @@ extension FajrWakeViewController {
         alarmSwitch.on = alarm.alarmOn
         cell.accessoryView = alarmSwitch
         alarmSwitch.addTarget(self, action: #selector(self.switchChanged), forControlEvents: .ValueChanged)
-        
+
         saveAlarms()
         
         return cell
@@ -365,8 +321,7 @@ extension FajrWakeViewController {
 
         if url != nil {
             playSound(url!)
-            
-            // first vibrate then vibrate every 2 seconds
+            // vibrate every 2 seconds
             self.vibrate()
             vibrationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(self.vibrate), userInfo: nil, repeats: true)
         }
@@ -529,7 +484,7 @@ extension FajrWakeViewController {
     
     // Sort alarms based on alarm times
     func sortAlarms() {
-        alarms.sortInPlace({ $0.timeToAlarm(prayerTimes).timeIntervalSinceNow < $1.timeToAlarm(prayerTimes).timeIntervalSinceNow })
+        alarms.sortInPlace({ $0.timeToAlarm().timeIntervalSinceNow < $1.timeToAlarm().timeIntervalSinceNow })
     }
 }
 
@@ -691,7 +646,7 @@ extension FajrWakeViewController {
         }
 
         if savedAlarms.count > 0 {
-            savedAlarms.sortInPlace({$0.timeToAlarm(prayerTimes).timeIntervalSinceNow < $1.timeToAlarm(prayerTimes).timeIntervalSinceNow })
+            savedAlarms.sortInPlace({$0.timeToAlarm().timeIntervalSinceNow < $1.timeToAlarm().timeIntervalSinceNow })
             return savedAlarms
         } else {
             return nil

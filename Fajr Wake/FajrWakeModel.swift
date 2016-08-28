@@ -235,7 +235,7 @@ protocol AlarmClockType {
     static var DocumentsDirectory: NSURL { get }
     static var ArchiveURL: NSURL { get }
     
-    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate
+    func timeToAlarm() -> NSDate
 }
 
 extension AlarmClockType {
@@ -319,7 +319,7 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         super.init()
     }
 
-    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate {
+    func timeToAlarm() -> NSDate {
         let currentDate = NSDate()
         let calendar = NSCalendar.currentCalendar()
         let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
@@ -333,7 +333,22 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         timeToAlarmComponents.minute = pickerTimeComponents.minute
         timeToAlarmComponents.second = 0
         
-        return calendar.dateFromComponents(timeToAlarmComponents)!
+        var timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)!
+        
+        if timeToAlarm.timeIntervalSinceNow < 0 {
+            timeToAlarm = timeToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
+        }
+        
+        if let savedAlarm = self.savedAlarmDate {
+            if savedAlarm.timeIntervalSinceNow == 0 || savedAlarm.timeIntervalSinceNow > 0 {
+                timeToAlarm = savedAlarm
+            }
+        }
+        
+        self.savedAlarmDate = timeToAlarm
+
+        
+        return timeToAlarm
     }
     
     var timeToString: String {
@@ -416,16 +431,44 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         super.init()
     }
         
-    func timeToAlarm(prayerTimes: [String: String]?) -> NSDate {
+    func timeToAlarm() -> NSDate {
+         // prayer times
+         let settings = NSUserDefaults.standardUserDefaults()
+         let lon = settings.doubleForKey("longitude")
+         let lat = settings.doubleForKey("latitude")
+         let gmt = settings.doubleForKey("gmt")
+         let userPrayerTime = UserSettingsPrayertimes()
+         var prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate(), latitude: lat, longitude: lon, tZone: gmt)
+
+        var timeToAlarm = initialAlarmTime(prayerTimes)
+        
+        if timeToAlarm.timeIntervalSinceNow < 0 {
+            // based on next day's prayer times
+            prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate().dateByAddingTimeInterval(60 * 60 * 24), latitude: lat, longitude: lon, tZone: gmt)
+            timeToAlarm = initialAlarmTime(prayerTimes).dateByAddingTimeInterval(60 * 60 * 24)
+        }
+        
+        if let savedAlarm = self.savedAlarmDate {
+            if savedAlarm.timeIntervalSinceNow == 0 || savedAlarm.timeIntervalSinceNow > 0 {
+                timeToAlarm = savedAlarm
+            }
+        }
+        
+        self.savedAlarmDate = timeToAlarm
+        
+        return timeToAlarm
+    }
+    
+    func initialAlarmTime(prayerTimes: [String : String]) -> NSDate {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
-        let salatOrQadhaTime = dateFormatter.dateFromString(prayerTimes![whatSalatToWake.getString]!)
+        let salatOrQadhaTime = dateFormatter.dateFromString(prayerTimes[whatSalatToWake.getString]!)
         
         let calendar = NSCalendar.currentCalendar()
         var adjustedTime: NSDate?
         
         if whenToWake == .OnTime {
-           adjustedTime = salatOrQadhaTime
+            adjustedTime = salatOrQadhaTime
         } else if whenToWake == .Before {
             adjustedTime = calendar.dateByAddingUnit(.Minute, value: -minsToAdjust, toDate: salatOrQadhaTime!, options: [])
         } else if whenToWake == .After {
@@ -442,9 +485,8 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         timeToAlarmComponents.hour = adjustedTimeComponents.hour
         timeToAlarmComponents.minute = adjustedTimeComponents.minute
         timeToAlarmComponents.second = 0
-        let timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)
         
-        return timeToAlarm!
+        return calendar.dateFromComponents(timeToAlarmComponents)!
     }
     
     var title: String {
