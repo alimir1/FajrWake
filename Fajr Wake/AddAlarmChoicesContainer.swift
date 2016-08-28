@@ -103,12 +103,14 @@ class AddAlarmChoicesContainer: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
-        switch indexPath.row {
-        case 0: cell.imageView!.image = UIImage(named: "Clock 2.png")!
-        case 1: cell.imageView!.image = UIImage(named: "Clipboard.png")!
-        case 2: cell.imageView!.image = UIImage(named: "Music Note 1.png")!
-        case 3: cell.imageView!.image = UIImage(named: "Bell.png")!
-        default: cell.imageView!.image = nil
+        if indexPath.section == 0 {
+            switch indexPath.row {
+            case 0: cell.imageView!.image = UIImage(named: "Clock 2.png")!
+            case 1: cell.imageView!.image = UIImage(named: "Clipboard.png")!
+            case 2: cell.imageView!.image = UIImage(named: "Music Note 1.png")!
+            case 3: cell.imageView!.image = UIImage(named: "Bell.png")!
+            default: cell.imageView!.image = nil
+            }
         }
         
         return cell

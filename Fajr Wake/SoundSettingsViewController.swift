@@ -38,6 +38,8 @@ class SoundSettingsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.title = "Alarm Sounds"
     }
     
     func playSound(url: NSURL) {

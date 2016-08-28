@@ -20,6 +20,8 @@ class LabelSettingsViewController: UITableViewController, UITextFieldDelegate {
         textField.clearButtonMode = .WhileEditing
         self.textField.delegate = self
         textField.text = alarmLabelText
+        
+        self.navigationItem.title = "Alarm Name"
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
