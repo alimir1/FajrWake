@@ -215,6 +215,7 @@ extension FajrWakeViewController {
         var alarm = alarms[indexPath.row]
         
         cell.alarmLabel.attributedText = alarm.attributedTitle
+        cell.alarmLabel.textColor = UIColor.blackColor()
         cell.editingAccessoryType = .DisclosureIndicator
         
         // Stop alarm (if any)
@@ -232,6 +233,7 @@ extension FajrWakeViewController {
             ///////////////////////////////////////////////////////////////////////////
         } else {
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            cell.alarmLabel.textColor = UIColor.grayColor()
         }
         
         let alarmSwitch = UISwitch(frame: CGRectZero)
@@ -251,7 +253,6 @@ extension FajrWakeViewController {
         if let indexPath = tableView.indexPathForRowAtPoint(switchOriginInTableView) {
             alarms[indexPath.row].alarmOn = switchControl.on
             tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            saveAlarms()
         } else {
             print("ERROR: Cell doesn't exist!")
         }
@@ -262,7 +263,7 @@ extension FajrWakeViewController {
             // remove NSTimer and delete the row from the data source
             alarms[indexPath.row].stopAlarm()
             alarms.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             dispatch_async(dispatch_get_main_queue()) {
                 self.tableView.reloadData()
             }
@@ -302,7 +303,6 @@ extension FajrWakeViewController {
         }
         sortAlarms()
         self.tableView.reloadData()
-        saveAlarms()
     }
     
     ///////////////////////////////Firing Alarm////////////////////////////////////////////////////
@@ -342,9 +342,8 @@ extension FajrWakeViewController {
                 if vibrationTimer.valid {
                     vibrationTimer.invalidate()
                 }
-                
                 // snooze for 8 mins
-                let snoozeTime = NSDate().dateByAddingTimeInterval(8 * 60)
+                let snoozeTime = NSDate().dateByAddingTimeInterval(60 * 8)
                 if url != nil {
                     self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: [indexPath! : url!])
                 } else {
@@ -355,10 +354,9 @@ extension FajrWakeViewController {
                 self.saveAlarms()
                 })
         }
-        // Ok Button
+        // Stop Button
         alarmAlertController!.addAction(UIAlertAction(title: "Stop", style: .Default) {
             action -> Void in
-            
             // stop alarm sound
             if self.alarmSoundPlayer != nil {
                 self.alarmSoundPlayer.stop()
@@ -369,7 +367,6 @@ extension FajrWakeViewController {
             if vibrationTimer.valid {
                 vibrationTimer.invalidate()
             }
-
             self.alarms[indexPath!.row].alarmOn = false
             self.saveAlarms()
             self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
