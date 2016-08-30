@@ -108,6 +108,12 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
             for (index, _) in self.alarms.enumerate() {
                 if self.alarms[index].alarmOn {
                     let alarmDate = self.alarms[index].savedAlarmDate!
+                    
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
+                    let dateString = dateFormatter.stringFromDate(alarmDate)
+                    print("LocalNotification scheduled for: \(dateString)")
+                    
                     if alarmDate.timeIntervalSinceNow >= 0  {
                         if noSound == true {
                             self.alarms[index].scheduleLocalNotification(noSound: true)
@@ -217,21 +223,22 @@ extension FajrWakeViewController {
         cell.alarmLabel.attributedText = alarm.attributedTitle
         cell.alarmLabel.textColor = UIColor.blackColor()
         cell.editingAccessoryType = .DisclosureIndicator
-        
-        // Stop alarm (if any)
-        alarm.stopAlarm()
-        
+
         // Alarm On/Off
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.whiteColor()
             // Alarming ////////////////////////////////////////////////////////////////            
             if let url = alarm.sound.alarmSound.URL {
-                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(true, withPrayerTimes: nil), userInfo: [indexPath : url])
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(nil), userInfo: [indexPath : url])
             } else {
-                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(true, withPrayerTimes: nil), userInfo: indexPath)
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(nil), userInfo: indexPath)
             }
+            // schedule local notifications
+            setupLocalNotifications()
             ///////////////////////////////////////////////////////////////////////////
         } else {
+            alarm.stopAlarm()
+            alarm.deleteLocalNotifications()
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
             cell.alarmLabel.textColor = UIColor.grayColor()
         }
@@ -367,8 +374,9 @@ extension FajrWakeViewController {
             if vibrationTimer.valid {
                 vibrationTimer.invalidate()
             }
-            self.alarms[indexPath!.row].alarmOn = false
-            self.saveAlarms()
+            
+//            self.alarms[indexPath!.row].alarmOn = false
+//            self.saveAlarms()
             self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
             })
         
@@ -480,7 +488,7 @@ extension FajrWakeViewController {
     
     // Sort alarms based on alarm times
     func sortAlarms() {
-        alarms.sortInPlace({ $0.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow < $1.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow })
+        alarms.sortInPlace({ $0.timeToAlarm(nil).timeIntervalSinceNow < $1.timeToAlarm(nil).timeIntervalSinceNow })
     }
 }
 
@@ -619,9 +627,6 @@ extension FajrWakeViewController {
         if !customAlarmIsSuccessfulSave {
             print("unable to save CustomAlarms alarms")
         }
-        
-        // local notification
-        setupLocalNotifications()
     }
     
     func getSavedAlarms() -> [AlarmClockType]? {
@@ -642,7 +647,7 @@ extension FajrWakeViewController {
         }
 
         if savedAlarms.count > 0 {
-            savedAlarms.sortInPlace({$0.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow < $1.timeToAlarm(true, withPrayerTimes: nil).timeIntervalSinceNow})
+            savedAlarms.sortInPlace({$0.timeToAlarm(nil).timeIntervalSinceNow < $1.timeToAlarm(nil).timeIntervalSinceNow})
             return savedAlarms
         } else {
             return nil
