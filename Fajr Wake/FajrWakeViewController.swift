@@ -33,11 +33,8 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         UIApplication.sharedApplication().cancelAllLocalNotifications()
         
         configureNotificationObservers()
-        
-        setupPrayerTimes()
         noAlarmsLabelConfig()
-        
-        // load saved alarms
+        setupPrayerTimes()
         loadAlarms()
         
         // hide "edit" button when no alarm
@@ -66,17 +63,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
     func loadAlarms() {
         // load saved alarms
         if let savedAlarms = getSavedAlarms() {
-            var alarmsToLoad = savedAlarms
-            for (index, _) in savedAlarms.enumerate() {
-                if savedAlarms[index].alarmOn == true {
-                    if let alarmDate = savedAlarms[index].savedAlarmDate {
-                        if alarmDate.timeIntervalSinceNow < 0 {
-                            alarmsToLoad[index].alarmOn = false
-                        }
-                    }
-                }
-            }
-            alarms += alarmsToLoad
+            alarms += savedAlarms
         }
     }
     
@@ -108,12 +95,6 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
             for (index, _) in self.alarms.enumerate() {
                 if self.alarms[index].alarmOn {
                     let alarmDate = self.alarms[index].savedAlarmDate!
-                    
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
-                    let dateString = dateFormatter.stringFromDate(alarmDate)
-                    print("LocalNotification scheduled for: \(dateString)")
-                    
                     if alarmDate.timeIntervalSinceNow >= 0  {
                         if noSound == true {
                             self.alarms[index].scheduleLocalNotification(noSound: true)
@@ -172,7 +153,6 @@ extension FajrWakeViewController {
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
         self.displaySettingsTableView()
         
         let settings = NSUserDefaults.standardUserDefaults()
@@ -224,21 +204,9 @@ extension FajrWakeViewController {
         cell.alarmLabel.textColor = UIColor.blackColor()
         cell.editingAccessoryType = .DisclosureIndicator
 
-        // Alarm On/Off
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.whiteColor()
-            // Alarming ////////////////////////////////////////////////////////////////            
-            if let url = alarm.sound.alarmSound.URL {
-                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(nil), userInfo: [indexPath : url])
-            } else {
-                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(nil), userInfo: indexPath)
-            }
-            // schedule local notifications
-            setupLocalNotifications()
-            ///////////////////////////////////////////////////////////////////////////
         } else {
-            alarm.stopAlarm()
-            alarm.deleteLocalNotifications()
             cell.backgroundColor = UIColor.groupTableViewBackgroundColor()
             cell.alarmLabel.textColor = UIColor.grayColor()
         }
@@ -249,9 +217,24 @@ extension FajrWakeViewController {
         cell.accessoryView = alarmSwitch
         alarmSwitch.addTarget(self, action: #selector(self.switchChanged), forControlEvents: .ValueChanged)
 
-        saveAlarms()
-        
         return cell
+    }
+    
+    func setupAlarmsAndUpdate(indexPath: NSIndexPath) {
+        var alarm = alarms[indexPath.row]
+        if alarm.alarmOn == true {
+            if let url = alarm.sound.alarmSound.URL {
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(nil), userInfo: [indexPath : url])
+            } else {
+                alarm.startAlarm(self, selector: #selector(self.alarmAction), date: alarm.timeToAlarm(nil), userInfo: indexPath)
+            }
+            // schedule local notifications
+            setupLocalNotifications()
+        } else {
+            alarm.stopAlarm()
+            alarm.deleteLocalNotifications()
+        }
+        saveAlarms()
     }
     
     // Target-Action for AlarmClock switch (on/off)
@@ -259,7 +242,8 @@ extension FajrWakeViewController {
         let switchOriginInTableView = switchControl.convertPoint(CGPointZero, toView: tableView)
         if let indexPath = tableView.indexPathForRowAtPoint(switchOriginInTableView) {
             alarms[indexPath.row].alarmOn = switchControl.on
-            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            setupAlarmsAndUpdate(indexPath)
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         } else {
             print("ERROR: Cell doesn't exist!")
         }
@@ -269,6 +253,7 @@ extension FajrWakeViewController {
         if editingStyle == .Delete {
             // remove NSTimer and delete the row from the data source
             alarms[indexPath.row].stopAlarm()
+            alarms[indexPath.row].deleteLocalNotifications()
             alarms.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             dispatch_async(dispatch_get_main_queue()) {
@@ -294,18 +279,17 @@ extension FajrWakeViewController {
         if let sourceViewController = sender.sourceViewController as? AddAlarmMasterViewController, let alarm = sourceViewController.alarmClock {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 // edit alarm
-                // turn off the previous alarm
-                alarms[selectedIndexPath.row].alarmOn = false
-                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
-                
-                // replace alarm clock with edited alarm
+                // turn off the previous alarm and replace alarm clock with edited alarm
+                alarms[selectedIndexPath.row].stopAlarm()
+                alarms[selectedIndexPath.row].deleteLocalNotifications()
                 alarms[selectedIndexPath.row] = alarm
-                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
+                setupAlarmsAndUpdate(selectedIndexPath)
             } else {
                 // add new alarm
                 let newIndexPath = NSIndexPath(forRow: alarms.count, inSection: 0)
                 alarms.append(alarm)
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
+                setupAlarmsAndUpdate(newIndexPath)
             }
         }
         sortAlarms()
@@ -356,9 +340,8 @@ extension FajrWakeViewController {
                 } else {
                     self.alarms[indexPath!.row].startAlarm(self, selector: #selector(self.alarmAction), date: snoozeTime, userInfo: indexPath!)
                 }
-                
                 self.alarms[indexPath!.row].savedAlarmDate = snoozeTime
-                self.saveAlarms()
+                self.setupAlarmsAndUpdate(indexPath!)
                 })
         }
         // Stop Button
@@ -375,9 +358,7 @@ extension FajrWakeViewController {
                 vibrationTimer.invalidate()
             }
             
-//            self.alarms[indexPath!.row].alarmOn = false
-//            self.saveAlarms()
-            self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
+            self.setupAlarmsAndUpdate(indexPath!)
             })
         
         alarmAlertController!.show()
@@ -408,14 +389,11 @@ extension FajrWakeViewController {
     
     @IBAction func unwindToAlarmsDelete(sender: UIStoryboardSegue) {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            // remove NSTimer
-            alarms[selectedIndexPath.row].alarmOn = false
-            tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
-            
-            // delete cell
+            // remove alarms and delete cell
+            alarms[selectedIndexPath.row].stopAlarm()
+            alarms[selectedIndexPath.row].deleteLocalNotifications()
             alarms.removeAtIndex(selectedIndexPath.row)
             tableView.deleteRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .Automatic)
-            
             saveAlarms()
         }
     }
@@ -450,7 +428,6 @@ extension FajrWakeViewController {
                 self.locationNameDisplay = "Could not get your city name"
             }
             updatePrayerTimes(NSDate())
-            
         } else {
             startLocationDelegation()
             // once the app launched for first time, set "launchedBefore" to true
@@ -468,8 +445,14 @@ extension FajrWakeViewController {
     
     // update prayer time dictionary
     func updatePrayerTimes(date: NSDate) {
-        self.prayerTimes = getPrayerTimes(date)
         dispatch_async(dispatch_get_main_queue()) {
+            self.prayerTimes = self.getPrayerTimes(date)
+            for i in 0 ..< self.alarms.count {
+                let indexPath = NSIndexPath(forRow: i, inSection: 0)
+                self.alarms[indexPath.row].stopAlarm()
+                self.alarms[indexPath.row].deleteLocalNotifications()
+                self.setupAlarmsAndUpdate(indexPath)
+            }
             self.sortAlarms()
             self.tableView.reloadData()
         }

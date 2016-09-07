@@ -304,9 +304,10 @@ extension AlarmClockType {
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
                 let dateString = dateFormatter.stringFromDate(date)
-                print("notifications(1,3,4....): \(dateString)")
+                print("Set Notifications: \(dateString)")
             }
         }
+        print("--------------------------------------------------------")
     }
     
     func getLocalNotification(date: NSDate, noSound: Bool? = false) -> UILocalNotification {
@@ -328,6 +329,7 @@ extension AlarmClockType {
             for notification in localNotifications {
                 UIApplication.sharedApplication().cancelLocalNotification(notification)
             }
+            print("notifications canceled successfully")
         }
     }
 }

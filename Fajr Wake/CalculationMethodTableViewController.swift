@@ -85,7 +85,7 @@ class CalculationMethodTableViewController: UITableViewController {
             fajrWakeVCReference!.updatePrayerTimes(NSDate())
         }
         
-        //update the checkmark for the current row
+        // update the checkmark for the current row
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.accessoryType = .Checkmark
     }
