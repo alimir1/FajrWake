@@ -26,8 +26,8 @@ class SoundSettingsViewController: UITableViewController {
     var selectedSound: AlarmSound? {
         didSet {
             if let sound = selectedSound {
-                selectedSoundSectionIndex = alarmSoundsSectionTitles.indexOf(sound.alarmSectionTitle)!
-                selectedSoundRowIndex = alarmSounds[selectedSoundSectionIndex!].indexOf(sound.alarmSound)!
+                selectedSoundSectionIndex = alarmSoundsSectionTitles.index(of: sound.alarmSectionTitle)!
+                selectedSoundRowIndex = alarmSounds[selectedSoundSectionIndex!].index(of: sound.alarmSound)!
                 addAlarmChoicesListReference?.alarmSound = sound
             }
         }
@@ -42,14 +42,14 @@ class SoundSettingsViewController: UITableViewController {
         self.navigationItem.title = "Alarm Sounds"
     }
     
-    func playSound(url: NSURL) {
+    func playSound(_ url: URL) {
         do {
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback) // play audio even in silent mode
             } catch {
                 print("could not play in silent mode")
             }
-            alarmSoundPlayer = try AVAudioPlayer(contentsOfURL: url)
+            alarmSoundPlayer = try AVAudioPlayer(contentsOf: url)
             alarmSoundPlayer.volume = 1.0
             alarmSoundPlayer.play()
             //someSound.numberOfLoops = -1 // "infinite" loop
@@ -61,52 +61,52 @@ class SoundSettingsViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return alarmSoundsSectionTitles.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.alarmSounds[section].count
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return alarmSoundsSectionTitles[section].rawValue
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("soundID", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "soundID", for: indexPath)
         // Configure the cell...
-        cell.textLabel?.text = self.alarmSounds[indexPath.section][indexPath.row].rawValue
+        cell.textLabel?.text = self.alarmSounds[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row].rawValue
         
-        if indexPath.section == selectedSoundSectionIndex && indexPath.row == selectedSoundRowIndex {
-            cell.accessoryType = .Checkmark
+        if (indexPath as NSIndexPath).section == selectedSoundSectionIndex && (indexPath as NSIndexPath).row == selectedSoundRowIndex {
+            cell.accessoryType = .checkmark
         } else {
-            cell.accessoryType = .None
+            cell.accessoryType = .none
         }
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         //Other row is selected - need to deselect it
         if let selectionIndex = selectedSoundSectionIndex, let rowIndex = selectedSoundRowIndex {
-            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: rowIndex, inSection: selectionIndex))
-            cell?.accessoryType = .None
+            let cell = tableView.cellForRow(at: IndexPath(row: rowIndex, section: selectionIndex))
+            cell?.accessoryType = .none
         }
         
-        let sound = self.alarmSounds[indexPath.section][indexPath.row]
-        let title = self.alarmSoundsSectionTitles[indexPath.section]
+        let sound = self.alarmSounds[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+        let title = self.alarmSoundsSectionTitles[(indexPath as NSIndexPath).section]
         selectedSound = AlarmSound(alarmSound: sound, alarmSectionTitle: title)
-        let settings = NSUserDefaults.standardUserDefaults()
-        settings.setObject(sound.rawValue, forKey: "DefaultSound")
-        settings.setObject(title.rawValue, forKey: "DefaultSoundTitle")
+        let settings = UserDefaults.standard
+        settings.set(sound.rawValue, forKey: "DefaultSound")
+        settings.set(title.rawValue, forKey: "DefaultSoundTitle")
         
         
         // Play Sound
         if sound.URL != nil {
-            playSound(sound.URL!)
+            playSound(sound.URL! as URL)
         } else {
             if alarmSoundPlayer != nil {
                 alarmSoundPlayer.stop()
@@ -115,8 +115,8 @@ class SoundSettingsViewController: UITableViewController {
         }
         
         //update the checkmark for the current row
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        cell?.accessoryType = .Checkmark
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.accessoryType = .checkmark
     }
 }
 

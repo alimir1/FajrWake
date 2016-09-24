@@ -195,6 +195,7 @@
 					0152D63C1CEF0FCB004FFC04 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = M6ZVBN5V88;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 0;
@@ -379,6 +380,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.FajrWake.FajrWake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -396,6 +398,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

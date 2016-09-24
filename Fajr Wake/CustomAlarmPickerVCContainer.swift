@@ -12,7 +12,7 @@ class CustomAlarmPickerVCContainer: UIViewController {
     var AddAlarmMasterVCReference: AddAlarmMasterViewController?
     @IBOutlet weak var datePicker: UIDatePicker!
     
-    var pickerTime: NSDate? {
+    var pickerTime: Date? {
         didSet {
             AddAlarmMasterVCReference?.pickerTime = pickerTime
             datePicker.date = pickerTime!
@@ -22,13 +22,13 @@ class CustomAlarmPickerVCContainer: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let time = AddAlarmMasterVCReference!.pickerTime {
-            pickerTime = time
+            pickerTime = time as Date
         } else {
             print("oh dear... something went wrong in viewDidLoad() of CustomAlarmPickerVCContainer")
         }
     }
     
-    @IBAction func datePickerAction(sender: AnyObject) {
+    @IBAction func datePickerAction(_ sender: AnyObject) {
         pickerTime = datePicker.date
     }
 }

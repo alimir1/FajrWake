@@ -31,7 +31,7 @@ class FajrAlarmPickerVCContainer: UIViewController {
     
     let maxElements = 10000
     var locOfZero = (10000/2) - 20
-    var pickerData: [[String]] = [[], ["On time", "Before", "After"], [SalatsAndQadhas.Fajr.getString, SalatsAndQadhas.Sunrise.getString]]
+    var pickerData: [[String]] = [[], ["On time", "Before", "After"], [SalatsAndQadhas.fajr.getString, SalatsAndQadhas.sunrise.getString]]
     let minsToAdjustComponent: Int = 0
     let whenToAlarmComponent: Int = 1
     let whatSalatToAlarmComponent: Int = 2
@@ -46,14 +46,14 @@ class FajrAlarmPickerVCContainer: UIViewController {
         } else {
             print("oh dear... something went wrong in viewDidLoad() of FajrAlarmPickerVCContainer")
         }
-        whenToAlarm = WakeOptions(rawValue: prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent))!
-        salatToAlarm = SalatsAndQadhas(rawValue: prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent))!
-        minsToAdjustAlarm = Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
+        whenToAlarm = WakeOptions(rawValue: prayerTimesPicker.selectedRow(inComponent: whenToAlarmComponent))!
+        salatToAlarm = SalatsAndQadhas(rawValue: prayerTimesPicker.selectedRow(inComponent: whatSalatToAlarmComponent))!
+        minsToAdjustAlarm = Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRow(inComponent: minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
         
         // "min" label ::: NEEDS FIX TO ADJUST DIFFERENT SCREENS
-        let hourLabel = UILabel(frame: CGRectMake(84, prayerTimesPicker.frame.size.height / 2 - 12, 75, 30))
+        let hourLabel = UILabel(frame: CGRect(x: 84, y: prayerTimesPicker.frame.size.height / 2 - 12, width: 75, height: 30))
         hourLabel.text = "min"
-        hourLabel.font = UIFont.boldSystemFontOfSize(14)
+        hourLabel.font = UIFont.boldSystemFont(ofSize: 14)
         prayerTimesPicker.addSubview(hourLabel)
     }
 }
@@ -61,7 +61,7 @@ class FajrAlarmPickerVCContainer: UIViewController {
 // MARK: - UIPickerView
 extension FajrAlarmPickerVCContainer: UIPickerViewDelegate, UIPickerViewDataSource {
     // setup alarm
-    func setupFajrAlarm(minsToAdjust minsToAdjust: Int = 10, whenToAlarm: Int = 1, whatSalatToAlarm: Int = 2) {
+    func setupFajrAlarm(minsToAdjust: Int = 10, whenToAlarm: Int = 1, whatSalatToAlarm: Int = 2) {
         // populate first components with minutes
         for index in 0...59 {
             pickerData[minsToAdjustComponent].append("\(index)")
@@ -71,11 +71,11 @@ extension FajrAlarmPickerVCContainer: UIPickerViewDelegate, UIPickerViewDataSour
         prayerTimesPicker.selectRow(whatSalatToAlarm, inComponent: whatSalatToAlarmComponent, animated: true)
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return pickerData.count
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == minsToAdjustComponent {
             return maxElements // to create illusion of infinite scrolling for minutes
         } else {
@@ -83,7 +83,7 @@ extension FajrAlarmPickerVCContainer: UIPickerViewDelegate, UIPickerViewDataSour
         }
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == minsToAdjustComponent {
             let myRow = row % pickerData[minsToAdjustComponent].count
             let numbers = pickerData[minsToAdjustComponent][myRow]
@@ -93,10 +93,10 @@ extension FajrAlarmPickerVCContainer: UIPickerViewDelegate, UIPickerViewDataSour
         }
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedWhenToAlarm = prayerTimesPicker.selectedRowInComponent(whenToAlarmComponent)
-        var selectedMinsToAdjust = Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRowInComponent(minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
-        let selectedSalatAndQadha = prayerTimesPicker.selectedRowInComponent(whatSalatToAlarmComponent)
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedWhenToAlarm = prayerTimesPicker.selectedRow(inComponent: whenToAlarmComponent)
+        var selectedMinsToAdjust = Int(self.pickerView(prayerTimesPicker, titleForRow: prayerTimesPicker.selectedRow(inComponent: minsToAdjustComponent), forComponent: minsToAdjustComponent)!)!
+        let selectedSalatAndQadha = prayerTimesPicker.selectedRow(inComponent: whatSalatToAlarmComponent)
         
         // Adjust the picker if user makes invalid selections
         if (selectedWhenToAlarm == 1 || selectedWhenToAlarm == 2){

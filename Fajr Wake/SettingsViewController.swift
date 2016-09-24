@@ -16,7 +16,7 @@ class SettingsViewController: UITableViewController, CLLocationManagerDelegate {
     var fajrWakeVCReference: FajrWakeViewController?
     
     var calculationMethod: String {
-        let settingsCalcMethod = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
+        let settingsCalcMethod = UserDefaults.standard.integer(forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
         let calcMethodText = CalculationMethods(rawValue: settingsCalcMethod)!.getString()
         return calcMethodText
     }
@@ -25,28 +25,28 @@ class SettingsViewController: UITableViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         detail.text = calculationMethod
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "calcMethodPick" {
-            if let calcMethodViewController = segue.destinationViewController as? CalculationMethodTableViewController {
+            if let calcMethodViewController = segue.destination as? CalculationMethodTableViewController {
                 calcMethodViewController.selectedCalcMethodLabel = calculationMethod
                 calcMethodViewController.fajrWakeVCReference = self.fajrWakeVCReference
             }
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // trigger action for "Get Current Location (GPS)" cell
-        if indexPath.section == 1 && indexPath.row == 0 {
+        if (indexPath as NSIndexPath).section == 1 && (indexPath as NSIndexPath).row == 0 {
             fajrWakeVCReference!.startLocationDelegation()
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 1 {
             return "__________ IMPORTANT __________\nFor best results, keep this app running until alarm times. You may lock the device. If you choose not to keep this app running (not recommended) then make sure to switch your ringer ON and adjust your ringer volume."
         } else {
@@ -54,10 +54,10 @@ class SettingsViewController: UITableViewController, CLLocationManagerDelegate {
         }
     }
 
-    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         if section == 1 {
             if let footerView = view as? UITableViewHeaderFooterView {
-                footerView.textLabel?.textAlignment = .Center
+                footerView.textLabel?.textAlignment = .center
             }
         }
     }

@@ -17,20 +17,20 @@ class LabelSettingsViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         textField.becomeFirstResponder()
-        textField.clearButtonMode = .WhileEditing
+        textField.clearButtonMode = .whileEditing
         self.textField.delegate = self
         textField.text = alarmLabelText
         
         self.navigationItem.title = "Alarm Name"
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        performSegueWithIdentifier("unwindAlarmLabelSegue", sender: self)
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        performSegue(withIdentifier: "unwindAlarmLabelSegue", sender: self)
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let newText = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         textField.text = newText
         if textField.text == "" {
             addAlarmChoicesListReference?.alarmLabelText = "Alarm"
@@ -40,13 +40,13 @@ class LabelSettingsViewController: UITableViewController, UITextFieldDelegate {
         return false
     }
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         textField.text = ""
         addAlarmChoicesListReference?.alarmLabelText = "Alarm"
         return true
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return self.view.frame.size.width/2
     }
     

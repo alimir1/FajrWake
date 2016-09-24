@@ -17,10 +17,10 @@ class AlarmTypeViewController: UITableViewController {
     var selectedCell: Int? {
         didSet(newlySelectedCell) {
             if let cell = selectedCell {
-                if cell == AlarmType.FajrWakeAlarm.rawValue {
-                    addAlarmChoicesListReference?.alarmType = AlarmType.FajrWakeAlarm
-                } else if cell == AlarmType.CustomAlarm.rawValue {
-                    addAlarmChoicesListReference?.alarmType = AlarmType.CustomAlarm
+                if cell == AlarmType.fajrWakeAlarm.rawValue {
+                    addAlarmChoicesListReference?.alarmType = AlarmType.fajrWakeAlarm
+                } else if cell == AlarmType.customAlarm.rawValue {
+                    addAlarmChoicesListReference?.alarmType = AlarmType.customAlarm
                 }
             }
         }
@@ -29,23 +29,23 @@ class AlarmTypeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if selectedCell == 0 {
-            fajrWakeCell.accessoryType = .Checkmark
-            customCell.accessoryType = .None
+            fajrWakeCell.accessoryType = .checkmark
+            customCell.accessoryType = .none
         } else if selectedCell == 1 {
-            fajrWakeCell.accessoryType = .None
-            customCell.accessoryType = .Checkmark
+            fajrWakeCell.accessoryType = .none
+            customCell.accessoryType = .checkmark
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        selectedCell = indexPath.row
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        selectedCell = (indexPath as NSIndexPath).row
         if selectedCell == 0 {
-            fajrWakeCell.accessoryType = .Checkmark
-            customCell.accessoryType = .None
+            fajrWakeCell.accessoryType = .checkmark
+            customCell.accessoryType = .none
         } else {
-            fajrWakeCell.accessoryType = .None
-            customCell.accessoryType = .Checkmark
+            fajrWakeCell.accessoryType = .none
+            customCell.accessoryType = .checkmark
         }
     }
 }

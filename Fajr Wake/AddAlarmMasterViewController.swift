@@ -19,9 +19,9 @@ class AddAlarmMasterViewController: UIViewController {
     var alarmType: AlarmType? {
         didSet {
             if let alarmtype = alarmType {
-                if alarmtype == .FajrWakeAlarm {
+                if alarmtype == .fajrWakeAlarm {
                     alphaSettingsForAlarmContainers(fajrAlpha: 1.0, customAlpha: 0.0)
-                } else if alarmtype == .CustomAlarm {
+                } else if alarmtype == .customAlarm {
                     alphaSettingsForAlarmContainers(fajrAlpha: 0.0, customAlpha: 1.0)
                 }
             }
@@ -30,7 +30,7 @@ class AddAlarmMasterViewController: UIViewController {
     var alarmLabel: String?
     var sound: AlarmSound?
     var snooze: Bool?
-    var pickerTime: NSDate?
+    var pickerTime: Date?
     var minsToAdjust: Int?
     var whenToWake: WakeOptions?
     var whatSalatToWake: SalatsAndQadhas?
@@ -42,22 +42,22 @@ class AddAlarmMasterViewController: UIViewController {
         }
     }
     
-    @IBAction func cancel (sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel (_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
-    func alphaSettingsForAlarmContainers(fajrAlpha fajrAlpha: CGFloat, customAlpha: CGFloat) {
+    func alphaSettingsForAlarmContainers(fajrAlpha: CGFloat, customAlpha: CGFloat) {
         fajrAlarmContainer.alpha = fajrAlpha
         customAlarmContainer.alpha = customAlpha
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if saveButton === sender {
             if alarmType != nil {
-                if alarmType! == .FajrWakeAlarm {
-                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, sound: self.sound!, snooze: snooze!, minsToAdjust: minsToAdjust!, whenToWake: whenToWake!, whatSalatToWake: whatSalatToWake!, alarmType: .FajrWakeAlarm, alarmOn: true)
-                } else if alarmType! == .CustomAlarm {
-                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, sound: self.sound!, snooze: self.snooze!, time: pickerTime!, alarmType: .CustomAlarm, alarmOn: true)
+                if alarmType! == .fajrWakeAlarm {
+                    alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, sound: self.sound!, snooze: snooze!, minsToAdjust: minsToAdjust!, whenToWake: whenToWake!, whatSalatToWake: whatSalatToWake!, alarmType: .fajrWakeAlarm, alarmOn: true)
+                } else if alarmType! == .customAlarm {
+                    alarmClock = CustomAlarm(alarmLabel: self.alarmLabel!, sound: self.sound!, snooze: self.snooze!, time: pickerTime!, alarmType: .customAlarm, alarmOn: true)
                 }
             }
         }
@@ -66,56 +66,56 @@ class AddAlarmMasterViewController: UIViewController {
             if let alarm = alarmClock {
                 // Edit Alarm
                 alarmType = alarm.alarmType
-                if alarm.alarmType == .FajrWakeAlarm {
+                if alarm.alarmType == .fajrWakeAlarm {
                     // Reset (default) for CustomAlarm
-                    pickerTime = NSDate()
+                    pickerTime = Date()
                     
                     // Load values for FajrWakeAlarm
                     let fajrWakeAlarm: FajrWakeAlarm = alarm as! FajrWakeAlarm
                     minsToAdjust = fajrWakeAlarm.minsToAdjust
                     whenToWake = fajrWakeAlarm.whenToWake
                     whatSalatToWake = fajrWakeAlarm.whatSalatToWake
-                } else if alarm.alarmType == .CustomAlarm {
+                } else if alarm.alarmType == .customAlarm {
                     // Reset (default) for FajrWakeAlarm
                     minsToAdjust = 0
-                    whenToWake = .OnTime
-                    whatSalatToWake = .Fajr
+                    whenToWake = .onTime
+                    whatSalatToWake = .fajr
                     
                     // Load values for CustomAlarm
                     let customAlarm: CustomAlarm = alarm as! CustomAlarm
-                    pickerTime = customAlarm.time
+                    pickerTime = customAlarm.time as Date
                 }
             } else {
                 // Add Alarm
-                pickerTime = NSDate()
+                pickerTime = Date()
                 minsToAdjust = 0
-                whenToWake = .OnTime
-                whatSalatToWake = .Fajr
+                whenToWake = .onTime
+                whatSalatToWake = .fajr
             }
 
             switch segueIdentifier {
             case "fajrWakePickerContainer":
-                let fajrAlarmPickerVCContainer = segue.destinationViewController as! FajrAlarmPickerVCContainer
+                let fajrAlarmPickerVCContainer = segue.destination as! FajrAlarmPickerVCContainer
                 fajrAlarmPickerVCContainer.AddAlarmMasterVCReference = self
                 
             case "customAlarmPickerContainer":
-                let customAlarmPickerVCContainer = segue.destinationViewController as! CustomAlarmPickerVCContainer
+                let customAlarmPickerVCContainer = segue.destination as! CustomAlarmPickerVCContainer
                 customAlarmPickerVCContainer.AddAlarmMasterVCReference = self
 
             case "addAlarmChoicesContainer":
-                let addAlarmChoicesContainer = segue.destinationViewController as! AddAlarmChoicesContainer
+                let addAlarmChoicesContainer = segue.destination as! AddAlarmChoicesContainer
                 addAlarmChoicesContainer.AddAlarmMasterVCReference = self
                 
                 if let alarm = alarmClock {
                     // Edit Alarm
-                    if alarm.alarmType == .CustomAlarm {
+                    if alarm.alarmType == .customAlarm {
                         if let customAlarm = alarm as? CustomAlarm {
                             alarmType = customAlarm.alarmType
                             alarmLabel = customAlarm.alarmLabel
                             sound = customAlarm.sound
                             snooze = customAlarm.snooze
                         }
-                    } else if alarm.alarmType == .FajrWakeAlarm {
+                    } else if alarm.alarmType == .fajrWakeAlarm {
                         if let fajrWakeAlarm = alarm as? FajrWakeAlarm {
                             alarmType = fajrWakeAlarm.alarmType
                             alarmLabel = fajrWakeAlarm.alarmLabel
@@ -125,14 +125,14 @@ class AddAlarmMasterViewController: UIViewController {
                     }
                 } else {
                     // Add Alarm
-                    alarmType = .FajrWakeAlarm
+                    alarmType = .fajrWakeAlarm
                     alarmLabel = "Alarm"
-                    let defaultSound = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSound") as? String
-                    let defaultSoundTitle = NSUserDefaults.standardUserDefaults().objectForKey("DefaultSoundTitle") as? String
+                    let defaultSound = UserDefaults.standard.object(forKey: "DefaultSound") as? String
+                    let defaultSoundTitle = UserDefaults.standard.object(forKey: "DefaultSoundTitle") as? String
                     sound = AlarmSound(alarmSound: AlarmSounds(rawValue: defaultSound!)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: defaultSoundTitle!)!)
                     snooze = true
-                    addAlarmChoicesContainer.tableView.scrollEnabled = false
-                    addAlarmChoicesContainer.deleteAlarmCell.hidden = true
+                    addAlarmChoicesContainer.tableView.isScrollEnabled = false
+                    addAlarmChoicesContainer.deleteAlarmCell.isHidden = true
                 }
             default:
                 break

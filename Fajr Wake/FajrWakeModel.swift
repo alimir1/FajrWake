@@ -11,8 +11,8 @@ import UIKit
 // local GMT
 class LocalGMT {
     class func getLocalGMT() -> Double {
-        let localTimeZone = NSTimeZone.localTimeZone().abbreviation!
-        let notCorrectedGMTFormat = localTimeZone.componentsSeparatedByString("GMT")
+        let localTimeZone = NSTimeZone.local.abbreviation()!
+        let notCorrectedGMTFormat = localTimeZone.components(separatedBy: "GMT")
         let correctedGMTFormat: String = notCorrectedGMTFormat[1]
         let gmtArr = correctedGMTFormat.characters.split { $0 == ":" } .map {
             (x) -> Int in return Int(String(x))!
@@ -30,19 +30,19 @@ class LocalGMT {
 }
 
 class DaysToRepeatLabel {
-    class func getTextToRepeatDaysLabel(days: [Days]) -> String {
+    class func getTextToRepeatDaysLabel(_ days: [Days]) -> String {
         var daysInString: [String] = []
         var daysForLabel: String = ""
         
-        let weekends = [Days.Saturday, Days.Sunday]
-        let weekdays = [Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday]
+        let weekends = [Days.saturday, Days.sunday]
+        let weekdays = [Days.monday, Days.tuesday, Days.wednesday, Days.thursday, Days.friday]
         
         let daysSet = Set(days)
         let findWeekendsListSet = Set(weekends)
         let findWeekdaysListSet = Set(weekdays)
         
-        let containsWeekends = findWeekendsListSet.isSubsetOf(daysSet)
-        let containsWeekdays = findWeekdaysListSet.isSubsetOf(daysSet)
+        let containsWeekends = findWeekendsListSet.isSubset(of: daysSet)
+        let containsWeekdays = findWeekdaysListSet.isSubset(of: daysSet)
         
         if days.count == 7 {
             daysForLabel += "Everyday"
@@ -75,7 +75,7 @@ class DaysToRepeatLabel {
         
         for day in days {
             let str = day.getString
-            daysForLabel += str[str.startIndex.advancedBy(0)...str.startIndex.advancedBy(2)] + " "
+            daysForLabel += str[str.characters.index(str.startIndex, offsetBy: 0)...str.characters.index(str.startIndex, offsetBy: 2)] + " "
         }
         
         return daysForLabel
@@ -85,80 +85,80 @@ class DaysToRepeatLabel {
 // MARK: - Concrete Types
 
 enum SalatsAndQadhas: Int {
-    case Fajr
-    case Sunrise
-    case Dhuhr
-    case Asr
-    case Sunset
-    case Maghrib
-    case Isha
+    case fajr
+    case sunrise
+    case dhuhr
+    case asr
+    case sunset
+    case maghrib
+    case isha
     
     var getString: String {
-        return String(self)
+        return String(describing: self)
     }
 }
 
 enum WakeOptions: Int {
-    case OnTime
-    case Before
-    case After
+    case onTime
+    case before
+    case after
     
     var getString: String {
         switch self {
-        case OnTime:
+        case .onTime:
             return "On Time"
-        case Before:
+        case .before:
             return "Before"
-        case After:
+        case .after:
             return "After"
         }
     }
 }
 
 enum AlarmType: Int {
-    case FajrWakeAlarm
-    case CustomAlarm
+    case fajrWakeAlarm
+    case customAlarm
     
     var getString: String {
         switch self {
-        case .FajrWakeAlarm: return "Fajr Wake Alarm"
-        case .CustomAlarm: return "Custom Alarm"
+        case .fajrWakeAlarm: return "Fajr Wake Alarm"
+        case .customAlarm: return "Custom Alarm"
         }
     }
 }
 
 enum Days: Int  {
-    case Sunday
-    case Monday
-    case Tuesday
-    case Wednesday
-    case Thursday
-    case Friday
-    case Saturday
+    case sunday
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
     
     var getString: String {
-        return String(self)
+        return String(describing: self)
     }
 }
 
 enum CalculationMethods: Int {
-    case Jafari = 0
-    case Karachi
-    case Isna
-    case Mwl
-    case Makkah
-    case Egypt
-    case Tehran = 7
+    case jafari = 0
+    case karachi
+    case isna
+    case mwl
+    case makkah
+    case egypt
+    case tehran = 7
     
     func getString() -> String {
         switch self {
-        case .Jafari: return "Shia Ithna Ashari, Leva Research Institute, Qum"
-        case .Karachi: return "University of Islamic Sciences, Karachi"
-        case .Isna: return "Islamic Society of North America"
-        case .Mwl: return "Muslim World League"
-        case .Makkah: return "Umm al-Qura University, Makkah"
-        case .Egypt: return "Egyptian General Authority of Survey"
-        case .Tehran: return "Institute of Geophysics, Tehran University"
+        case .jafari: return "Shia Ithna Ashari, Leva Research Institute, Qum"
+        case .karachi: return "University of Islamic Sciences, Karachi"
+        case .isna: return "Islamic Society of North America"
+        case .mwl: return "Muslim World League"
+        case .makkah: return "Umm al-Qura University, Makkah"
+        case .egypt: return "Egyptian General Authority of Survey"
+        case .tehran: return "Institute of Geophysics, Tehran University"
         }
     }
 }
@@ -174,13 +174,13 @@ enum AlarmSounds: String {
     case BirdsChirping2 = "Birds Chirping 2", BirdsChirping = "Birds Chirping", Crickets, Ocean
     case None = "None"
     
-    var URL: NSURL? {
+    var URL: Foundation.URL? {
         switch self {
         case .None:
             return nil
         default:
-            let path = NSBundle.mainBundle().pathForResource("\(self)", ofType: "caf", inDirectory: "Sounds")
-            let url = NSURL(fileURLWithPath: path!)
+            let path = Bundle.main.path(forResource: "\(self)", ofType: "caf", inDirectory: "Sounds")
+            let url = Foundation.URL(fileURLWithPath: path!)
             return url
         }
     }
@@ -209,10 +209,10 @@ struct AlarmSound {
 }
 
 class UserSettingsPrayertimes {
-    let calculationMethod: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.CalculationMethod.rawValue)
-    let asrJuristic: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.AsrJuristic.rawValue)
-    let adjustHighLats: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.AdjustHighLats.rawValue)
-    let timeFormat: Int = NSUserDefaults.standardUserDefaults().integerForKey(PrayerTimeSettingsReference.TimeFormat.rawValue)
+    let calculationMethod: Int = UserDefaults.standard.integer(forKey: PrayerTimeSettingsReference.CalculationMethod.rawValue)
+    let asrJuristic: Int = UserDefaults.standard.integer(forKey: PrayerTimeSettingsReference.AsrJuristic.rawValue)
+    let adjustHighLats: Int = UserDefaults.standard.integer(forKey: PrayerTimeSettingsReference.AdjustHighLats.rawValue)
+    let timeFormat: Int = UserDefaults.standard.integer(forKey: PrayerTimeSettingsReference.TimeFormat.rawValue)
     
     func getUserSettings() -> PrayerTimes {
         let userSettings = PrayerTimes(caculationmethod: PrayerTimes.CalculationMethods(rawValue: self.calculationMethod)!, asrJuristic: PrayerTimes.AsrJuristicMethods(rawValue: self.asrJuristic)!, adjustHighLats: PrayerTimes.AdjustingMethods(rawValue: self.adjustHighLats)!, timeFormat: PrayerTimes.TimeForamts(rawValue: self.timeFormat)!)
@@ -227,15 +227,15 @@ protocol AlarmClockType {
     var snooze: Bool { get set }
     var alarmType: AlarmType { get set }
     var alarmOn: Bool { get set }
-    var alarm: NSTimer { get set }
-    var savedAlarmDate: NSDate? { get set }
+    var alarm: Timer { get set }
+    var savedAlarmDate: Date? { get set }
     var localNotifications: [UILocalNotification] { get set }
     var attributedTitle: NSMutableAttributedString { get }
     
-    static var DocumentsDirectory: NSURL { get }
-    static var ArchiveURL: NSURL { get }
+    static var DocumentsDirectory: URL { get }
+    static var ArchiveURL: URL { get }
     
-    func timeToAlarm(withPrayerTimes: [String : String]?) -> NSDate
+    func timeToAlarm(_ withPrayerTimes: [String : String]?) -> Date
 }
 
 extension AlarmClockType {
@@ -244,73 +244,73 @@ extension AlarmClockType {
         let alarmSubtitle: String
         let alarmSubtitleAttributedString: NSMutableAttributedString
         alarmSubtitle = label
-        let rangeOfAlarmLabel = (alarmSubtitle as NSString).rangeOfString(label)
+        let rangeOfAlarmLabel = (alarmSubtitle as NSString).range(of: label)
         alarmSubtitleAttributedString = NSMutableAttributedString(string: alarmSubtitle)
         alarmSubtitleAttributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Medium", size: 15)!, range: rangeOfAlarmLabel)
 
         return alarmSubtitleAttributedString
     }
     
-    mutating func startAlarm(target: AnyObject, selector: Selector, date: NSDate, userInfo: AnyObject?) {
+    mutating func startAlarm(_ target: AnyObject, selector: Selector, date: Date, userInfo: AnyObject?) {
         alarm.invalidate()
         stopAlarm()
-        alarm = NSTimer.scheduledTimerWithTimeInterval(date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
-        NSRunLoop.currentRunLoop().addTimer(alarm, forMode: NSDefaultRunLoopMode)
+        alarm = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
+        RunLoop.current.add(alarm, forMode: RunLoopMode.defaultRunLoopMode)
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
-        let dateString = dateFormatter.stringFromDate(date)
+        let dateString = dateFormatter.string(from: date)
         print("NSTimer scheduled for: \(dateString)")
     }
     
     mutating func stopAlarm() {
-        if alarm.valid {
+        if alarm.isValid {
             alarm.invalidate()
             print("NSTimer Invalidated")
         }
     }
     
-    mutating func scheduleLocalNotification(noSound noSound: Bool? = false) {
-        let settings = NSUserDefaults.standardUserDefaults()
-        let lon = settings.doubleForKey("longitude")
-        let lat = settings.doubleForKey("latitude")
-        let gmt = settings.doubleForKey("gmt")
+    mutating func scheduleLocalNotification(noSound: Bool? = false) {
+        let settings = UserDefaults.standard
+        let lon = settings.double(forKey: "longitude")
+        let lat = settings.double(forKey: "latitude")
+        let gmt = settings.double(forKey: "gmt")
         let userPrayerTime = UserSettingsPrayertimes()
         var prayerTimes: [String : String]
-        var dateToAlarm: NSDate
+        var dateToAlarm: Date
         
         localNotifications = []
         
         for i in 0 ..< 4 {
-            if self.alarmType == .FajrWakeAlarm {
-                prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate().dateByAddingTimeInterval((60 * 60 * 24) * Double(i)), latitude: lat, longitude: lon, tZone: gmt)
-                dateToAlarm = self.timeToAlarm(prayerTimes).dateByAddingTimeInterval((60 * 60 * 24) * Double(i))
+            if self.alarmType == .fajrWakeAlarm {
+                prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(Calendar.current, date: Date().addingTimeInterval((60 * 60 * 24) * Double(i)), latitude: lat, longitude: lon, tZone: gmt)
+                dateToAlarm = self.timeToAlarm(prayerTimes).addingTimeInterval((60 * 60 * 24) * Double(i))
             } else {
-                dateToAlarm = self.timeToAlarm(nil).dateByAddingTimeInterval((60 * 60 * 24) * Double(i))
+                dateToAlarm = self.timeToAlarm(nil).addingTimeInterval((60 * 60 * 24) * Double(i))
             }
             for n in 1 ..< 4 {
-                localNotifications.append(getLocalNotification(dateToAlarm.dateByAddingTimeInterval(30*Double(n)), noSound: noSound))
+                localNotifications.append(getLocalNotification(dateToAlarm.addingTimeInterval(30*Double(n)), noSound: noSound))
             }
             localNotifications.append(getLocalNotification(dateToAlarm, noSound: noSound))
         }
         
         // schedule local notifications
-        if let systemNotifications = UIApplication.sharedApplication().scheduledLocalNotifications {
-            UIApplication.sharedApplication().scheduledLocalNotifications = systemNotifications + localNotifications
+        if let systemNotifications = UIApplication.shared.scheduledLocalNotifications {
+            UIApplication.shared.scheduledLocalNotifications = systemNotifications + localNotifications
         }
         
         for notification in localNotifications {
             if let date = notification.fireDate {
-                let dateFormatter = NSDateFormatter()
+                let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "MM-dd-yyyy HH:mm a"
-                let dateString = dateFormatter.stringFromDate(date)
+                let dateString = dateFormatter.string(from: date)
                 print("Set Notifications: \(dateString)")
             }
         }
         print("--------------------------------------------------------")
     }
     
-    func getLocalNotification(date: NSDate, noSound: Bool? = false) -> UILocalNotification {
+    func getLocalNotification(_ date: Date, noSound: Bool? = false) -> UILocalNotification {
         let localNotification = UILocalNotification()
         localNotification.fireDate = date
         localNotification.alertBody = "\(self.attributedTitle.string)\n\"\(self.alarmLabel)\" - (Open the app to stop)"
@@ -327,7 +327,7 @@ extension AlarmClockType {
     func deleteLocalNotifications() {
         if localNotifications.count > 0 {
             for notification in localNotifications {
-                UIApplication.sharedApplication().cancelLocalNotification(notification)
+                UIApplication.shared.cancelLocalNotification(notification)
             }
             print("notifications canceled successfully")
         }
@@ -338,17 +338,17 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
     var alarmLabel: String
     var sound: AlarmSound
     var snooze: Bool
-    var time: NSDate
+    var time: Date
     var alarmType: AlarmType
     var alarmOn: Bool
-    var alarm: NSTimer = NSTimer()
-    var savedAlarmDate: NSDate?
+    var alarm: Timer = Timer()
+    var savedAlarmDate: Date?
     var localNotifications: [UILocalNotification] = []
     
-    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("customAlarmAlarms")
+    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("customAlarmAlarms")
     
-    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, time: NSDate, alarmType: AlarmType, alarmOn: Bool, savedAlarmDate: NSDate? = nil) {
+    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, time: Date, alarmType: AlarmType, alarmOn: Bool, savedAlarmDate: Date? = nil) {
         self.alarmLabel = alarmLabel
         self.sound = sound
         self.snooze = snooze
@@ -360,12 +360,12 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         super.init()
     }
 
-    func timeToAlarm(withPrayerTimes: [String : String]?) -> NSDate {
-        let currentDate = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
-        let pickerTimeComponents = calendar.components([.Hour, .Minute], fromDate: time)
-        let timeToAlarmComponents = NSDateComponents()
+    func timeToAlarm(_ withPrayerTimes: [String : String]?) -> Date {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let currentDateComponents = (calendar as NSCalendar).components([.month, .year, .day], from: currentDate)
+        let pickerTimeComponents = (calendar as NSCalendar).components([.hour, .minute], from: time)
+        var timeToAlarmComponents = DateComponents()
         
         timeToAlarmComponents.year = currentDateComponents.year
         timeToAlarmComponents.month = currentDateComponents.month
@@ -374,10 +374,10 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         timeToAlarmComponents.minute = pickerTimeComponents.minute
         timeToAlarmComponents.second = 0
         
-        var timeToAlarm = calendar.dateFromComponents(timeToAlarmComponents)!
+        var timeToAlarm = calendar.date(from: timeToAlarmComponents)!
         
         if timeToAlarm.timeIntervalSinceNow < 0 {
-            timeToAlarm = timeToAlarm.dateByAddingTimeInterval(60 * 60 * 24)
+            timeToAlarm = timeToAlarm.addingTimeInterval(60 * 60 * 24)
         }
         
         if let savedAlarm = self.savedAlarmDate {
@@ -392,21 +392,21 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
     }
     
     var timeToString: String {
-        let outputFormatter = NSDateFormatter()
+        let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "h:mm a"
-        let stringFromDate = outputFormatter.stringFromDate(time)
+        let stringFromDate = outputFormatter.string(from: time)
         return stringFromDate
     }
     
     var attributedTitle: NSMutableAttributedString {
         let alarmAttributedTitle = NSMutableAttributedString(string: timeToString)
         let amOrPm: String
-        if timeToString.rangeOfString("AM") != nil {
+        if timeToString.range(of: "AM") != nil {
             amOrPm = "AM"
         } else {
             amOrPm = "PM"
         }
-        let amPMRange = (timeToString as NSString).rangeOfString(" \(amOrPm)")
+        let amPMRange = (timeToString as NSString).range(of: " \(amOrPm)")
         timeToString.characters.count
         let alarmTimeRange: NSRange = NSMakeRange(0, amPMRange.location)
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: alarmTimeRange)
@@ -414,27 +414,27 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         return alarmAttributedTitle
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(alarmLabel, forKey: CustomAlarmPropertyKey.alarmLabelKey)
-        aCoder.encodeObject(sound.alarmSound.rawValue, forKey: CustomAlarmPropertyKey.alarmSoundKey)
-        aCoder.encodeObject(sound.alarmSectionTitle.rawValue, forKey: CustomAlarmPropertyKey.alarmSoundSectionKey)
-        aCoder.encodeObject(snooze, forKey: CustomAlarmPropertyKey.snoozeKey)
-        aCoder.encodeObject(time, forKey: CustomAlarmPropertyKey.timeKey)
-        aCoder.encodeObject(alarmType.rawValue, forKey: CustomAlarmPropertyKey.alarmTypeKey)
-        aCoder.encodeObject(alarmOn, forKey: CustomAlarmPropertyKey.alarmOnKey)
-        aCoder.encodeObject(savedAlarmDate, forKey: CustomAlarmPropertyKey.savedAlarmDateKey)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(alarmLabel, forKey: CustomAlarmPropertyKey.alarmLabelKey)
+        aCoder.encode(sound.alarmSound.rawValue, forKey: CustomAlarmPropertyKey.alarmSoundKey)
+        aCoder.encode(sound.alarmSectionTitle.rawValue, forKey: CustomAlarmPropertyKey.alarmSoundSectionKey)
+        aCoder.encode(snooze, forKey: CustomAlarmPropertyKey.snoozeKey)
+        aCoder.encode(time, forKey: CustomAlarmPropertyKey.timeKey)
+        aCoder.encode(alarmType.rawValue, forKey: CustomAlarmPropertyKey.alarmTypeKey)
+        aCoder.encode(alarmOn, forKey: CustomAlarmPropertyKey.alarmOnKey)
+        aCoder.encode(savedAlarmDate, forKey: CustomAlarmPropertyKey.savedAlarmDateKey)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
-        let alarmLabel = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmLabelKey) as! String
-        let alarmSound = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmSoundKey) as! String
-        let alarmSoundSection = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmSoundSectionKey) as! String
+        let alarmLabel = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmLabelKey) as! String
+        let alarmSound = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmSoundKey) as! String
+        let alarmSoundSection = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmSoundSectionKey) as! String
         let sound = AlarmSound(alarmSound: AlarmSounds(rawValue: alarmSound)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: alarmSoundSection)!)
-        let snooze = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.snoozeKey) as! Bool
-        let time = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.timeKey) as! NSDate
-        let alarmType = AlarmType(rawValue: aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmTypeKey) as! Int)!
-        let alarmOn = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.alarmOnKey) as! Bool
-        let savedAlarmDate = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.savedAlarmDateKey) as? NSDate
+        let snooze = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.snoozeKey) as! Bool
+        let time = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.timeKey) as! Date
+        let alarmType = AlarmType(rawValue: aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmTypeKey) as! Int)!
+        let alarmOn = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmOnKey) as! Bool
+        let savedAlarmDate = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.savedAlarmDateKey) as? Date
         
         self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, time: time, alarmType: alarmType, alarmOn: alarmOn, savedAlarmDate: savedAlarmDate)
     }
@@ -449,14 +449,14 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
     var whatSalatToWake: SalatsAndQadhas
     var alarmType: AlarmType
     var alarmOn: Bool
-    var alarm: NSTimer = NSTimer()
-    var savedAlarmDate: NSDate?
+    var alarm: Timer = Timer()
+    var savedAlarmDate: Date?
     var localNotifications: [UILocalNotification] = []
     
-    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("fajrWakeAlarms")
+    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("fajrWakeAlarms")
     
-    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool, dateTesting: NSDate? = nil) {
+    init(alarmLabel: String, sound: AlarmSound, snooze: Bool, minsToAdjust: Int, whenToWake: WakeOptions, whatSalatToWake: SalatsAndQadhas, alarmType: AlarmType, alarmOn: Bool, dateTesting: Date? = nil) {
         self.alarmLabel = alarmLabel
         self.sound = sound
         self.snooze = snooze
@@ -470,26 +470,26 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         super.init()
     }
 
-    func timeToAlarm(withPrayerTimes: [String : String]?) -> NSDate {
-        let settings = NSUserDefaults.standardUserDefaults()
-        let lon = settings.doubleForKey("longitude")
-        let lat = settings.doubleForKey("latitude")
-        let gmt = settings.doubleForKey("gmt")
+    func timeToAlarm(_ withPrayerTimes: [String : String]?) -> Date {
+        let settings = UserDefaults.standard
+        let lon = settings.double(forKey: "longitude")
+        let lat = settings.double(forKey: "latitude")
+        let gmt = settings.double(forKey: "gmt")
         let userPrayerTime = UserSettingsPrayertimes()
         var prayerTimes: [String : String]
         
         if let pTimes = withPrayerTimes {
             prayerTimes = pTimes
         } else {
-            prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate(), latitude: lat, longitude: lon, tZone: gmt)
+            prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(Calendar.current, date: Date(), latitude: lat, longitude: lon, tZone: gmt)
         }
         
         var timeToAlarm = initialAlarmTime(prayerTimes)
 
         if timeToAlarm.timeIntervalSinceNow < 0 {
             // based on next day's prayer times
-            prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(NSCalendar.currentCalendar(), date: NSDate().dateByAddingTimeInterval(60 * 60 * 24), latitude: lat, longitude: lon, tZone: gmt)
-            timeToAlarm = initialAlarmTime(prayerTimes).dateByAddingTimeInterval(60 * 60 * 24)
+            prayerTimes = userPrayerTime.getUserSettings().getPrayerTimes(Calendar.current, date: Date().addingTimeInterval(60 * 60 * 24), latitude: lat, longitude: lon, tZone: gmt)
+            timeToAlarm = initialAlarmTime(prayerTimes).addingTimeInterval(60 * 60 * 24)
         }
         
         if let savedAlarm = self.savedAlarmDate {
@@ -503,26 +503,26 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         return timeToAlarm
     }
     
-    func initialAlarmTime(prayerTimes: [String : String]) -> NSDate {
-        let dateFormatter = NSDateFormatter()
+    func initialAlarmTime(_ prayerTimes: [String : String]) -> Date {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
-        let salatOrQadhaTime = dateFormatter.dateFromString(prayerTimes[whatSalatToWake.getString]!)
+        let salatOrQadhaTime = dateFormatter.date(from: prayerTimes[whatSalatToWake.getString]!)
         
-        let calendar = NSCalendar.currentCalendar()
-        var adjustedTime: NSDate?
+        let calendar = Calendar.current
+        var adjustedTime: Date?
         
-        if whenToWake == .OnTime {
+        if whenToWake == .onTime {
             adjustedTime = salatOrQadhaTime
-        } else if whenToWake == .Before {
-            adjustedTime = calendar.dateByAddingUnit(.Minute, value: -minsToAdjust, toDate: salatOrQadhaTime!, options: [])
-        } else if whenToWake == .After {
-            adjustedTime = calendar.dateByAddingUnit(.Minute, value: minsToAdjust, toDate: salatOrQadhaTime!, options: [])
+        } else if whenToWake == .before {
+            adjustedTime = (calendar as NSCalendar).date(byAdding: .minute, value: -minsToAdjust, to: salatOrQadhaTime!, options: [])
+        } else if whenToWake == .after {
+            adjustedTime = (calendar as NSCalendar).date(byAdding: .minute, value: minsToAdjust, to: salatOrQadhaTime!, options: [])
         }
         
-        let currentDate = NSDate()
-        let currentDateComponents = calendar.components([.Month, .Year, .Day], fromDate: currentDate)
-        let adjustedTimeComponents = calendar.components([.Hour, .Minute], fromDate: adjustedTime!)
-        let timeToAlarmComponents = NSDateComponents()
+        let currentDate = Date()
+        let currentDateComponents = (calendar as NSCalendar).components([.month, .year, .day], from: currentDate)
+        let adjustedTimeComponents = (calendar as NSCalendar).components([.hour, .minute], from: adjustedTime!)
+        var timeToAlarmComponents = DateComponents()
         timeToAlarmComponents.year = currentDateComponents.year
         timeToAlarmComponents.month = currentDateComponents.month
         timeToAlarmComponents.day = currentDateComponents.day
@@ -530,11 +530,11 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         timeToAlarmComponents.minute = adjustedTimeComponents.minute
         timeToAlarmComponents.second = 0
         
-        return calendar.dateFromComponents(timeToAlarmComponents)!
+        return calendar.date(from: timeToAlarmComponents)!
     }
     
     var title: String {
-        if whenToWake == .OnTime {
+        if whenToWake == .onTime {
             return "\(whatSalatToWake.getString)"
         } else {
             return "\(minsToAdjust) MIN \(whenToWake.getString) \(whatSalatToWake.getString)"
@@ -543,13 +543,13 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
     
     var attributedTitle: NSMutableAttributedString {
         let alarmAttributedTitle = NSMutableAttributedString(string: title)
-        let rangeOfMinutesToAdjust = (title as NSString).rangeOfString(String(minsToAdjust))
-        let rangeOfMinText = (title as NSString).rangeOfString(" MIN")
+        let rangeOfMinutesToAdjust = (title as NSString).range(of: String(minsToAdjust))
+        let rangeOfMinText = (title as NSString).range(of: " MIN")
         var rangeOfRestOfText: NSRange
-        if whenToWake == .OnTime {
-            rangeOfRestOfText = (title as NSString).rangeOfString("\(whatSalatToWake.getString)")
+        if whenToWake == .onTime {
+            rangeOfRestOfText = (title as NSString).range(of: "\(whatSalatToWake.getString)")
         } else {
-            rangeOfRestOfText = (title as NSString).rangeOfString("\(whenToWake.getString) \(whatSalatToWake.getString)")
+            rangeOfRestOfText = (title as NSString).range(of: "\(whenToWake.getString) \(whatSalatToWake.getString)")
         }
         
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 10)!, range: rangeOfMinText)
@@ -559,31 +559,31 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         return alarmAttributedTitle
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(alarmLabel, forKey: FajrAlarmPropetKey.alarmLabelKey)
-        aCoder.encodeObject(sound.alarmSound.rawValue, forKey: FajrAlarmPropetKey.alarmSoundKey)
-        aCoder.encodeObject(sound.alarmSectionTitle.rawValue, forKey: FajrAlarmPropetKey.alarmSoundSectionKey)
-        aCoder.encodeObject(snooze, forKey: FajrAlarmPropetKey.snoozeKey)
-        aCoder.encodeObject(alarmType.rawValue, forKey: FajrAlarmPropetKey.alarmTypeKey)
-        aCoder.encodeObject(minsToAdjust, forKey: FajrAlarmPropetKey.minsToAdjustKey)
-        aCoder.encodeObject(whenToWake.rawValue, forKey: FajrAlarmPropetKey.whenToWakeKey)
-        aCoder.encodeObject(whatSalatToWake.rawValue, forKey: FajrAlarmPropetKey.whatSalatToWakeKey)
-        aCoder.encodeObject(alarmOn, forKey: FajrAlarmPropetKey.alarmOnKey)
-        aCoder.encodeObject(savedAlarmDate, forKey: FajrAlarmPropetKey.savedAlarmDateKey)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(alarmLabel, forKey: FajrAlarmPropetKey.alarmLabelKey)
+        aCoder.encode(sound.alarmSound.rawValue, forKey: FajrAlarmPropetKey.alarmSoundKey)
+        aCoder.encode(sound.alarmSectionTitle.rawValue, forKey: FajrAlarmPropetKey.alarmSoundSectionKey)
+        aCoder.encode(snooze, forKey: FajrAlarmPropetKey.snoozeKey)
+        aCoder.encode(alarmType.rawValue, forKey: FajrAlarmPropetKey.alarmTypeKey)
+        aCoder.encode(minsToAdjust, forKey: FajrAlarmPropetKey.minsToAdjustKey)
+        aCoder.encode(whenToWake.rawValue, forKey: FajrAlarmPropetKey.whenToWakeKey)
+        aCoder.encode(whatSalatToWake.rawValue, forKey: FajrAlarmPropetKey.whatSalatToWakeKey)
+        aCoder.encode(alarmOn, forKey: FajrAlarmPropetKey.alarmOnKey)
+        aCoder.encode(savedAlarmDate, forKey: FajrAlarmPropetKey.savedAlarmDateKey)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
-        let alarmLabel = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmLabelKey) as! String
-        let alarmSound = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmSoundKey) as! String
-        let alarmSoundSection = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmSoundSectionKey) as! String
+        let alarmLabel = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmLabelKey) as! String
+        let alarmSound = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmSoundKey) as! String
+        let alarmSoundSection = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmSoundSectionKey) as! String
         let sound = AlarmSound(alarmSound: AlarmSounds(rawValue: alarmSound)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: alarmSoundSection)!)
-        let snooze = aDecoder.decodeObjectForKey(CustomAlarmPropertyKey.snoozeKey) as! Bool
-        let alarmType = AlarmType(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmTypeKey) as! Int)!
-        let alarmOn = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.alarmOnKey) as! Bool
-        let minsToAdjust = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.minsToAdjustKey) as! Int
-        let whenToWake: WakeOptions = WakeOptions(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.whenToWakeKey) as! Int)!
-        let whatSalatToWake: SalatsAndQadhas = SalatsAndQadhas(rawValue: aDecoder.decodeObjectForKey(FajrAlarmPropetKey.whatSalatToWakeKey) as! Int)!
-        let savedAlarmDate = aDecoder.decodeObjectForKey(FajrAlarmPropetKey.savedAlarmDateKey) as? NSDate
+        let snooze = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.snoozeKey) as! Bool
+        let alarmType = AlarmType(rawValue: aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmTypeKey) as! Int)!
+        let alarmOn = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmOnKey) as! Bool
+        let minsToAdjust = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.minsToAdjustKey) as! Int
+        let whenToWake: WakeOptions = WakeOptions(rawValue: aDecoder.decodeObject(forKey: FajrAlarmPropetKey.whenToWakeKey) as! Int)!
+        let whatSalatToWake: SalatsAndQadhas = SalatsAndQadhas(rawValue: aDecoder.decodeObject(forKey: FajrAlarmPropetKey.whatSalatToWakeKey) as! Int)!
+        let savedAlarmDate = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.savedAlarmDateKey) as? Date
         
         self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, minsToAdjust: minsToAdjust, whenToWake: whenToWake, whatSalatToWake: whatSalatToWake, alarmType: alarmType, alarmOn: alarmOn, dateTesting: savedAlarmDate)
     }
