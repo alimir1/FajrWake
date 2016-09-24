@@ -2,7 +2,7 @@
 //  FajrWake.swift
 //  Fajr Wake
 //
-//  Created by Abidi on 5/13/16.
+//  Created by Ali Mir on 5/13/16.
 //  Copyright © 2016 FajrWake. All rights reserved.
 //
 

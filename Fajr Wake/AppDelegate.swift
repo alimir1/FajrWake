@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Fajr Wake
 //
-//  Created by Abidi on 5/20/16.
+//  Created by Ali Mir on 5/20/16.
 //  Copyright © 2016 Fajr Wake. All rights reserved.
 //
 

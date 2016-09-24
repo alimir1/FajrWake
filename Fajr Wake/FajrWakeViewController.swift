@@ -2,7 +2,7 @@
 //  FajrWakeViewController.swift
 //  Fajr Wake
 //
-//  Created by Abidi on 6/14/16.
+//  Created by Ali Mir on 6/14/16.
 //  Copyright © 2016 Fajr Wake. All rights reserved.
 //
 
