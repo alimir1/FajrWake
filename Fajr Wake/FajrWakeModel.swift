@@ -251,7 +251,7 @@ extension AlarmClockType {
         return alarmSubtitleAttributedString
     }
     
-    mutating func startAlarm(_ target: AnyObject, selector: Selector, date: Date, userInfo: AnyObject?) {
+    mutating func startAlarm(_ target: AnyObject, selector: Selector, date: Date, userInfo: Any?) {
         alarm.invalidate()
         stopAlarm()
         alarm = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow, target: target, selector: selector, userInfo: userInfo, repeats: false)
@@ -407,7 +407,6 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
             amOrPm = "PM"
         }
         let amPMRange = (timeToString as NSString).range(of: " \(amOrPm)")
-        timeToString.characters.count
         let alarmTimeRange: NSRange = NSMakeRange(0, amPMRange.location)
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 25)!, range: alarmTimeRange)
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 10)!, range: amPMRange)
@@ -430,10 +429,10 @@ class CustomAlarm: NSObject, AlarmClockType, NSCoding {
         let alarmSound = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmSoundKey) as! String
         let alarmSoundSection = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmSoundSectionKey) as! String
         let sound = AlarmSound(alarmSound: AlarmSounds(rawValue: alarmSound)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: alarmSoundSection)!)
-        let snooze = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.snoozeKey) as! Bool
+        let snooze = aDecoder.decodeBool(forKey: CustomAlarmPropertyKey.snoozeKey)
         let time = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.timeKey) as! Date
-        let alarmType = AlarmType(rawValue: aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmTypeKey) as! Int)!
-        let alarmOn = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.alarmOnKey) as! Bool
+        let alarmType = AlarmType(rawValue: aDecoder.decodeInteger(forKey: CustomAlarmPropertyKey.alarmTypeKey))!
+        let alarmOn = aDecoder.decodeBool(forKey: CustomAlarmPropertyKey.alarmOnKey)
         let savedAlarmDate = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.savedAlarmDateKey) as? Date
         
         self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, time: time, alarmType: alarmType, alarmOn: alarmOn, savedAlarmDate: savedAlarmDate)
@@ -577,12 +576,12 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         let alarmSound = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmSoundKey) as! String
         let alarmSoundSection = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmSoundSectionKey) as! String
         let sound = AlarmSound(alarmSound: AlarmSounds(rawValue: alarmSound)!, alarmSectionTitle: AlarmSoundsSectionTitles(rawValue: alarmSoundSection)!)
-        let snooze = aDecoder.decodeObject(forKey: CustomAlarmPropertyKey.snoozeKey) as! Bool
-        let alarmType = AlarmType(rawValue: aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmTypeKey) as! Int)!
-        let alarmOn = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.alarmOnKey) as! Bool
-        let minsToAdjust = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.minsToAdjustKey) as! Int
-        let whenToWake: WakeOptions = WakeOptions(rawValue: aDecoder.decodeObject(forKey: FajrAlarmPropetKey.whenToWakeKey) as! Int)!
-        let whatSalatToWake: SalatsAndQadhas = SalatsAndQadhas(rawValue: aDecoder.decodeObject(forKey: FajrAlarmPropetKey.whatSalatToWakeKey) as! Int)!
+        let snooze = aDecoder.decodeBool(forKey: FajrAlarmPropetKey.snoozeKey)
+        let alarmType = AlarmType(rawValue: aDecoder.decodeInteger(forKey: FajrAlarmPropetKey.alarmTypeKey))!
+        let alarmOn = aDecoder.decodeBool(forKey: FajrAlarmPropetKey.alarmOnKey)
+        let minsToAdjust = aDecoder.decodeInteger(forKey: FajrAlarmPropetKey.minsToAdjustKey)
+        let whenToWake: WakeOptions = WakeOptions(rawValue: aDecoder.decodeInteger(forKey: FajrAlarmPropetKey.whenToWakeKey))!
+        let whatSalatToWake: SalatsAndQadhas = SalatsAndQadhas(rawValue: aDecoder.decodeInteger(forKey: FajrAlarmPropetKey.whatSalatToWakeKey))!
         let savedAlarmDate = aDecoder.decodeObject(forKey: FajrAlarmPropetKey.savedAlarmDateKey) as? Date
         
         self.init(alarmLabel: alarmLabel, sound: sound, snooze: snooze, minsToAdjust: minsToAdjust, whenToWake: whenToWake, whatSalatToWake: whatSalatToWake, alarmType: alarmType, alarmOn: alarmOn, dateTesting: savedAlarmDate)

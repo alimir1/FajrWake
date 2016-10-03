@@ -52,7 +52,7 @@ class AddAlarmMasterViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if saveButton === sender {
+        if saveButton === sender as AnyObject? {
             if alarmType != nil {
                 if alarmType! == .fajrWakeAlarm {
                     alarmClock = FajrWakeAlarm(alarmLabel: self.alarmLabel!, sound: self.sound!, snooze: snooze!, minsToAdjust: minsToAdjust!, whenToWake: whenToWake!, whatSalatToWake: whatSalatToWake!, alarmType: .fajrWakeAlarm, alarmOn: true)

@@ -165,7 +165,6 @@ extension FajrWakeViewController {
         if alarms.count > 0 {
             navigationItem.leftBarButtonItem = editButtonItem
         } else {
-            self.setEditing(false, animated: false)
             navigationItem.leftBarButtonItem = nil
         }
         
@@ -413,8 +412,12 @@ extension FajrWakeViewController {
             alarms[(selectedIndexPath as NSIndexPath).row].stopAlarm()
             alarms[(selectedIndexPath as NSIndexPath).row].deleteLocalNotifications()
             alarms.remove(at: (selectedIndexPath as NSIndexPath).row)
-            tableView.deleteRows(at: [selectedIndexPath], with: .automatic)
+            tableView.deleteRows(at: [selectedIndexPath], with: .fade)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
             saveAlarms()
+
         }
     }
     
@@ -500,7 +503,7 @@ extension FajrWakeViewController {
 extension FajrWakeViewController {
     func startLocationDelegation() {
         // Activity Indicator
-        EZLoadingActivity.show("Getting your location...", disableUI: true)
+//        EZLoadingActivity.show("Getting your location...", disableUI: true)
         
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
@@ -512,7 +515,7 @@ extension FajrWakeViewController {
                 let gmt = LocalGMT.getLocalGMT()
                 self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
                 // stop showing activity indicator (success)
-                EZLoadingActivity.hide(success: true, animated: true)
+//                EZLoadingActivity.hide(success: true, animated: true)
             } else if let err = error {
                 print(err.localizedDescription)
                 // setting defaults to San Jose, CA, USA's time if error in getting user location
@@ -542,7 +545,7 @@ extension FajrWakeViewController {
                     self.present(alertController, animated: true, completion: nil)
                 }
                 // stop showing activity indicator (not successful)
-                EZLoadingActivity.hide(success: false, animated: true)
+//                EZLoadingActivity.hide(success: false, animated: true)
             }
             self.manager = nil
         }
@@ -620,21 +623,21 @@ extension FajrWakeViewController {
         }
         
         // Save FajrWakeAlarm's
-        fajrAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(fajrAlarms, toFile: FajrWakeAlarm.ArchiveURL.path!)
+        fajrAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(fajrAlarms, toFile: FajrWakeAlarm.ArchiveURL.path)
         if !fajrAlarmIsSuccessfulSave {
             print("unable to save FajrWake alarms")
         }
         
         // Save CustomAlarm's
-        customAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(customAlarms, toFile: CustomAlarm.ArchiveURL.path!)
+        customAlarmIsSuccessfulSave = NSKeyedArchiver.archiveRootObject(customAlarms, toFile: CustomAlarm.ArchiveURL.path)
         if !customAlarmIsSuccessfulSave {
             print("unable to save CustomAlarms alarms")
         }
     }
     
     func getSavedAlarms() -> [AlarmClockType]? {
-        let savedFajrAlarms = NSKeyedUnarchiver.unarchiveObject(withFile: FajrWakeAlarm.ArchiveURL.path!) as? [FajrWakeAlarm]
-        let savedCustomAlarms = NSKeyedUnarchiver.unarchiveObject(withFile: CustomAlarm.ArchiveURL.path!) as? [CustomAlarm]
+        let savedFajrAlarms = NSKeyedUnarchiver.unarchiveObject(withFile: FajrWakeAlarm.ArchiveURL.path) as? [FajrWakeAlarm]
+        let savedCustomAlarms = NSKeyedUnarchiver.unarchiveObject(withFile: CustomAlarm.ArchiveURL.path) as? [CustomAlarm]
         var savedAlarms: [AlarmClockType] = []
         
         if let customAlarms = savedCustomAlarms {
