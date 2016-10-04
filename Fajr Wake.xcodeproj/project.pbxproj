@@ -27,6 +27,7 @@
 		01A3A8201D12F43A00DE4CE9 /* OneShotLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A81F1D12F43A00DE4CE9 /* OneShotLocationManager.swift */; };
 		01A3A8261D13C20400DE4CE9 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A8251D13C20400DE4CE9 /* SettingsViewController.swift */; };
 		01A3A8281D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */; };
+		01C5601E1DA3895F006EFBBF /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C5601D1DA3895F006EFBBF /* ActivityIndicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		01A3A8251D13C20400DE4CE9 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		01A3A8271D13C5A600DE4CE9 /* CalculationMethodTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculationMethodTableViewController.swift; sourceTree = "<group>"; };
 		01B5A3B11D5E2A3C008CD13F /* Fajr Wake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Fajr Wake.entitlements"; sourceTree = "<group>"; };
+		01C5601D1DA3895F006EFBBF /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 			children = (
 				0152D6521CEF1048004FFC04 /* PrayerTimes.swift */,
 				01A3A81F1D12F43A00DE4CE9 /* OneShotLocationManager.swift */,
+				01C5601D1DA3895F006EFBBF /* ActivityIndicator.swift */,
 			);
 			name = "Framework files";
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				01591FE21D1ED3DA00D5DF73 /* AddAlarmMasterViewController.swift in Sources */,
 				0152D6411CEF0FCC004FFC04 /* AppDelegate.swift in Sources */,
 				014104461D1CB70E00CE85F7 /* SoundSettingsViewController.swift in Sources */,
+				01C5601E1DA3895F006EFBBF /* ActivityIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

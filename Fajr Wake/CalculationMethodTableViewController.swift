@@ -94,7 +94,6 @@ class CalculationMethodTableViewController: UITableViewController {
             fajrWakeVCReference!.setupAlarmsAndUpdate(IndexPath(row: index, section: 0))
         }
         
-        fajrWakeVCReference!.sortAlarms()
         fajrWakeVCReference!.tableView.reloadData()
         
         let settings = UserDefaults.standard

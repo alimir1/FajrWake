@@ -12,17 +12,17 @@
             <objects>
                 <tableViewController id="SMS-hI-HCE" customClass="LabelSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="m5f-Tr-MY4">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="453"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection id="DjH-4L-Dgf">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="CnA-JG-z6U">
-                                        <rect key="frame" x="0.0" y="35" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="35" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CnA-JG-z6U" id="qdL-Wh-BMk">
-                                            <frame key="frameInset" width="600" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="34M-mC-ouq">
@@ -62,15 +62,15 @@
             <objects>
                 <tableViewController id="Htn-Is-i9a" customClass="SoundSettingsViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="0Ww-cG-tjm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="453"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="soundID" id="JAo-7F-JOn">
-                                <rect key="frame" x="0.0" y="56" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JAo-7F-JOn" id="etw-iQ-Rn1">
-                                    <frame key="frameInset" width="600" height="44"/>
+                                    <frame key="frameInset" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -99,11 +99,11 @@
                                 <rect key="frame" x="0.0" y="120" width="375" height="93"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0K-rT-VOa" id="1FJ-pm-kVv">
-                                    <frame key="frameInset" width="375" height="93"/>
+                                    <frame key="frameInset" width="375" height="92"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="5 mins before fajr" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oly-jz-6Cp">
-                                            <frame key="frameInset" minX="15" width="345" height="92.5"/>
+                                            <frame key="frameInset" minX="15" width="345" height="92"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -158,18 +158,18 @@
                                         <rect key="frame" x="0.0" y="99" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lYr-Lf-auf" id="34P-f3-a4O">
-                                            <frame key="frameInset" width="342" height="44"/>
+                                            <frame key="frameInset" width="342" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Calculation Method" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yPL-kk-OYl">
-                                                    <frame key="frameInset" minX="15" minY="12" width="141" height="19.5"/>
+                                                    <frame key="frameInset" minX="15" minY="12" width="141" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3gJ-yD-Bdc">
-                                                    <frame key="frameInset" minX="298.5" minY="12" width="41.5" height="19.5"/>
+                                                    <frame key="frameInset" minX="298" minY="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -189,11 +189,11 @@
                                         <rect key="frame" x="0.0" y="179" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3PD-M7-2cm" id="Yio-4j-xob">
-                                            <frame key="frameInset" width="375" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Get Current Location (GPS)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aL6-ka-V1K">
-                                                    <frame key="frameInset" minX="15" width="345" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -232,7 +232,7 @@
                                 <rect key="frame" x="0.0" y="120" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ypu-M7-8ap" id="I5S-4f-Q0q">
-                                    <frame key="frameInset" width="375" height="44"/>
+                                    <frame key="frameInset" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -278,20 +278,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HpS-p9-mZG" userLabel="FajrAlarmContainer">
-                                <frame key="frameInset" minY="64" width="600" height="150"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HpS-p9-mZG" userLabel="FajrAlarmContainer">
                                 <connections>
                                     <segue destination="X9F-WZ-crL" kind="embed" identifier="fajrWakePickerContainer" id="JJl-Ta-nah"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a7V-C7-esb" userLabel="CustomAlarmContainer">
-                                <frame key="frameInset" minY="64" width="600" height="150"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a7V-C7-esb" userLabel="CustomAlarmContainer">
                                 <connections>
                                     <segue destination="Y4d-kI-82q" kind="embed" identifier="customAlarmPickerContainer" id="ME9-hc-uEF"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bfm-AP-ibk" userLabel="ChoicesListContainer">
-                                <frame key="frameInset" minY="214" width="600" height="386"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfm-AP-ibk" userLabel="ChoicesListContainer">
                                 <connections>
                                     <segue destination="IyY-Jl-AXb" kind="embed" identifier="addAlarmChoicesContainer" id="kCi-SL-pua"/>
                                 </connections>
@@ -299,18 +296,18 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="trailing" secondItem="HpS-p9-mZG" secondAttribute="trailing" id="3WU-Lm-aAr"/>
-                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="y9T-g9-cki" secondAttribute="top" constant="214" id="7p3-hh-vqr"/>
-                            <constraint firstAttribute="trailing" secondItem="a7V-C7-esb" secondAttribute="trailing" id="Duu-aw-iEz"/>
-                            <constraint firstItem="bfm-AP-ibk" firstAttribute="bottom" secondItem="Dp2-Js-cYv" secondAttribute="top" id="IOj-yQ-Y7I"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="leading" secondItem="a7V-C7-esb" secondAttribute="leading" id="PbH-b0-8sb"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="leading" secondItem="y9T-g9-cki" secondAttribute="leading" id="WxH-6p-ujA"/>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="top" secondItem="i5W-hE-Y6X" secondAttribute="bottom" id="Y1o-zz-V0i"/>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="top" secondItem="HpS-p9-mZG" secondAttribute="top" id="fue-51-rX9"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="bottom" secondItem="a7V-C7-esb" secondAttribute="bottom" id="jWb-ov-pfL"/>
-                            <constraint firstItem="a7V-C7-esb" firstAttribute="leading" secondItem="bfm-AP-ibk" secondAttribute="leading" id="jlR-IN-q4W"/>
-                            <constraint firstItem="HpS-p9-mZG" firstAttribute="trailing" secondItem="bfm-AP-ibk" secondAttribute="trailing" id="lRV-4b-6lM"/>
-                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="HpS-p9-mZG" secondAttribute="bottom" id="xL1-5q-zw4"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="trailing" secondItem="HpS-p9-mZG" secondAttribute="trailing" id="1ho-Fa-orw"/>
+                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="a7V-C7-esb" secondAttribute="bottom" id="2be-YR-E9C"/>
+                            <constraint firstAttribute="trailing" secondItem="a7V-C7-esb" secondAttribute="trailing" id="Jd1-jx-G7x"/>
+                            <constraint firstItem="HpS-p9-mZG" firstAttribute="top" secondItem="i5W-hE-Y6X" secondAttribute="bottom" id="RsX-Jv-dPZ"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="leading" secondItem="y9T-g9-cki" secondAttribute="leading" id="YbH-Sz-hos"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="trailing" secondItem="bfm-AP-ibk" secondAttribute="trailing" id="dS1-4m-ukr"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="leading" secondItem="bfm-AP-ibk" secondAttribute="leading" id="gQV-sN-CFQ"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="bottom" secondItem="HpS-p9-mZG" secondAttribute="bottom" id="ljd-IH-kVs"/>
+                            <constraint firstItem="bfm-AP-ibk" firstAttribute="top" secondItem="y9T-g9-cki" secondAttribute="top" constant="214" id="p8V-RH-Dpv"/>
+                            <constraint firstItem="HpS-p9-mZG" firstAttribute="top" secondItem="a7V-C7-esb" secondAttribute="top" id="tHL-dh-SJ4"/>
+                            <constraint firstItem="bfm-AP-ibk" firstAttribute="bottom" secondItem="Dp2-Js-cYv" secondAttribute="top" id="tyd-Iy-vR8"/>
+                            <constraint firstItem="a7V-C7-esb" firstAttribute="leading" secondItem="HpS-p9-mZG" secondAttribute="leading" id="zk1-0R-Qci"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Alarm" id="9pg-lJ-HT0">
@@ -335,7 +332,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQv-2A-Qg9" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="E4R-6p-dzb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1278" y="1131"/>
+            <point key="canvasLocation" x="1276.8115942028987" y="1129.8913043478262"/>
         </scene>
         <!--FajrWake Navigation Controller-->
         <scene sceneID="dTa-4p-rWA">
@@ -364,7 +361,7 @@
                         <viewControllerLayoutGuide type="bottom" id="7Ka-qW-IMl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1tm-ly-AKA">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kpO-io-Tvb"/>
@@ -394,7 +391,7 @@
                         <viewControllerLayoutGuide type="bottom" id="yO8-b0-lde"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AMw-2M-QKp">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="icA-nd-NVO">
@@ -427,28 +424,28 @@
             <objects>
                 <tableViewController id="IyY-Jl-AXb" customClass="AddAlarmChoicesContainer" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="DQg-v6-dXq">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="453"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection id="vP1-pH-wEg">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="zdW-bq-umW" detailTextLabel="aoC-ST-F5i" style="IBUITableViewCellStyleValue1" id="h5P-wt-FdU" userLabel="AlarmTypeCell">
-                                        <rect key="frame" x="0.0" y="35" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="35" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h5P-wt-FdU" id="q2s-RY-jGJ">
-                                            <frame key="frameInset" width="567" height="44"/>
+                                            <frame key="frameInset" width="342" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zdW-bq-umW">
-                                                    <frame key="frameInset" minX="15" minY="12" width="35.5" height="19.5"/>
+                                                    <frame key="frameInset" minX="15" minY="12" width="36" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aoC-ST-F5i">
-                                                    <frame key="frameInset" minX="523.5" minY="12" width="41.5" height="19.5"/>
+                                                    <frame key="frameInset" minX="298" minY="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -461,21 +458,21 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="X97-25-ygA" detailTextLabel="NHG-5I-aZl" style="IBUITableViewCellStyleValue1" id="jFn-aN-tLc">
-                                        <rect key="frame" x="0.0" y="79" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="79" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jFn-aN-tLc" id="Jcm-a4-ZJP">
-                                            <frame key="frameInset" width="567" height="44"/>
+                                            <frame key="frameInset" width="342" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="X97-25-ygA">
-                                                    <frame key="frameInset" minX="15" minY="12" width="43" height="19.5"/>
+                                                    <frame key="frameInset" minX="15" minY="12" width="43" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NHG-5I-aZl">
-                                                    <frame key="frameInset" minX="523.5" minY="12" width="41.5" height="19.5"/>
+                                                    <frame key="frameInset" minX="298" minY="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -488,21 +485,21 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="LRq-P5-nf2" detailTextLabel="3ai-CG-CzS" style="IBUITableViewCellStyleValue1" id="Dv6-8k-Bm0">
-                                        <rect key="frame" x="0.0" y="123" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="123" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dv6-8k-Bm0" id="r5H-vi-QkT">
-                                            <frame key="frameInset" width="567" height="44"/>
+                                            <frame key="frameInset" width="342" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LRq-P5-nf2">
-                                                    <frame key="frameInset" minX="15" minY="12" width="47" height="19.5"/>
+                                                    <frame key="frameInset" minX="15" minY="12" width="47" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3ai-CG-CzS">
-                                                    <frame key="frameInset" minX="523.5" minY="12" width="41.5" height="19.5"/>
+                                                    <frame key="frameInset" minX="298" minY="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -515,14 +512,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="I8K-ZR-PzX" style="IBUITableViewCellStyleDefault" id="rde-tu-qzw">
-                                        <rect key="frame" x="0.0" y="167" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="167" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rde-tu-qzw" id="jyf-V8-YB3">
-                                            <frame key="frameInset" width="600" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I8K-ZR-PzX">
-                                                    <frame key="frameInset" minX="15" width="570" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -545,14 +542,14 @@
                             <tableViewSection id="QgY-4V-paG">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="ije-ae-wDM" style="IBUITableViewCellStyleDefault" id="AU9-qc-Pe8">
-                                        <rect key="frame" x="0.0" y="247" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="247" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AU9-qc-Pe8" id="fa9-jS-4qb">
-                                            <frame key="frameInset" width="600" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Delete Alarm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ije-ae-wDM">
-                                                    <frame key="frameInset" minX="15" width="570" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="1" green="0.12841629060000001" blue="0.15970916060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -583,28 +580,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DxH-uU-QEP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="JlP-Rx-MYF" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2330" y="1831"/>
+            <point key="canvasLocation" x="2330" y="1873"/>
         </scene>
         <!--AlarmType-->
         <scene sceneID="uuV-GI-osf">
             <objects>
                 <tableViewController title="AlarmType" id="WWv-Z9-8VZ" customClass="AlarmTypeViewController" customModule="Fajr_Wake" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="4oq-ZO-lEU">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="386"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="453"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection id="IOh-Sp-prI">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="a2K-tm-g0J" style="IBUITableViewCellStyleDefault" id="9WY-UU-gYN" userLabel="FajrWakeCell">
-                                        <rect key="frame" x="0.0" y="35" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="35" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9WY-UU-gYN" id="sOP-XR-au6">
-                                            <frame key="frameInset" width="600" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Fajr Wake Alarm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a2K-tm-g0J">
-                                                    <frame key="frameInset" minX="15" width="570" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -614,14 +611,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="5Xd-CB-IlC" style="IBUITableViewCellStyleDefault" id="wTQ-kJ-5hh" userLabel="CustomCell">
-                                        <rect key="frame" x="0.0" y="79" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="79" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wTQ-kJ-5hh" id="Tir-nq-f3f">
-                                            <frame key="frameInset" width="600" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Custom Alarm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5Xd-CB-IlC">
-                                                    <frame key="frameInset" minX="15" width="570" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

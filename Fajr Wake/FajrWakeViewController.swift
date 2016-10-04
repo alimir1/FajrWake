@@ -14,23 +14,23 @@ import AVFoundation
 import AudioToolbox
 import MediaPlayer
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 
@@ -77,7 +77,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.checkApplicationState), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         // did become active
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupNotificationsReference), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-
+        
     }
     
     func loadAlarms() {
@@ -108,7 +108,7 @@ class FajrWakeViewController: UITableViewController, CLLocationManagerDelegate {
         }
         setupLocalNotifications()
     }
-
+    
     func setupLocalNotifications(_ noSound: Bool? = false) {
         UIApplication.shared.cancelAllLocalNotifications()
         if self.alarms.count > 0 {
@@ -182,7 +182,7 @@ extension FajrWakeViewController {
         if let locName = locationNameDisplay {
             toDisplay = "\(locName)\n\(calculationMethod)"
         }
-
+        
         return toDisplay
     }
     
@@ -222,7 +222,7 @@ extension FajrWakeViewController {
         cell.alarmLabel.attributedText = alarm.attributedTitle
         cell.alarmLabel.textColor = UIColor.black
         cell.editingAccessoryType = .disclosureIndicator
-
+        
         if alarm.alarmOn == true {
             cell.backgroundColor = UIColor.white
         } else {
@@ -235,7 +235,7 @@ extension FajrWakeViewController {
         alarmSwitch.isOn = alarm.alarmOn
         cell.accessoryView = alarmSwitch
         alarmSwitch.addTarget(self, action: #selector(self.switchChanged), for: .valueChanged)
-
+        
         return cell
     }
     
@@ -326,7 +326,7 @@ extension FajrWakeViewController {
         } else if let userInfo = timer.userInfo as? IndexPath {
             indexPath = userInfo
         }
-
+        
         if url != nil {
             playSound(url!)
             // vibrate every 2 seconds
@@ -360,7 +360,7 @@ extension FajrWakeViewController {
                 }
                 self.alarms[(indexPath! as NSIndexPath).row].savedAlarmDate = snoozeTime
                 self.setupAlarmsAndUpdate(indexPath!)
-                })
+            })
         }
         // Stop Button
         alarmAlertController!.addAction(UIAlertAction(title: "Stop", style: .default) {
@@ -377,7 +377,7 @@ extension FajrWakeViewController {
             }
             
             self.setupAlarmsAndUpdate(indexPath!)
-            })
+        })
         
         alarmAlertController!.show()
     }
@@ -403,7 +403,7 @@ extension FajrWakeViewController {
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     
     @IBAction func unwindToAlarmsDelete(_ sender: UIStoryboardSegue) {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -416,7 +416,7 @@ extension FajrWakeViewController {
                 self.tableView.reloadData()
             }
             saveAlarms()
-
+            
         }
     }
     
@@ -496,7 +496,8 @@ extension FajrWakeViewController {
 extension FajrWakeViewController {
     func startLocationDelegation() {
         // Activity Indicator
-//        EZLoadingActivity.show("Getting your location...", disableUI: true)
+        SwiftSpinner.show("Please Wait...", animated: true)
+        
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
             // fetch location or an error
@@ -506,13 +507,15 @@ extension FajrWakeViewController {
                 let gmt = LocalGMT.getLocalGMT()
                 self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
                 // stop showing activity indicator (success)
-//                EZLoadingActivity.hide(success: true, animated: true)
+                // EZLoadingActivity.hide(success: true, animated: true)
+                
             } else if let err = error {
-                print(err.localizedDescription)
                 // setting defaults to San Jose, CA, USA's time if error in getting user location
                 let lat = 37.279518
                 let lon = -121.867905
                 let gmt = -7.0
+                
+                print(err.localizedDescription)
                 self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
                 
                 if err.code == 0 {
@@ -536,7 +539,7 @@ extension FajrWakeViewController {
                     self.present(alertController, animated: true, completion: nil)
                 }
                 // stop showing activity indicator (not successful)
-//                EZLoadingActivity.hide(success: false, animated: true)
+                SwiftSpinner.hide()
             }
             self.manager = nil
         }
@@ -564,6 +567,7 @@ extension FajrWakeViewController {
                 UserDefaults.standard.set("Network Error", forKey: "userAddressForDisplay")
                 self.locationNameDisplay = UserDefaults.standard.object(forKey: "userAddressForDisplay") as? String
                 self.tableView.reloadData()
+                SwiftSpinner.hide()
                 return
             }
             else if placemarks?.count > 0 {
@@ -586,6 +590,8 @@ extension FajrWakeViewController {
                     saveAddress = "\(String(describing: country))"
                 }
             }
+            // Hide activity indicator
+            SwiftSpinner.hide()
         } else {
             saveAddress = "Can't Find Your City Name"
         }
@@ -642,7 +648,7 @@ extension FajrWakeViewController {
                 savedAlarms.append(alarm)
             }
         }
-
+        
         if savedAlarms.count > 0 {
             return savedAlarms
         } else {
