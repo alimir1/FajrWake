@@ -534,9 +534,9 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
     
     var title: String {
         if whenToWake == .onTime {
-            return "\(whatSalatToWake.getString)"
+            return "\(whatSalatToWake.getString.capitalized)"
         } else {
-            return "\(minsToAdjust) MIN \(whenToWake.getString) \(whatSalatToWake.getString)"
+            return "\(minsToAdjust) MIN \(whenToWake.getString) \(whatSalatToWake.getString.capitalized)"
         }
     }
     
@@ -546,9 +546,9 @@ class FajrWakeAlarm: NSObject, AlarmClockType, NSCoding {
         let rangeOfMinText = (title as NSString).range(of: " MIN")
         var rangeOfRestOfText: NSRange
         if whenToWake == .onTime {
-            rangeOfRestOfText = (title as NSString).range(of: "\(whatSalatToWake.getString)")
+            rangeOfRestOfText = (title as NSString).range(of: "\(whatSalatToWake.getString.capitalized)")
         } else {
-            rangeOfRestOfText = (title as NSString).range(of: "\(whenToWake.getString) \(whatSalatToWake.getString)")
+            rangeOfRestOfText = (title as NSString).range(of: "\(whenToWake.getString) \(whatSalatToWake.getString.capitalized)")
         }
         
         alarmAttributedTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 10)!, range: rangeOfMinText)

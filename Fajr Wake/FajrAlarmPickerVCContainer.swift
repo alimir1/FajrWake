@@ -31,7 +31,7 @@ class FajrAlarmPickerVCContainer: UIViewController {
     
     let maxElements = 10000
     var locOfZero = (10000/2) - 20
-    var pickerData: [[String]] = [[], ["On time", "Before", "After"], [SalatsAndQadhas.fajr.getString, SalatsAndQadhas.sunrise.getString]]
+    var pickerData: [[String]] = [[], ["On time", "Before", "After"], [SalatsAndQadhas.fajr.getString.capitalized, SalatsAndQadhas.sunrise.getString.capitalized]]
     let minsToAdjustComponent: Int = 0
     let whenToAlarmComponent: Int = 1
     let whatSalatToAlarmComponent: Int = 2

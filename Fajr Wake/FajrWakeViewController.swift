@@ -506,8 +506,6 @@ extension FajrWakeViewController {
                 let lon = loc.coordinate.longitude
                 let gmt = LocalGMT.getLocalGMT()
                 self.setupLocationForPrayerTimes(lat, lon: lon, gmt: gmt)
-                // stop showing activity indicator (success)
-                // EZLoadingActivity.hide(success: true, animated: true)
                 
             } else if let err = error {
                 // setting defaults to San Jose, CA, USA's time if error in getting user location

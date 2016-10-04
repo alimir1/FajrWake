@@ -55,7 +55,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veg-iK-Ska" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="xif-gd-z0p" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3861" y="1770"/>
+            <point key="canvasLocation" x="3273" y="1940"/>
         </scene>
         <!--Sound-->
         <scene sceneID="FDj-S8-ITP">
@@ -84,7 +84,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FtZ-l4-fJd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3862" y="1365"/>
+            <point key="canvasLocation" x="3273" y="1478"/>
         </scene>
         <!--Fajr Wake-->
         <scene sceneID="WdT-f1-caf">
@@ -311,12 +311,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Alarm" id="9pg-lJ-HT0">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Okx-ev-S93">
+                        <barButtonItem key="leftBarButtonItem" image="X" id="Okx-ev-S93">
                             <connections>
                                 <action selector="cancel:" destination="Cvb-5m-uUt" id="3Zp-v5-k74"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="bPh-tB-rIc">
+                        <barButtonItem key="rightBarButtonItem" image="Checkmark 1" id="bPh-tB-rIc">
                             <connections>
                                 <segue destination="E4R-6p-dzb" kind="unwind" unwindAction="unwindToAlarms:" id="ham-x3-iR0"/>
                             </connections>
@@ -580,7 +580,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DxH-uU-QEP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="JlP-Rx-MYF" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2330" y="1873"/>
+            <point key="canvasLocation" x="2249" y="1792"/>
         </scene>
         <!--AlarmType-->
         <scene sceneID="uuV-GI-osf">
@@ -643,11 +643,13 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wCE-9u-Mua" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2331" y="1401"/>
+            <point key="canvasLocation" x="2249" y="1341"/>
         </scene>
     </scenes>
     <resources>
+        <image name="Checkmark 1" width="22" height="15"/>
         <image name="Settings 2" width="22" height="22"/>
+        <image name="X" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="JYW-td-i19"/>
