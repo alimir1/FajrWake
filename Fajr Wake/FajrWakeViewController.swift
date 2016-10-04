@@ -491,6 +491,7 @@ extension FajrWakeViewController {
     }
 }
 
+// Testing Update?
 // MARK: - Get location
 // Get coordinates and call functinos to get prayer times
 extension FajrWakeViewController {
