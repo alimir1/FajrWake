@@ -311,7 +311,6 @@ extension FajrWakeViewController {
                 setupAlarmsAndUpdate(newIndexPath)
             }
         }
-        sortAlarms()
         self.tableView.reloadData()
     }
     
@@ -476,7 +475,6 @@ extension FajrWakeViewController {
                 self.alarms[(indexPath as NSIndexPath).row].deleteLocalNotifications()
                 self.setupAlarmsAndUpdate(indexPath)
             }
-            self.sortAlarms()
             self.tableView.reloadData()
         }
     }
@@ -491,11 +489,6 @@ extension FajrWakeViewController {
         
         return userPrayerTime.getUserSettings().getPrayerTimes(Calendar.current, date: date, latitude: lat, longitude: lon, tZone: gmt)
     }
-    
-    // Sort alarms based on alarm times
-    func sortAlarms() {
-        alarms.sort(by: { $0.timeToAlarm(nil).timeIntervalSinceNow < $1.timeToAlarm(nil).timeIntervalSinceNow })
-    }
 }
 
 // MARK: - Get location
@@ -504,13 +497,10 @@ extension FajrWakeViewController {
     func startLocationDelegation() {
         // Activity Indicator
 //        EZLoadingActivity.show("Getting your location...", disableUI: true)
-        print("in1")
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
             // fetch location or an error
-            print("in2")
             if let loc = location {
-                print("location working..?")
                 let lat = loc.coordinate.latitude
                 let lon = loc.coordinate.longitude
                 let gmt = LocalGMT.getLocalGMT()
@@ -518,7 +508,6 @@ extension FajrWakeViewController {
                 // stop showing activity indicator (success)
 //                EZLoadingActivity.hide(success: true, animated: true)
             } else if let err = error {
-                print("location NOT working..?")
                 print(err.localizedDescription)
                 // setting defaults to San Jose, CA, USA's time if error in getting user location
                 let lat = 37.279518
@@ -655,7 +644,6 @@ extension FajrWakeViewController {
         }
 
         if savedAlarms.count > 0 {
-            savedAlarms.sort(by: {$0.timeToAlarm(nil).timeIntervalSinceNow < $1.timeToAlarm(nil).timeIntervalSinceNow})
             return savedAlarms
         } else {
             return nil
