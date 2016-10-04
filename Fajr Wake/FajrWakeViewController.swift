@@ -504,12 +504,13 @@ extension FajrWakeViewController {
     func startLocationDelegation() {
         // Activity Indicator
 //        EZLoadingActivity.show("Getting your location...", disableUI: true)
-        
+        print("in1")
         manager = OneShotLocationManager()
         manager!.fetchWithCompletion {location, error in
-            
             // fetch location or an error
+            print("in2")
             if let loc = location {
+                print("location working..?")
                 let lat = loc.coordinate.latitude
                 let lon = loc.coordinate.longitude
                 let gmt = LocalGMT.getLocalGMT()
@@ -517,6 +518,7 @@ extension FajrWakeViewController {
                 // stop showing activity indicator (success)
 //                EZLoadingActivity.hide(success: true, animated: true)
             } else if let err = error {
+                print("location NOT working..?")
                 print(err.localizedDescription)
                 // setting defaults to San Jose, CA, USA's time if error in getting user location
                 let lat = 37.279518

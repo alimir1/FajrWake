@@ -45,6 +45,8 @@ class OneShotLocationManager: NSObject, CLLocationManagerDelegate {
         switch status {
         case .authorizedWhenInUse:
             self.locationManager!.startUpdatingLocation()
+        case .authorizedAlways:
+            self.locationManager!.startUpdatingLocation()
         case .denied:
             _didComplete(nil, error: NSError(domain: self.classForCoder.description(),
                 code: OneShotLocationManagerErrors.authorizationDenied.rawValue,
