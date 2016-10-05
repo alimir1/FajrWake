@@ -54,6 +54,6 @@ I acknowledge much of the code could have been written differently for more effi
 
 ![alt text](https://github.com/alimir1/FajrWake/blob/master/Screen%20Shot%202016-10-04%20at%202.06.04%20PM.png?raw=true "Fajr Wake add alarm")
 
-![alt text] (https://github.com/alimir1/FajrWake/blob/master/Screen%20Shot%202016-10-04%20at%202.08.25%20PM.png?raw=true "Fajr Wake")
 
-<a href="url"><img src="http://url.to/image.png" align="left" height="48" width="48" ></a>
+
+![alt text] (https://github.com/alimir1/FajrWake/blob/master/Screen%20Shot%202016-10-04%20at%202.08.25%20PM.png?raw=true "Fajr Wake")
