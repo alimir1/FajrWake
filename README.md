@@ -1,5 +1,7 @@
 # Fajr Wake
 
+[logo]: https://github.com/alimir1/FajrWake/blob/master/Fajr%20Wake/Assets.xcassets/AppIcon.appiconset/Icon-72.png?raw=true "Fajr Wake logo"
+
 By: [Ali Mir](http://alimir.io)
 
 Github: https://github.com/alimir1/FajrWake
