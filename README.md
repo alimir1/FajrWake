@@ -26,7 +26,7 @@ Islam requires that Muslims pray 5 times a day. These prayers (i.e. Salah) canno
 * **Maghreb**: Soon after sunset.
 * **Isha**: The time at which darkness falls and there is no scattered light in the sky.
 
-Fajr prayer begins at as per the above timing but it is permissible to pray anytime BEFORE sunrise. Dhuhr and Asr should to be prayed before sunset. Maghreb and Isha must be prayed before midnight. (**Note: This is just a simplified version on prayer times rulings. There are different opinions amongst Islamic scholars!**).
+Fajr prayer begins at as per the above timing but it is permissible to pray anytime BEFORE sunrise. Dhuhr and Asr should to be prayed before sunset. Maghreb and Isha must be prayed before midnight. (**Note: I'm simplifiying prayer time rulings here for non-Muslims to better understand. There are different opinions amongst Islamic scholars!**).
 
 You can learn more about Islamic prayer times on the following website: http://praytimes.org/wiki/Prayer_Times_Calculation
 
