@@ -1,7 +1,5 @@
 # Fajr Wake
 
-[logo]: https://github.com/alimir1/FajrWake/blob/master/Fajr%20Wake/Assets.xcassets/AppIcon.appiconset/Icon-72.png?raw=true "Fajr Wake logo"
-
 By: [Ali Mir](http://alimir.io)
 
 Github: https://github.com/alimir1/FajrWake
@@ -50,3 +48,10 @@ I acknowledge much of the code could have been written differently for more effi
 ## Acknowledgment
 
 [This](prayertimes.org) website was very helpful to me on so many levels. I used [this repo](https://github.com/alhazmy13/PrayerTimesSwift) for calculating prayer times.
+
+
+## Screenshots
+
+![alt text](https://github.com/alimir1/FajrWake/blob/master/Screen%20Shot%202016-10-04%20at%202.06.04%20PM.png?raw=true "Fajr Wake add alarm")
+
+![alt text] (https://github.com/alimir1/FajrWake/blob/master/Screen%20Shot%202016-10-04%20at%202.08.25%20PM.png?raw=true "Fajr Wake")
