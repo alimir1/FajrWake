@@ -32,7 +32,7 @@ You can learn more about Islamic prayer times on the following website: http://p
 
 My main focus was to build an app that makes it easy for Muslims to wake up for Fajr time. The reason being that Muslims typically use an alarm clock to wake up for Fajr prayer.
 
-There are many great Islamic prayer time alarm clock apps out there. This app is different in that
+There are many great Islamic prayer time alarm clock apps out there. This app is different in that:
 
 1. It not only can alarm at Fajr time but also any time between Fajr and sunrise (which is important since many Muslims perfer to pray Fajr for example 20 mins before sunrise).
 2. You can have multiple alarms around the Fajr and sunrise timing. Some Muslims wake up to pray [night prayers](https://www.al-islam.org/salatul-layl-h-t-kassamali/salatul-layl) some time before Fajr and then pray on Fajr on time.
