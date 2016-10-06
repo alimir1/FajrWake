@@ -2,6 +2,8 @@
 
 By: [Ali Mir](http://alimir.io)
 
+App Store link: https://itunes.apple.com/us/app/fajr-wake/id1143559369?mt=8
+
 Github: https://github.com/alimir1/FajrWake
 
 ___
