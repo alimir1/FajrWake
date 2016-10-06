@@ -48,6 +48,10 @@ There are many great Islamic prayer time alarm clock apps out there. This app is
 This is the first fully functional iPhone app that I created. Before creating this app, I was taking courses on [iOS Develompent with Swift]((https://teamtreehouse.com/tracks/ios-development-with-swift-20)) through [Treehouse](https://teamtreehouse.com/). As I was taking the Treehouse courses, this idea just came to my mind and thus Fajr Wake was created.
 Much of the code could have been written differently for more efficiency and best practices were not always implemented. This is the first app I made as I was learning iOS development. When I have time I plan on making some changes. 
 
+## Known Bugs
+
+Loction service has bugs that need to be fixed.
+
 ## Acknowledgments
 
 [This](prayertimes.org) website was very helpful to me on so many levels. I used [this repo](https://github.com/alhazmy13/PrayerTimesSwift) for calculating prayer times.
