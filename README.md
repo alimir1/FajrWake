@@ -50,7 +50,7 @@ Much of the code could have been written differently for more efficiency and bes
 
 ## Known Bugs
 
-Loction service has bugs that need to be fixed.
+Loction services
 
 ## Acknowledgments
 
