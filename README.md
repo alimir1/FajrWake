@@ -18,6 +18,9 @@ Build information:
 
 ---
 
+## Deprecated
+Check out version [here](https://github.com/alimir1/FajrWakev2).
+
 ## Introduction
 
 Islam requires that Muslims pray 5 times a day. These prayers (i.e. Salah) cannot be prayed just at any times. They are to be prayed on specific times. The following are the 5 obligatory daily prayers along with corresponding time that a Muslims can start the prayer:
