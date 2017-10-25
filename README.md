@@ -1,22 +1,6 @@
 # Fajr Wake
 
-By: [Ali Mir](http://alimir.io)
-
-App Store link: https://itunes.apple.com/us/app/fajr-wake/id1143559369?mt=8
-
-Github: https://github.com/alimir1/FajrWake
-
-___
-
-Build information:
-
-* Version: 1.0
-* Xcode version: 8.0
-* Swift: 3.0
-* iPhone: 4s or later
-* iPad: N/A
-
----
+By: [Ali Mir](http://github.com/alimir1)
 
 ## Deprecated
 Check out version [here](https://github.com/alimir1/FajrWakev2).
